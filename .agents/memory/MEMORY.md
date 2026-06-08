@@ -1,0 +1,1 @@
+- [Expo Web Dependencies](expo-web-deps.md) — react-native-worklets required for reanimated v4; react-native-keyboard-controller breaks web; expo-linking must be explicit.

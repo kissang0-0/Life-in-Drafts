@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "Life in Drafts",
+    "slug": "life-in-drafts",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "life-in-drafts",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#EBF5FF"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.lifeindrафts.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Used to capture photos for your memories and scrapbook.",
+        "NSPhotoLibraryUsageDescription": "Used to select photos for your memories and scrapbook.",
+        "NSPhotoLibraryAddUsageDescription": "Used to save your memory photos.",
+        "NSFaceIDUsageDescription": "Used to unlock your private journal with Face ID.",
+        "NSUserNotificationsUsageDescription": "Used to send gentle reminders to journal."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#EBF5FF"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "VIBRATE",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow Life in Drafts to use Face ID to keep your journal private."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#7EC8E3"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Life in Drafts to access your photos for memories.",
+          "cameraPermission": "Allow Life in Drafts to take photos for your memories."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
