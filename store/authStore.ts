@@ -39,8 +39,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       await signInWithEmailAndPassword(auth, email, password);
       set({ loading: false });
     } catch (err: unknown) {
+      const code = (err as { code?: string })?.code ?? '';
       const msg = err instanceof Error ? err.message : 'Sign in failed';
-      set({ loading: false, error: formatAuthError(msg) });
+      console.error('[Auth] signIn error:', code, msg);
+      set({ loading: false, error: formatAuthError(code || msg) });
     }
   },
 
@@ -50,8 +52,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       await createUserWithEmailAndPassword(auth, email, password);
       set({ loading: false });
     } catch (err: unknown) {
+      const code = (err as { code?: string })?.code ?? '';
       const msg = err instanceof Error ? err.message : 'Sign up failed';
-      set({ loading: false, error: formatAuthError(msg) });
+      console.error('[Auth] signUp error:', code, msg);
+      set({ loading: false, error: formatAuthError(code || msg) });
     }
   },
 
@@ -63,12 +67,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   clearError: () => set({ error: null }),
 }));
 
-function formatAuthError(msg: string): string {
-  if (msg.includes('invalid-email')) return 'Invalid email address.';
-  if (msg.includes('user-not-found')) return 'No account found with this email.';
-  if (msg.includes('wrong-password') || msg.includes('invalid-credential')) return 'Incorrect password.';
-  if (msg.includes('email-already-in-use')) return 'An account already exists with this email.';
-  if (msg.includes('weak-password')) return 'Password must be at least 6 characters.';
-  if (msg.includes('too-many-requests')) return 'Too many attempts. Please try again later.';
-  return 'Something went wrong. Please try again.';
+function formatAuthError(codeOrMsg: string): string {
+  if (codeOrMsg.includes('auth/invalid-email') || codeOrMsg.includes('invalid-email')) return 'Invalid email address.';
+  if (codeOrMsg.includes('auth/user-not-found') || codeOrMsg.includes('user-not-found')) return 'No account found with this email.';
+  if (codeOrMsg.includes('auth/wrong-password') || codeOrMsg.includes('wrong-password')) return 'Incorrect password.';
+  if (codeOrMsg.includes('auth/invalid-credential') || codeOrMsg.includes('invalid-credential')) return 'Incorrect email or password.';
+  if (codeOrMsg.includes('auth/email-already-in-use') || codeOrMsg.includes('email-already-in-use')) return 'An account already exists with this email.';
+  if (codeOrMsg.includes('auth/weak-password') || codeOrMsg.includes('weak-password')) return 'Password must be at least 6 characters.';
+  if (codeOrMsg.includes('auth/too-many-requests') || codeOrMsg.includes('too-many-requests')) return 'Too many attempts. Please try again later.';
+  if (codeOrMsg.includes('auth/network-request-failed') || codeOrMsg.includes('network')) return 'Network error. Check your connection.';
+  if (codeOrMsg.includes('auth/operation-not-allowed')) return 'Email/password sign-in is not enabled. Please enable it in Firebase Console → Authentication → Sign-in method.';
+  if (codeOrMsg.includes('auth/configuration-not-found') || codeOrMsg.includes('configuration-not-found')) return 'Firebase not configured. Enable Email/Password in Firebase Console.';
+  return `Auth error: ${codeOrMsg}`;
 }

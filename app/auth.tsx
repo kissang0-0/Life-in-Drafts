@@ -9,12 +9,14 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/store/authStore';
 import { useColors } from '@/hooks/useColors';
+import NimbusBird from '@/components/NimbusBird';
 
 export default function AuthScreen() {
   const colors = useColors();
@@ -27,7 +29,18 @@ export default function AuthScreen() {
   const [showPass, setShowPass] = useState(false);
 
   const handleSubmit = async () => {
-    if (!email.trim() || !password.trim()) return;
+    if (!email.trim()) {
+      Alert.alert('Missing email', 'Please enter your email address.');
+      return;
+    }
+    if (!password.trim()) {
+      Alert.alert('Missing password', 'Please enter your password.');
+      return;
+    }
+    if (mode === 'signup' && password.length < 6) {
+      Alert.alert('Weak password', 'Password must be at least 6 characters.');
+      return;
+    }
     clearError();
     if (mode === 'signin') {
       await signIn(email.trim(), password);
@@ -59,8 +72,8 @@ export default function AuthScreen() {
         >
           {/* Brand */}
           <View style={styles.brand}>
-            <View style={[styles.logoCircle, { backgroundColor: colors.primary }]}>
-              <Text style={styles.logoIcon}>🐦</Text>
+            <View style={[styles.logoCircle, { backgroundColor: '#D6F0FB' }]}>
+              <NimbusBird size={56} />
             </View>
             <Text style={[styles.appName, { color: colors.navy }]}>Life in Drafts</Text>
             <Text style={[styles.tagline, { color: colors.textMuted }]}>The Archive of Becoming</Text>
@@ -77,12 +90,12 @@ export default function AuthScreen() {
                 : 'Your journey begins here.'}
             </Text>
 
-            {error && (
-              <View style={[styles.errorBox, { backgroundColor: colors.errorLight }]}>
-                <Ionicons name="alert-circle-outline" size={16} color={colors.error} />
-                <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
+            {error ? (
+              <View style={[styles.errorBox, { backgroundColor: '#FDECEA', borderColor: '#F28B82', borderWidth: 1.5 }]}>
+                <Ionicons name="alert-circle" size={18} color="#D32F2F" />
+                <Text style={[styles.errorText, { color: '#B71C1C' }]}>{error}</Text>
               </View>
-            )}
+            ) : null}
 
             <View style={styles.fields}>
               <View style={[styles.inputWrap, { borderColor: colors.border, backgroundColor: colors.surfaceAlt }]}>
@@ -164,9 +177,8 @@ const styles = StyleSheet.create({
   scroll: { paddingHorizontal: 24, flexGrow: 1 },
   brand: { alignItems: 'center', marginBottom: 36, gap: 8 },
   logoCircle: {
-    width: 72, height: 72, borderRadius: 36, alignItems: 'center', justifyContent: 'center', marginBottom: 4,
+    width: 82, height: 82, borderRadius: 41, alignItems: 'center', justifyContent: 'center', marginBottom: 4,
   },
-  logoIcon: { fontSize: 36 },
   appName: { fontSize: 28, fontFamily: 'Nunito_800ExtraBold', letterSpacing: 0.5 },
   tagline: { fontSize: 14, fontFamily: 'Nunito_400Regular', letterSpacing: 0.3 },
   card: {
