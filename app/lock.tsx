@@ -82,19 +82,17 @@ export default function LockScreen({ onUnlock }: Props) {
 
   return (
     <LinearGradient
-      colors={[colors.background, colors.surfaceAlt, '#E0EFFD']}
+      colors={['#FBF0FF', '#EEE0FB', '#D8EEFF']}
       style={[styles.gradient, { paddingTop: topPad }]}
     >
-      <View style={[styles.blob1, { backgroundColor: colors.primary + '30' }]} />
-      <View style={[styles.blob2, { backgroundColor: colors.lavender + '40' }]} />
+      <View style={[styles.blob1, { backgroundColor: '#F9C6FF' }]} />
+      <View style={[styles.blob2, { backgroundColor: '#B8DEFF' }]} />
 
       <View style={styles.inner}>
         <View style={styles.brand}>
-          <View style={[styles.logoCircle, { backgroundColor: '#D6F0FB' }]}>
-            <NimbusBird size={52} />
-          </View>
+          <NimbusBird size={110} />
           <Text style={[styles.appName, { color: colors.navy }]}>Life in Drafts</Text>
-          <Text style={[styles.subtitle, { color: colors.textMuted }]}>Your archive is locked</Text>
+          <Text style={[styles.subtitle, { color: colors.textMuted }]}>🔒 Your archive is locked</Text>
         </View>
 
         {checking ? (
@@ -132,10 +130,6 @@ const styles = StyleSheet.create({
     gap: 36,
   },
   brand: { alignItems: 'center', gap: 10 },
-  logoCircle: {
-    width: 80, height: 80, borderRadius: 40,
-    alignItems: 'center', justifyContent: 'center', marginBottom: 4,
-  },
   appName: { fontSize: 26, fontFamily: 'Nunito_800ExtraBold', letterSpacing: 0.5 },
   subtitle: { fontSize: 15, fontFamily: 'Nunito_400Regular' },
   hint: { fontSize: 13, fontFamily: 'Nunito_400Regular', textAlign: 'center' },

@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useColors } from '@/hooks/useColors';
 import { NIMBUS_MESSAGES } from '@/constants/nimbus';
+import NimbusBird from '@/components/NimbusBird';
 
 type Props = {
   message?: string;
@@ -18,8 +19,8 @@ export function NimbusMessage({ message, style }: Props) {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surfaceAlt, borderColor: colors.border }, style]}>
-      <View style={[styles.birdCircle, { backgroundColor: colors.primary }]}>
-        <Text style={styles.birdEmoji}>🐦</Text>
+      <View style={styles.birdWrap}>
+        <NimbusBird size={50} />
       </View>
       <View style={styles.bubble}>
         <Text style={[styles.name, { color: colors.primary }]}>Nimbus</Text>
@@ -35,18 +36,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
     borderWidth: 1,
-    padding: 14,
-    gap: 12,
+    padding: 12,
+    gap: 10,
   },
-  birdCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+  birdWrap: {
+    width: 50,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  birdEmoji: {
-    fontSize: 22,
   },
   bubble: {
     flex: 1,

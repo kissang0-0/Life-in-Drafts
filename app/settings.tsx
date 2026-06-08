@@ -17,6 +17,7 @@ import { useColors } from '@/hooks/useColors';
 import { useAuthStore } from '@/store/authStore';
 import { useAppStore } from '@/store/appStore';
 import { useSecurityStore } from '@/store/securityStore';
+import NimbusBird from '@/components/NimbusBird';
 import {
   saveBiometricEnabled,
   clearPIN,
@@ -139,7 +140,7 @@ export default function SettingsScreen() {
         {/* Profile card */}
         <View style={[styles.profileCard, { backgroundColor: colors.primary }]}>
           <View style={styles.profileAvatar}>
-            <Text style={styles.avatarEmoji}>🐦</Text>
+            <NimbusBird size={46} />
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.profileName}>My Archive</Text>
