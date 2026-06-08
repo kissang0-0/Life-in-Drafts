@@ -1,2 +1,3 @@
 - [Expo Web Dependencies](expo-web-deps.md) — react-native-worklets required for reanimated v4; react-native-keyboard-controller breaks web; expo-linking must be explicit.
-- [Ionicons Valid Names](ionicons-web.md) — "quote" is not a valid Ionicons name on web; use "text-outline" or similar instead. Always verify icon names against the Ionicons v5 set.
+- [AnimatedButton pattern](animated-button.md) — use Pressable (not TouchableWithoutFeedback, which is deprecated); wraps Animated.View with spring scale on pressIn/pressOut.
+- [NimbusBird logo usage](nimbus-bird-usage.md) — full logo PNG shown everywhere; user confirmed logo badge is fine on auth/lock; inside-app uses (NimbusMessage etc.) just need larger size prop.

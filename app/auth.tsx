@@ -19,6 +19,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useColors } from '@/hooks/useColors';
 import NimbusBird from '@/components/NimbusBird';
 import Toast from '@/components/Toast';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 const SPARKLES = ['✨', '⭐', '💫', '🌟', '✦'];
 
@@ -148,17 +149,16 @@ export default function AuthScreen() {
               </View>
             </View>
 
-            <LinearGradient
-              colors={['#B8A4E8', '#7EC8E3']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.btnGradient}
+            <AnimatedButton
+              onPress={handleSubmit}
+              disabled={loading}
+              style={[styles.btnGradient, { opacity: loading ? 0.75 : 1 }]}
             >
-              <TouchableOpacity
-                onPress={handleSubmit}
-                disabled={loading}
-                activeOpacity={0.85}
-                style={[styles.btn, { opacity: loading ? 0.75 : 1 }]}
+              <LinearGradient
+                colors={['#B8A4E8', '#7EC8E3']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.btn}
               >
                 {loading ? (
                   <ActivityIndicator color="#fff" />
@@ -167,8 +167,8 @@ export default function AuthScreen() {
                     {mode === 'signin' ? '✨ Open my archive' : '🌟 Begin my journey'}
                   </Text>
                 )}
-              </TouchableOpacity>
-            </LinearGradient>
+              </LinearGradient>
+            </AnimatedButton>
 
             <TouchableOpacity
               onPress={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); clearError(); }}

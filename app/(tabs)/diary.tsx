@@ -12,6 +12,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useColors } from '@/hooks/useColors';
 import { useAppStore } from '@/store/appStore';
 import { DiaryCard } from '@/components/DiaryCard';
@@ -119,7 +120,6 @@ function CalendarView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
 
   return (
     <View style={calStyles.wrapper}>
-      {/* Month nav */}
       <View style={calStyles.nav}>
         <TouchableOpacity onPress={prevMonth} style={calStyles.navBtn}>
           <Ionicons name="chevron-back" size={18} color={colors.navy} />
@@ -129,15 +129,11 @@ function CalendarView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
           <Ionicons name="chevron-forward" size={18} color={colors.navy} />
         </TouchableOpacity>
       </View>
-
-      {/* Day headers */}
       <View style={calStyles.dayHeaders}>
         {DAYS.map((d) => (
           <Text key={d} style={[calStyles.dayHeader, { color: colors.textMuted }]}>{d}</Text>
         ))}
       </View>
-
-      {/* Grid */}
       <View style={calStyles.grid}>
         {cells.map((day, i) => {
           if (!day) return <View key={`e${i}`} style={calStyles.cell} />;
@@ -146,7 +142,6 @@ function CalendarView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
           const isToday = k === today;
           const topMood = dayEntries[0]?.mood;
           const moodColor = topMood ? colors.moodColors[topMood] ?? colors.surfaceAlt : null;
-
           return (
             <TouchableOpacity
               key={k}
@@ -161,12 +156,8 @@ function CalendarView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
               <Text style={[calStyles.dayNum, { color: isToday ? colors.primary : dayEntries.length > 0 ? colors.navy : colors.textLight }]}>
                 {day}
               </Text>
-              {dayEntries.length > 0 && (
-                <View style={[calStyles.dot, { backgroundColor: colors.navy + '60' }]} />
-              )}
-              {dayEntries.length > 1 && (
-                <Text style={[calStyles.multiCount, { color: colors.navy }]}>+{dayEntries.length - 1}</Text>
-              )}
+              {dayEntries.length > 0 && <View style={[calStyles.dot, { backgroundColor: colors.navy + '60' }]} />}
+              {dayEntries.length > 1 && <Text style={[calStyles.multiCount, { color: colors.navy }]}>+{dayEntries.length - 1}</Text>}
             </TouchableOpacity>
           );
         })}
@@ -191,7 +182,6 @@ const calStyles = StyleSheet.create({
 
 function TimelineView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (id: string) => void }) {
   const colors = useColors();
-
   const grouped: { date: string; items: DiaryEntry[] }[] = useMemo(() => {
     const map: Record<string, DiaryEntry[]> = {};
     for (const e of entries) {
@@ -274,6 +264,7 @@ export default function DiaryScreen() {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
+  const today = new Date().toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
 
   const filtered = useMemo(() => diary.filter((e) => {
     const matchSearch =
@@ -285,42 +276,55 @@ export default function DiaryScreen() {
     return matchSearch && matchMood;
   }), [diary, search, filterMood]);
 
-  const VIEW_MODES: { key: ViewMode; icon: string; label: string }[] = [
-    { key: 'list',     icon: 'list-outline',     label: 'List'     },
-    { key: 'timeline', icon: 'git-branch-outline', label: 'Timeline' },
-    { key: 'calendar', icon: 'calendar-outline',  label: 'Calendar' },
+  const VIEW_MODES: { key: ViewMode; icon: string }[] = [
+    { key: 'list',     icon: 'list-outline'      },
+    { key: 'timeline', icon: 'git-branch-outline' },
+    { key: 'calendar', icon: 'calendar-outline'   },
   ];
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header */}
-      <View style={[styles.header, { paddingTop: topPad + 16, backgroundColor: colors.background }]}>
+      {/* Gradient Header */}
+      <LinearGradient
+        colors={['#F5EEFF', '#EBF4FF', colors.background]}
+        locations={[0, 0.6, 1]}
+        style={[styles.header, { paddingTop: topPad + 14 }]}
+      >
+        {/* Title row */}
         <View style={styles.titleRow}>
-          <View>
+          <View style={styles.titleGroup}>
             <Text style={[styles.title, { color: colors.navy }]}>Dear Me,</Text>
-            <Text style={[styles.count, { color: colors.textMuted }]}>
-              {diary.length} {diary.length === 1 ? 'entry' : 'entries'}
+            <Text style={[styles.subtitle, { color: colors.textMuted }]}>
+              {today} · {diary.length} {diary.length === 1 ? 'entry' : 'entries'}
             </Text>
           </View>
+
           {/* View mode toggle */}
-          <View style={[styles.viewToggle, { backgroundColor: colors.surfaceAlt }]}>
+          <View style={[styles.viewToggle, { backgroundColor: 'rgba(255,255,255,0.75)', borderColor: colors.border }]}>
             {VIEW_MODES.map((vm) => (
               <TouchableOpacity
                 key={vm.key}
                 onPress={() => setViewMode(vm.key)}
-                style={[styles.viewToggleBtn, viewMode === vm.key && { backgroundColor: colors.surface, shadowColor: colors.shadowDeep }]}
+                style={[
+                  styles.viewToggleBtn,
+                  viewMode === vm.key && { backgroundColor: colors.primary },
+                ]}
               >
-                <Ionicons name={vm.icon as any} size={16} color={viewMode === vm.key ? colors.navy : colors.textMuted} />
+                <Ionicons
+                  name={vm.icon as any}
+                  size={15}
+                  color={viewMode === vm.key ? '#fff' : colors.textMuted}
+                />
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
-        {/* Mood bar analytics */}
+        {/* Mood overview */}
         {diary.length >= 3 && <MoodBar entries={diary} />}
 
         {/* Search */}
-        <View style={[styles.searchBar, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.searchBar, { backgroundColor: 'rgba(255,255,255,0.85)', borderColor: colors.border }]}>
           <Ionicons name="search-outline" size={16} color={colors.textMuted} />
           <TextInput
             style={[styles.searchInput, { color: colors.text, fontFamily: 'Nunito_400Regular' }]}
@@ -336,30 +340,31 @@ export default function DiaryScreen() {
           )}
         </View>
 
-        {/* Mood filter (only for list mode) */}
+        {/* Mood filter chips */}
         {viewMode === 'list' && (
           <FlatList
             horizontal
-            data={[{ key: '', label: 'All', icon: 'apps-outline' as const }, ...MOOD_OPTIONS]}
+            data={[{ key: '', label: 'All ✨', icon: 'apps-outline' as const }, ...MOOD_OPTIONS]}
             keyExtractor={(item) => item.key}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.filters}
             renderItem={({ item }) => {
               const isActive = filterMood === item.key;
-              const mc = item.key ? colors.moodColors[item.key] ?? colors.surfaceAlt : colors.surfaceAlt;
+              const mc = item.key ? colors.moodColors[item.key] ?? colors.surfaceAlt : colors.lavender;
               return (
                 <TouchableOpacity
                   onPress={() => setFilterMood(item.key)}
+                  activeOpacity={0.75}
                   style={[
                     styles.filterChip,
                     {
-                      backgroundColor: isActive ? mc : colors.surface,
-                      borderColor: isActive ? colors.navy + '40' : colors.border,
+                      backgroundColor: isActive ? mc : 'rgba(255,255,255,0.8)',
+                      borderColor: isActive ? colors.navy + '30' : colors.border,
                       borderWidth: 1.5,
                     },
                   ]}
                 >
-                  <Ionicons name={item.icon as any} size={13} color={isActive ? colors.navy : colors.textMuted} />
+                  <Ionicons name={item.icon as any} size={12} color={isActive ? colors.navy : colors.textMuted} />
                   <Text style={[styles.filterLabel, { color: isActive ? colors.navy : colors.textMuted }]}>
                     {item.label}
                   </Text>
@@ -368,9 +373,9 @@ export default function DiaryScreen() {
             }}
           />
         )}
-      </View>
+      </LinearGradient>
 
-      {/* Content by view mode */}
+      {/* Content */}
       {viewMode === 'list' && (
         <FlatList
           data={filtered}
@@ -385,8 +390,8 @@ export default function DiaryScreen() {
           ListEmptyComponent={
             <EmptyState
               icon="book-outline"
-              title={search || filterMood ? 'No matching entries' : 'Your diary is empty'}
-              subtitle={search || filterMood ? 'Try a different search or filter' : 'Write your first entry to begin'}
+              title={search || filterMood ? 'No matching entries' : 'Start your archive'}
+              subtitle={search || filterMood ? 'Try a different search or filter' : 'Write your first entry — future you will thank you 💙'}
             />
           }
           showsVerticalScrollIndicator={false}
@@ -416,28 +421,28 @@ export default function DiaryScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: { paddingHorizontal: 20, paddingBottom: 12, gap: 10 },
+  header: { paddingHorizontal: 20, paddingBottom: 14, gap: 12 },
   titleRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
-  title: { fontSize: 26, fontFamily: 'Nunito_800ExtraBold' },
-  count: { fontSize: 13, fontFamily: 'Nunito_400Regular', marginTop: -2 },
+  titleGroup: { gap: 2 },
+  title: { fontSize: 30, fontFamily: 'Nunito_800ExtraBold', letterSpacing: -0.3 },
+  subtitle: { fontSize: 12, fontFamily: 'Nunito_600SemiBold', marginTop: 1 },
   viewToggle: {
-    flexDirection: 'row', borderRadius: 12, padding: 3, gap: 2,
-    shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.5, shadowRadius: 4, elevation: 1,
+    flexDirection: 'row', borderRadius: 14, padding: 4, gap: 2,
+    borderWidth: 1.5, marginTop: 4,
   },
   viewToggleBtn: {
-    padding: 7, borderRadius: 9,
-    shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.5, shadowRadius: 3, elevation: 1,
+    padding: 7, borderRadius: 10,
   },
   searchBar: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
-    borderWidth: 1.5, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 10,
+    borderWidth: 1.5, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 11,
   },
   searchInput: { flex: 1, fontSize: 14 },
-  filters: { gap: 8, paddingVertical: 4 },
+  filters: { gap: 7, paddingVertical: 2 },
   filterChip: {
     flexDirection: 'row', alignItems: 'center', gap: 5,
-    paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20,
+    paddingHorizontal: 11, paddingVertical: 7, borderRadius: 20,
   },
-  filterLabel: { fontSize: 12, fontFamily: 'Nunito_600SemiBold' },
-  list: { paddingHorizontal: 20, paddingTop: 8 },
+  filterLabel: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
+  list: { paddingHorizontal: 20, paddingTop: 10 },
 });

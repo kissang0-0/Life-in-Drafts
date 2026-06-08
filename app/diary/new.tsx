@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   Platform,
   Image,
-  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -22,6 +21,8 @@ import { useAuthStore } from '@/store/authStore';
 import { addDiaryEntry } from '@/lib/firestore';
 import { uploadPhoto } from '@/lib/storage';
 import { MoodPicker } from '@/components/MoodPicker';
+import Toast from '@/components/Toast';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 const WEATHER_OPTIONS = [
   { key: 'sunny',   emoji: '☀️', label: 'Sunny'   },
@@ -49,6 +50,8 @@ function isMidnightHours() {
   return h >= 22 || h < 5;
 }
 
+type ToastState = { visible: boolean; message: string; type: 'success' | 'error' | 'info' };
+
 export default function NewDiaryEntry() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
@@ -66,16 +69,19 @@ export default function NewDiaryEntry() {
   const [photos, setPhotos] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [showPrompts, setShowPrompts] = useState(false);
+  const [toast, setToast] = useState<ToastState>({ visible: false, message: '', type: 'success' });
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
-  // Midnight theme colors
   const bg = isMidnight ? '#0F1923' : colors.background;
   const surface = isMidnight ? '#1A2639' : colors.surface;
   const textColor = isMidnight ? '#E8EFF7' : colors.text;
   const mutedColor = isMidnight ? '#8BA3BF' : colors.textMuted;
   const borderColor = isMidnight ? '#2A3F57' : colors.border;
   const accentColor = isMidnight ? '#7EC8E3' : colors.primary;
+
+  const showToast = (message: string, type: ToastState['type'] = 'success') =>
+    setToast({ visible: true, message, type });
 
   const handlePickPhoto = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -123,13 +129,25 @@ export default function NewDiaryEntry() {
         weather,
         energyLevel,
       });
-      router.back();
+      showToast('✨ Entry saved to your archive!', 'success');
+      setTimeout(() => router.back(), 1200);
     } catch {
-      Alert.alert('Error', 'Could not save your entry. Please try again.');
-    } finally {
+      showToast('Could not save your entry. Please try again.', 'error');
       setSaving(false);
     }
   };
+
+  const saveBtn = (
+    <AnimatedButton
+      onPress={handleSave}
+      disabled={saving || !content.trim()}
+      style={[styles.saveBtn, { backgroundColor: accentColor, opacity: !content.trim() ? 0.5 : 1 }]}
+    >
+      {saving
+        ? <ActivityIndicator color="#fff" size="small" />
+        : <Text style={styles.saveBtnText}>Save</Text>}
+    </AnimatedButton>
+  );
 
   return (
     <View style={[styles.container, { backgroundColor: bg }]}>
@@ -146,13 +164,7 @@ export default function NewDiaryEntry() {
             <Text style={styles.moonEmoji}>🌙</Text>
             <Text style={[styles.headerTitle, { color: '#E8EFF7' }]}>Midnight Thoughts</Text>
           </View>
-          <TouchableOpacity
-            onPress={handleSave}
-            disabled={saving || !content.trim()}
-            style={[styles.saveBtn, { backgroundColor: accentColor, opacity: !content.trim() ? 0.5 : 1 }]}
-          >
-            {saving ? <ActivityIndicator color="#fff" size="small" /> : <Text style={styles.saveBtnText}>Save</Text>}
-          </TouchableOpacity>
+          {saveBtn}
         </LinearGradient>
       ) : (
         <View style={[styles.header, { paddingTop: topPad + 12, backgroundColor: surface, borderBottomColor: borderColor }]}>
@@ -160,13 +172,7 @@ export default function NewDiaryEntry() {
             <Ionicons name="close" size={24} color={mutedColor} />
           </TouchableOpacity>
           <Text style={[styles.headerTitle, { color: colors.navy }]}>New Entry</Text>
-          <TouchableOpacity
-            onPress={handleSave}
-            disabled={saving || !content.trim()}
-            style={[styles.saveBtn, { backgroundColor: colors.primary, opacity: !content.trim() ? 0.5 : 1 }]}
-          >
-            {saving ? <ActivityIndicator color="#fff" size="small" /> : <Text style={styles.saveBtnText}>Save</Text>}
-          </TouchableOpacity>
+          {saveBtn}
         </View>
       )}
 
@@ -347,6 +353,13 @@ export default function NewDiaryEntry() {
           <Text style={styles.midnightFooter}>🌙 Midnight Thoughts · Only you can see this</Text>
         )}
       </ScrollView>
+
+      <Toast
+        message={toast.message}
+        visible={toast.visible}
+        type={toast.type}
+        onHide={() => setToast((t) => ({ ...t, visible: false }))}
+      />
     </View>
   );
 }
