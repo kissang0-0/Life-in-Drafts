@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,22 +11,40 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/store/authStore';
 import { useColors } from '@/hooks/useColors';
 import NimbusBird from '@/components/NimbusBird';
+import Toast from '@/components/Toast';
 
 export default function AuthScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { signIn, signUp, loading, error, clearError } = useAuthStore();
+  const router = useRouter();
+  const { signIn, signUp, loading, error, clearError, user } = useAuthStore();
 
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
+  const [toast, setToast] = useState<{ visible: boolean; message: string; type: 'success' | 'error' | 'info' }>({
+    visible: false,
+    message: '',
+    type: 'success',
+  });
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/(tabs)/home');
+    }
+  }, [user]);
+
+  const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setToast({ visible: true, message, type });
+  };
 
   const handleSubmit = async () => {
     if (!email.trim()) {
@@ -42,10 +60,15 @@ export default function AuthScreen() {
       return;
     }
     clearError();
+
     if (mode === 'signin') {
       await signIn(email.trim(), password);
     } else {
       await signUp(email.trim(), password);
+      const currentError = useAuthStore.getState().error;
+      if (!currentError) {
+        showToast('🎉 Archive created! Welcome to Life in Drafts.', 'success');
+      }
     }
   };
 
@@ -54,7 +77,7 @@ export default function AuthScreen() {
       colors={[colors.background, colors.surfaceAlt, '#E0EFFD']}
       style={styles.gradient}
     >
-      {/* Decorative elements */}
+      {/* Decorative blobs */}
       <View style={[styles.blob1, { backgroundColor: colors.primary + '30' }]} />
       <View style={[styles.blob2, { backgroundColor: colors.lavender + '40' }]} />
 
@@ -91,9 +114,9 @@ export default function AuthScreen() {
             </Text>
 
             {error ? (
-              <View style={[styles.errorBox, { backgroundColor: '#FDECEA', borderColor: '#F28B82', borderWidth: 1.5 }]}>
+              <View style={styles.errorBox}>
                 <Ionicons name="alert-circle" size={18} color="#D32F2F" />
-                <Text style={[styles.errorText, { color: '#B71C1C' }]}>{error}</Text>
+                <Text style={styles.errorText}>{error}</Text>
               </View>
             ) : null}
 
@@ -137,7 +160,7 @@ export default function AuthScreen() {
               onPress={handleSubmit}
               disabled={loading}
               activeOpacity={0.85}
-              style={[styles.btn, { backgroundColor: colors.primary }]}
+              style={[styles.btn, { backgroundColor: colors.primary, opacity: loading ? 0.7 : 1 }]}
             >
               {loading ? (
                 <ActivityIndicator color="#fff" />
@@ -162,6 +185,13 @@ export default function AuthScreen() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <Toast
+        message={toast.message}
+        visible={toast.visible}
+        type={toast.type}
+        onHide={() => setToast((t) => ({ ...t, visible: false }))}
+      />
     </LinearGradient>
   );
 }
@@ -189,8 +219,9 @@ const styles = StyleSheet.create({
   subheading: { fontSize: 14, fontFamily: 'Nunito_400Regular', textAlign: 'center', marginBottom: 4 },
   errorBox: {
     flexDirection: 'row', alignItems: 'center', gap: 8, padding: 12, borderRadius: 12,
+    backgroundColor: '#FDECEA', borderColor: '#F28B82', borderWidth: 1.5,
   },
-  errorText: { fontSize: 13, fontFamily: 'Nunito_600SemiBold', flex: 1 },
+  errorText: { fontSize: 13, fontFamily: 'Nunito_600SemiBold', flex: 1, color: '#B71C1C' },
   fields: { gap: 12 },
   inputWrap: {
     flexDirection: 'row', alignItems: 'center', gap: 10,
