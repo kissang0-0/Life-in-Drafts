@@ -17,7 +17,20 @@ import { useAppStore } from '@/store/appStore';
 import { useAuthStore } from '@/store/authStore';
 import { deleteDiaryEntry } from '@/lib/firestore';
 import { MOOD_OPTIONS } from '@/constants/nimbus';
+import { MOOD_FLOWERS } from '@/constants/quotes';
 import { format } from '@/lib/dateUtils';
+
+const WEATHER_MAP: Record<string, string> = {
+  sunny: '☀️',
+  cloudy: '⛅',
+  rainy: '🌧️',
+  snowy: '❄️',
+  foggy: '🌫️',
+  stormy: '⛈️',
+  windy: '🌬️',
+};
+
+const ENERGY_EMOJI = ['', '😴', '😞', '😐', '🙂', '⚡'];
 
 export default function DiaryEntryScreen() {
   const colors = useColors();
@@ -30,6 +43,7 @@ export default function DiaryEntryScreen() {
   const entry = diary.find((e) => e.id === id);
   const mood = entry ? MOOD_OPTIONS.find((m) => m.key === entry.mood) : null;
   const moodColor = entry?.mood ? colors.moodColors[entry.mood] ?? colors.surfaceAlt : colors.surfaceAlt;
+  const flower = entry?.mood ? MOOD_FLOWERS[entry.mood] : null;
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
@@ -63,9 +77,7 @@ export default function DiaryEntryScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
-      <View
-        style={[styles.header, { paddingTop: topPad + 12, backgroundColor: colors.surface, borderBottomColor: colors.border }]}
-      >
+      <View style={[styles.header, { paddingTop: topPad + 12, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.navBtn}>
           <Ionicons name="arrow-back" size={22} color={colors.navy} />
         </TouchableOpacity>
@@ -82,17 +94,41 @@ export default function DiaryEntryScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Mood banner */}
+        {/* Mood banner with flower */}
         {mood && (
           <View style={[styles.moodBanner, { backgroundColor: moodColor }]}>
-            <Ionicons name={mood.icon} size={24} color={colors.navy} />
+            <Ionicons name={mood.icon} size={22} color={colors.navy} />
             <Text style={[styles.moodText, { color: colors.navy }]}>{mood.label}</Text>
+            {flower && <Text style={styles.flowerEmoji}>{flower.emoji}</Text>}
+            {flower && (
+              <Text style={[styles.flowerName, { color: colors.navy + '80' }]}>{flower.name}</Text>
+            )}
           </View>
         )}
 
         <View style={styles.content}>
-          {/* Date */}
-          <Text style={[styles.date, { color: colors.textMuted }]}>{format(entry.createdAt)}</Text>
+          {/* Meta row: date, weather, energy */}
+          <View style={styles.metaRow}>
+            <Text style={[styles.date, { color: colors.textMuted }]}>{format(entry.createdAt)}</Text>
+            <View style={styles.metaPills}>
+              {entry.weather && (
+                <View style={[styles.pill, { backgroundColor: colors.surfaceAlt }]}>
+                  <Text style={styles.pillEmoji}>{WEATHER_MAP[entry.weather] ?? ''}</Text>
+                  <Text style={[styles.pillText, { color: colors.textMuted }]}>
+                    {entry.weather.charAt(0).toUpperCase() + entry.weather.slice(1)}
+                  </Text>
+                </View>
+              )}
+              {!!entry.energyLevel && entry.energyLevel > 0 && (
+                <View style={[styles.pill, { backgroundColor: colors.surfaceAlt }]}>
+                  <Text style={styles.pillEmoji}>{ENERGY_EMOJI[entry.energyLevel]}</Text>
+                  <Text style={[styles.pillText, { color: colors.textMuted }]}>
+                    {['', 'Drained', 'Low', 'Okay', 'Good', 'Energized'][entry.energyLevel]}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
 
           {/* Title */}
           {entry.title ? (
@@ -109,10 +145,7 @@ export default function DiaryEntryScreen() {
                 <Image
                   key={i}
                   source={{ uri }}
-                  style={[
-                    styles.photo,
-                    entry.photos.length === 1 ? styles.photoFull : styles.photoHalf,
-                  ]}
+                  style={[styles.photo, entry.photos.length === 1 ? styles.photoFull : styles.photoHalf]}
                   resizeMode="cover"
                 />
               ))}
@@ -127,6 +160,16 @@ export default function DiaryEntryScreen() {
                   <Text style={[styles.tagText, { color: colors.primary }]}>#{tag}</Text>
                 </View>
               ))}
+            </View>
+          )}
+
+          {/* Garden footer */}
+          {flower && (
+            <View style={[styles.gardenFooter, { backgroundColor: colors.surfaceAlt }]}>
+              <Text style={styles.gardenEmoji}>{flower.emoji}</Text>
+              <Text style={[styles.gardenText, { color: colors.textMuted }]}>
+                This entry grew a <Text style={{ color: colors.navy, fontFamily: 'Nunito_700Bold' }}>{flower.name}</Text> in your Mood Garden
+              </Text>
             </View>
           )}
         </View>
@@ -144,12 +187,19 @@ const styles = StyleSheet.create({
   navBtn: { padding: 6 },
   scroll: {},
   moodBanner: {
-    flexDirection: 'row', alignItems: 'center', gap: 10,
-    paddingHorizontal: 24, paddingVertical: 14,
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    paddingHorizontal: 20, paddingVertical: 14,
   },
   moodText: { fontSize: 15, fontFamily: 'Nunito_600SemiBold' },
+  flowerEmoji: { fontSize: 20, marginLeft: 4 },
+  flowerName: { fontSize: 12, fontFamily: 'Nunito_400Regular' },
   content: { paddingHorizontal: 24, paddingTop: 20, gap: 16 },
+  metaRow: { gap: 8 },
   date: { fontSize: 12, fontFamily: 'Nunito_600SemiBold', textTransform: 'uppercase', letterSpacing: 0.5 },
+  metaPills: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
+  pill: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
+  pillEmoji: { fontSize: 13 },
+  pillText: { fontSize: 12, fontFamily: 'Nunito_600SemiBold' },
   title: { fontSize: 26, fontFamily: 'Nunito_800ExtraBold', lineHeight: 32 },
   body: { fontSize: 16, fontFamily: 'Nunito_400Regular', lineHeight: 26 },
   photosGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
@@ -159,6 +209,12 @@ const styles = StyleSheet.create({
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   tag: { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20 },
   tagText: { fontSize: 13, fontFamily: 'Nunito_600SemiBold' },
+  gardenFooter: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    borderRadius: 16, padding: 14, marginTop: 4,
+  },
+  gardenEmoji: { fontSize: 28 },
+  gardenText: { flex: 1, fontSize: 13, fontFamily: 'Nunito_400Regular', lineHeight: 18 },
   notFound: { fontSize: 16, fontFamily: 'Nunito_400Regular', marginBottom: 16 },
   backBtn: { paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20 },
   backBtnText: { color: '#fff', fontFamily: 'Nunito_700Bold' },

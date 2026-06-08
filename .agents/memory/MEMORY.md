@@ -1,1 +1,2 @@
 - [Expo Web Dependencies](expo-web-deps.md) — react-native-worklets required for reanimated v4; react-native-keyboard-controller breaks web; expo-linking must be explicit.
+- [Ionicons Valid Names](ionicons-web.md) — "quote" is not a valid Ionicons name on web; use "text-outline" or similar instead. Always verify icon names against the Ionicons v5 set.

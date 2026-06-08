@@ -25,6 +25,8 @@ export type DiaryEntry = {
   photos: string[];
   createdAt: Date;
   updatedAt: Date;
+  weather?: string;
+  energyLevel?: number;
   isTimeCapsule?: boolean;
   unlocksAt?: Date | null;
 };

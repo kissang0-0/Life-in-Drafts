@@ -1,0 +1,176 @@
+HOME DASHBOARD & DEAR ME CORE SYSTEMS
+
+This section defines the emotional and daily experience of the app.
+
+HOME DASHBOARD
+
+The home screen is the emotional center of Life in Drafts.
+
+It should feel warm, personal, and alive.
+
+DASHBOARD CONTENT
+
+Display:
+
+Current date
+Greeting message
+Today’s mood summary
+Writing streak
+Task overview
+Study progress
+Recent diary entry
+Memory reminder
+QUICK ACTIONS
+
+Include shortcuts:
+
+Write Diary Entry
+Add Task
+New Unsocial Post
+Write Unsent Message
+Start Study Timer
+DAILY CARD
+
+Include a rotating daily card:
+
+Quote of the day
+Nimbus message
+Mood suggestion
+Gentle reminder
+NIMBUS MESSAGE
+
+Show a message from the blue bird mascot.
+
+Examples:
+
+“You’re doing better than you think.”
+“One page at a time.”
+“Rest is part of progress too.”
+“Small steps still move you forward.”
+DEAR ME,
+PERSONAL DIARY SYSTEM
+
+This is the core journaling feature.
+
+Name:
+
+Dear Me,
+
+Purpose:
+
+A private journal for documenting life.
+
+ENTRY STRUCTURE
+
+Each entry includes:
+
+Title
+Date
+Time
+Mood selector
+Weather selector
+Energy level
+Optional tags
+WRITING EXPERIENCE
+
+Support:
+
+Rich text editor
+Bold / Italic / Underline
+Bullet points
+Font selection
+Color highlights
+MEDIA SUPPORT
+
+Allow:
+
+Multiple images per entry
+Image captions
+Voice notes (optional)
+REFLECTION SECTIONS
+
+Optional prompts:
+
+What happened today?
+What did I learn?
+What made me happy?
+What challenged me?
+What am I grateful for?
+What do I want tomorrow?
+VIEW MODES
+
+Provide:
+
+Calendar view
+Timeline view
+Gallery view
+Search view
+ANALYTICS
+
+Track:
+
+Writing streaks
+Mood trends
+Entry frequency
+Most used emotions
+MOOD GARDEN
+
+Every diary entry grows a virtual garden.
+
+MOOD FLOWERS
+
+Map moods to flowers:
+
+Happy → Hydrangea
+Calm → Forget-Me-Not
+Sad → Bluebell
+Stressed → Rain Lily
+Excited → Sunflower
+GARDEN SYSTEM
+Each entry plants a flower
+Over time, the garden becomes a visual emotional timeline
+User can view growth history
+MEMORY JAR
+
+A place for saved meaningful entries.
+
+FEATURES
+Save favorite diary entries
+Random memory resurfacing
+Memory timeline view
+ON THIS DAY
+
+Show past entries from:
+
+1 month ago
+6 months ago
+1 year ago
+MIDNIGHT THOUGHTS
+
+A special journaling mode for late-night reflection.
+
+ACTIVE HOURS
+10PM to 5AM
+FEATURES
+Dark dreamy UI
+Moon-themed visuals
+Soft animations
+Slower, calmer interface
+PURPOSE
+
+For:
+
+Late-night thoughts
+Emotional processing
+Quiet reflection
+CORE EXPERIENCE GOAL
+
+The diary system should feel like:
+
+A living emotional archive.
+
+A safe place for thoughts.
+
+A growing reflection of the user’s life.
+
+The Archive of Becoming.

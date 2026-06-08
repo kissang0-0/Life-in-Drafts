@@ -10,16 +10,30 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useColors } from '@/hooks/useColors';
 import { useAuthStore } from '@/store/authStore';
 import { useAppStore } from '@/store/appStore';
+import { useSecurityStore } from '@/store/securityStore';
 import { NimbusMessage } from '@/components/NimbusMessage';
 import { DiaryCard } from '@/components/DiaryCard';
 import { HabitCard } from '@/components/HabitCard';
+import { DailyCard } from '@/components/DailyCard';
+import { WritingStreak } from '@/components/WritingStreak';
+import { OnThisDay } from '@/components/OnThisDay';
+import { MoodGarden } from '@/components/MoodGarden';
 import { getGreeting, formatDate, todayString } from '@/lib/dateUtils';
 import { updateHabit } from '@/lib/firestore';
 import { MOOD_OPTIONS } from '@/constants/nimbus';
 import { Habit } from '@/lib/firestore';
+
+const QUICK_ACTIONS = [
+  { icon: 'pencil',   label: 'Diary',   color: '#7EC8E3', route: '/diary/new'     },
+  { icon: 'camera',   label: 'Memory',  color: '#C9AEED', route: '/memories/new'  },
+  { icon: 'mail',     label: 'Unsent',  color: '#FFCA6B', route: '/unsent/new'    },
+  { icon: 'book',     label: 'Study',   color: '#98D4A3', route: '/study/index'   },
+  { icon: 'grid',     label: 'More',    color: '#7EC8E3', route: '/(tabs)/more'   },
+] as const;
 
 export default function HomeScreen() {
   const colors = useColors();
@@ -27,14 +41,13 @@ export default function HomeScreen() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const { diary, habits, todayMood, setTodayMood } = useAppStore();
+  const { hasPIN, lock } = useSecurityStore();
 
   const today = todayString();
   const recentEntries = diary.slice(0, 3);
   const todayHabits = habits.slice(0, 4);
-
   const greeting = getGreeting();
   const dateStr = formatDate(new Date());
-
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
   const toggleHabit = async (habit: Habit) => {
@@ -43,7 +56,6 @@ export default function HomeScreen() {
     const newDates = completed
       ? habit.completedDates.filter((d) => d !== today)
       : [...habit.completedDates, today];
-
     let streak = habit.streak;
     if (!completed) {
       const yesterday = new Date();
@@ -53,20 +65,35 @@ export default function HomeScreen() {
     } else {
       streak = Math.max(0, streak - 1);
     }
-
     await updateHabit(user.uid, habit.id, { completedDates: newDates, streak });
   };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: topPad + 16 }]}>
-        <View style={[styles.headerBg, { backgroundColor: colors.primary + '15' }]} />
-        <View style={styles.headerContent}>
-          <View>
-            <Text style={[styles.greeting, { color: colors.textMuted }]}>{greeting} ☁️</Text>
+      <LinearGradient
+        colors={[colors.primary + '22', colors.background]}
+        style={[styles.header, { paddingTop: topPad + 12 }]}
+      >
+        <View style={styles.headerTop}>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.greeting, { color: colors.textMuted }]}>
+              {greeting} ✨
+            </Text>
             <Text style={[styles.date, { color: colors.navy }]}>{dateStr}</Text>
           </View>
+
+          <WritingStreak entries={diary} />
+
+          {hasPIN && (
+            <TouchableOpacity
+              style={[styles.iconBtn, { backgroundColor: colors.surface }]}
+              onPress={lock}
+            >
+              <Ionicons name="lock-closed-outline" size={16} color={colors.textMuted} />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
             style={[styles.avatarBtn, { backgroundColor: colors.primary }]}
             onPress={() => router.push('/settings')}
@@ -74,50 +101,42 @@ export default function HomeScreen() {
             <Ionicons name="person" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
 
       <ScrollView
         style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: Platform.OS === 'web' ? 34 + 80 : insets.bottom + 80 },
+        ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Nimbus message */}
-        <NimbusMessage style={styles.section} />
+        {/* Daily card */}
+        <DailyCard />
 
         {/* Quick actions */}
-        <View style={[styles.section, styles.quickActions]}>
-          <QuickAction
-            icon="pencil"
-            label="New Entry"
-            color={colors.primary}
-            onPress={() => router.push('/diary/new')}
-          />
-          <QuickAction
-            icon="camera"
-            label="Memory"
-            color={colors.lavenderDeep}
-            onPress={() => router.push('/memories/new')}
-          />
-          <QuickAction
-            icon="mail"
-            label="Unsent"
-            color={colors.accentDeep}
-            onPress={() => router.push('/unsent/index')}
-          />
-          <QuickAction
-            icon="book"
-            label="Study"
-            color={colors.success}
-            onPress={() => router.push('/study/index')}
-          />
+        <View style={styles.quickActions}>
+          {QUICK_ACTIONS.map((qa) => (
+            <TouchableOpacity
+              key={qa.label}
+              onPress={() => router.push(qa.route as any)}
+              activeOpacity={0.8}
+              style={styles.qaItem}
+            >
+              <View style={[styles.qaIcon, { backgroundColor: qa.color + '25' }]}>
+                <Ionicons name={qa.icon as any} size={22} color={qa.color} />
+              </View>
+              <Text style={[styles.qaLabel, { color: colors.text }]}>{qa.label}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
         {/* Today's mood */}
-        {!todayMood && (
-          <View style={[styles.section, styles.moodCard, { backgroundColor: colors.surface, shadowColor: colors.shadowDeep }]}>
+        {!todayMood ? (
+          <View style={[styles.moodCard, { backgroundColor: colors.surface, shadowColor: colors.shadowDeep }]}>
             <Text style={[styles.sectionTitle, { color: colors.navy }]}>How are you feeling?</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.moodScroll}>
-              {MOOD_OPTIONS.slice(0, 6).map((mood) => {
+              {MOOD_OPTIONS.map((mood) => {
                 const mc = colors.moodColors[mood.key] ?? colors.surfaceAlt;
                 return (
                   <TouchableOpacity
@@ -132,9 +151,37 @@ export default function HomeScreen() {
               })}
             </ScrollView>
           </View>
+        ) : (
+          <View style={[styles.moodSetCard, { backgroundColor: colors.moodColors[todayMood] ?? colors.surfaceAlt }]}>
+            <Ionicons name={MOOD_OPTIONS.find(m => m.key === todayMood)?.icon ?? 'happy-outline'} size={20} color={colors.navy} />
+            <Text style={[styles.moodSetText, { color: colors.navy }]}>
+              Feeling {MOOD_OPTIONS.find(m => m.key === todayMood)?.label ?? todayMood} today
+            </Text>
+            <TouchableOpacity onPress={() => setTodayMood('')}>
+              <Ionicons name="close-circle" size={18} color={colors.navy + '80'} />
+            </TouchableOpacity>
+          </View>
         )}
 
-        {/* Recent diary entries */}
+        {/* On This Day */}
+        {diary.length > 0 && (
+          <View style={styles.section}>
+            <OnThisDay
+              entries={diary}
+              onPress={(id) => router.push(`/diary/${id}`)}
+            />
+          </View>
+        )}
+
+        {/* Mood Garden */}
+        {diary.filter(e => e.mood).length >= 3 && (
+          <MoodGarden
+            entries={diary}
+            onPress={() => router.push('/(tabs)/diary')}
+          />
+        )}
+
+        {/* Recent diary */}
         {recentEntries.length > 0 && (
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
@@ -182,45 +229,32 @@ export default function HomeScreen() {
             </Text>
           </View>
         )}
-
-        <View style={{ height: Platform.OS === 'web' ? 34 : 16 }} />
       </ScrollView>
     </View>
   );
 }
 
-function QuickAction({
-  icon, label, color, onPress,
-}: { icon: string; label: string; color: string; onPress: () => void }) {
-  const colors = useColors();
-  return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.qaItem}>
-      <View style={[styles.qaIcon, { backgroundColor: color + '22' }]}>
-        <Ionicons name={icon as any} size={22} color={color} />
-      </View>
-      <Text style={[styles.qaLabel, { color: colors.text }]}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
-
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: { paddingHorizontal: 20, paddingBottom: 20, position: 'relative', overflow: 'hidden' },
-  headerBg: { position: 'absolute', width: 300, height: 300, borderRadius: 150, top: -100, right: -80 },
-  headerContent: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
-  greeting: { fontSize: 14, fontFamily: 'Nunito_600SemiBold', marginBottom: 2 },
-  date: { fontSize: 20, fontFamily: 'Nunito_800ExtraBold' },
-  avatarBtn: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  header: { paddingHorizontal: 20, paddingBottom: 16 },
+  headerTop: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  greeting: { fontSize: 13, fontFamily: 'Nunito_600SemiBold', marginBottom: 2 },
+  date: { fontSize: 18, fontFamily: 'Nunito_800ExtraBold' },
+  iconBtn: {
+    width: 36, height: 36, borderRadius: 18,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  avatarBtn: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
   scroll: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20, paddingTop: 8 },
-  section: { marginBottom: 20 },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  scrollContent: { paddingHorizontal: 20, paddingTop: 8, gap: 16 },
+  section: { gap: 10 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   sectionTitle: { fontSize: 17, fontFamily: 'Nunito_700Bold' },
   seeAll: { fontSize: 13, fontFamily: 'Nunito_600SemiBold' },
   quickActions: { flexDirection: 'row', justifyContent: 'space-between' },
   qaItem: { alignItems: 'center', gap: 6, flex: 1 },
-  qaIcon: { width: 52, height: 52, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
-  qaLabel: { fontSize: 12, fontFamily: 'Nunito_600SemiBold', textAlign: 'center' },
+  qaIcon: { width: 50, height: 50, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
+  qaLabel: { fontSize: 11, fontFamily: 'Nunito_600SemiBold', textAlign: 'center' },
   moodCard: {
     borderRadius: 20, padding: 16, gap: 12,
     shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 10, elevation: 3,
@@ -228,6 +262,11 @@ const styles = StyleSheet.create({
   moodScroll: { marginHorizontal: -4 },
   moodItem: { alignItems: 'center', gap: 4, paddingVertical: 10, paddingHorizontal: 12, borderRadius: 14, marginHorizontal: 4, minWidth: 64 },
   moodLabel: { fontSize: 11, fontFamily: 'Nunito_600SemiBold' },
+  moodSetCard: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    borderRadius: 16, paddingHorizontal: 16, paddingVertical: 12,
+  },
+  moodSetText: { flex: 1, fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
   emptyCard: {
     alignItems: 'center', borderRadius: 24, padding: 32, gap: 10,
     shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 10, elevation: 3,
