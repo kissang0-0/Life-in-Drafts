@@ -7,6 +7,7 @@ import {
   User,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { saveOwnerEmail, isOwnerEmail } from '@/lib/security';
 
 type AuthState = {
   user: User | null;
@@ -36,7 +37,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   signIn: async (email, password) => {
     set({ loading: true, error: null });
     try {
+      const ownerOk = await isOwnerEmail(email);
+      if (!ownerOk) {
+        await firebaseSignOut(auth).catch(() => {});
+        set({ loading: false, error: 'Access denied. This archive belongs to its owner only.' });
+        return;
+      }
       await signInWithEmailAndPassword(auth, email, password);
+      await saveOwnerEmail(email);
       set({ loading: false });
     } catch (err: unknown) {
       const code = (err as { code?: string })?.code ?? '';
@@ -49,7 +57,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   signUp: async (email, password) => {
     set({ loading: true, error: null });
     try {
+      const ownerOk = await isOwnerEmail(email);
+      if (!ownerOk) {
+        set({ loading: false, error: 'This archive is already claimed by its owner.' });
+        return;
+      }
       await createUserWithEmailAndPassword(auth, email, password);
+      await saveOwnerEmail(email);
       set({ loading: false });
     } catch (err: unknown) {
       const code = (err as { code?: string })?.code ?? '';
@@ -76,7 +90,7 @@ function formatAuthError(codeOrMsg: string): string {
   if (codeOrMsg.includes('auth/weak-password') || codeOrMsg.includes('weak-password')) return 'Password must be at least 6 characters.';
   if (codeOrMsg.includes('auth/too-many-requests') || codeOrMsg.includes('too-many-requests')) return 'Too many attempts. Please try again later.';
   if (codeOrMsg.includes('auth/network-request-failed') || codeOrMsg.includes('network')) return 'Network error. Check your connection.';
-  if (codeOrMsg.includes('auth/operation-not-allowed')) return 'Email/password sign-in is not enabled. Please enable it in Firebase Console → Authentication → Sign-in method.';
-  if (codeOrMsg.includes('auth/configuration-not-found') || codeOrMsg.includes('configuration-not-found')) return 'Firebase not configured. Enable Email/Password in Firebase Console.';
+  if (codeOrMsg.includes('auth/operation-not-allowed')) return 'Email/password sign-in is not enabled.';
+  if (codeOrMsg.includes('auth/configuration-not-found') || codeOrMsg.includes('configuration-not-found')) return 'Firebase not configured correctly.';
   return `Auth error: ${codeOrMsg}`;
 }

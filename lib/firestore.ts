@@ -25,6 +25,8 @@ export type DiaryEntry = {
   photos: string[];
   createdAt: Date;
   updatedAt: Date;
+  isTimeCapsule?: boolean;
+  unlocksAt?: Date | null;
 };
 
 export type Memory = {
@@ -63,17 +65,33 @@ export type StudyNote = {
   updatedAt: Date;
 };
 
+export type VaultEntry = {
+  id: string;
+  type: 'diary' | 'unsent' | 'note';
+  title: string;
+  content: string;
+  createdAt: Date;
+};
+
 const userRef = (uid: string) => doc(db, 'users', uid);
 const diaryRef = (uid: string) => collection(db, 'users', uid, 'diary');
 const memoriesRef = (uid: string) => collection(db, 'users', uid, 'memories');
 const habitsRef = (uid: string) => collection(db, 'users', uid, 'habits');
 const unsentRef = (uid: string) => collection(db, 'users', uid, 'unsent');
 const studyRef = (uid: string) => collection(db, 'users', uid, 'study');
+const vaultRef = (uid: string) => collection(db, 'users', uid, 'vault');
 
 const toDate = (ts: unknown): Date => {
   if (ts instanceof Timestamp) return ts.toDate();
   if (ts instanceof Date) return ts;
   return new Date();
+};
+
+const toDateOrNull = (ts: unknown): Date | null => {
+  if (!ts) return null;
+  if (ts instanceof Timestamp) return ts.toDate();
+  if (ts instanceof Date) return ts;
+  return null;
 };
 
 // Diary
@@ -85,9 +103,10 @@ export const subscribeDiary = (
   return onSnapshot(q, (snap) => {
     const entries: DiaryEntry[] = snap.docs.map((d) => ({
       id: d.id,
-      ...(d.data() as Omit<DiaryEntry, 'id' | 'createdAt' | 'updatedAt'>),
+      ...(d.data() as Omit<DiaryEntry, 'id' | 'createdAt' | 'updatedAt' | 'unlocksAt'>),
       createdAt: toDate(d.data().createdAt),
       updatedAt: toDate(d.data().updatedAt),
+      unlocksAt: toDateOrNull(d.data().unlocksAt),
     }));
     callback(entries);
   });
@@ -249,4 +268,31 @@ export const updateStudyNote = async (
 
 export const deleteStudyNote = async (uid: string, id: string) => {
   return deleteDoc(doc(studyRef(uid), id));
+};
+
+// Vault
+export const subscribeVault = (
+  uid: string,
+  callback: (entries: VaultEntry[]) => void
+) => {
+  const q = query(vaultRef(uid), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, (snap) => {
+    const entries: VaultEntry[] = snap.docs.map((d) => ({
+      id: d.id,
+      ...(d.data() as Omit<VaultEntry, 'id' | 'createdAt'>),
+      createdAt: toDate(d.data().createdAt),
+    }));
+    callback(entries);
+  });
+};
+
+export const addVaultEntry = async (
+  uid: string,
+  entry: Omit<VaultEntry, 'id' | 'createdAt'>
+) => {
+  return addDoc(vaultRef(uid), { ...entry, createdAt: serverTimestamp() });
+};
+
+export const deleteVaultEntry = async (uid: string, id: string) => {
+  return deleteDoc(doc(vaultRef(uid), id));
 };

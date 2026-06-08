@@ -1,0 +1,163 @@
+AUTHENTICATION SYSTEM
+Firebase Login
+
+Use Firebase Authentication.
+
+Support:
+
+Email login
+Password login
+Password reset
+Persistent sessions
+
+This is only for the owner account.
+
+No multi-user logic is required.
+
+OWNER-ONLY MODE
+
+This application is strictly single-user.
+
+Rules:
+
+Only one Firebase account is allowed
+No user switching
+No public registration flow (optional disable after setup)
+No social authentication unless explicitly enabled
+
+If a different account attempts login, deny access.
+
+APP ENTRY FLOW
+
+Every app launch must follow:
+
+App opens
+Security check starts
+Face ID / Fingerprint prompt
+If biometrics fail → PIN input
+If PIN correct → unlock app
+PIN SYSTEM
+
+After first login, user must create a PIN.
+
+Support:
+
+4-digit PIN
+6-digit PIN
+8-digit PIN
+
+Store securely using:
+
+Expo Secure Store
+
+Requirements:
+
+Never store raw PIN
+Store hashed version only
+PIN is required on every launch
+BIOMETRICS
+
+Use:
+
+Expo Local Authentication
+
+Support:
+
+Face ID (iOS)
+Fingerprint (Android)
+Device authentication fallback
+AUTO LOCK SYSTEM
+
+The app must automatically lock when:
+
+App is minimized
+Device goes to background
+User is inactive for a set time
+
+On re-entry → require PIN or biometrics.
+
+PRIVACY BLUR
+
+When the app goes to background:
+
+Blur all visible content
+Hide diary text
+Hide images
+Hide sensitive screens
+
+Prevent content preview in app switcher.
+
+EMERGENCY LOCK
+
+Include a visible emergency lock button.
+
+When pressed:
+
+Instantly locks the app
+Returns to authentication screen
+SECRET VAULT
+
+A hidden encrypted section of the app.
+
+Access requires:
+
+Second PIN OR
+Biometrics
+
+Vault contains:
+
+Hidden diary entries
+Hidden photos
+Hidden unsent messages
+
+Rules:
+
+Vault content must NOT appear in:
+search results
+memory features
+dashboards
+recaps
+widgets
+TIME CAPSULE FEATURE
+
+Allow locking entries until a future date.
+
+Features:
+
+Set unlock date
+Content remains hidden until unlocked
+Useful for future letters or reflections
+SECURITY STORAGE
+
+Use:
+
+Expo Secure Store
+
+Store:
+
+PIN hash
+Vault PIN hash
+biometric preference
+lock timeout settings
+
+Never expose sensitive data in Firestore.
+
+SECURITY PRINCIPLE
+
+Everything is private by default.
+
+No data should be publicly accessible.
+
+Even though Firebase is used, all data must be tied to the owner account only.
+
+FINAL SECURITY GOAL
+
+Life in Drafts must feel like:
+
+A locked personal world.
+
+A private archive.
+
+A diary that only belongs to one person.
+
+The Archive of Becoming.

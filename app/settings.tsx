@@ -16,15 +16,39 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import { useColors } from '@/hooks/useColors';
 import { useAuthStore } from '@/store/authStore';
 import { useAppStore } from '@/store/appStore';
+import { useSecurityStore } from '@/store/securityStore';
+import {
+  saveBiometricEnabled,
+  clearPIN,
+  saveLockTimeout,
+} from '@/lib/security';
+
+const LOCK_TIMEOUTS = [
+  { label: 'Immediately', value: 0 },
+  { label: '1 minute', value: 1 },
+  { label: '5 minutes', value: 5 },
+  { label: '15 minutes', value: 15 },
+  { label: '30 minutes', value: 30 },
+];
 
 export default function SettingsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { user, signOut } = useAuthStore();
-  const { diary, memories, habits, biometricEnabled, setBiometricEnabled, notificationsEnabled, setNotificationsEnabled } = useAppStore();
+  const { diary, memories, habits } = useAppStore();
+  const {
+    hasPIN,
+    biometricEnabled,
+    lockTimeoutMinutes,
+    lock,
+    setBiometricEnabled,
+    setLockTimeout,
+    setHasPIN,
+  } = useSecurityStore();
 
   const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [showTimeoutPicker, setShowTimeoutPicker] = useState(false);
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
@@ -37,7 +61,12 @@ export default function SettingsScreen() {
   const handleSignOut = () => {
     Alert.alert('Sign Out', 'Are you sure you want to sign out of your archive?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Sign out', style: 'destructive', onPress: () => { signOut(); router.replace('/auth'); } },
+      {
+        text: 'Sign out', style: 'destructive', onPress: () => {
+          signOut();
+          router.replace('/auth');
+        }
+      },
     ]);
   };
 
@@ -48,8 +77,47 @@ export default function SettingsScreen() {
       });
       if (!result.success) return;
     }
+    await saveBiometricEnabled(value);
     setBiometricEnabled(value);
   };
+
+  const handlePINAction = () => {
+    if (hasPIN) {
+      Alert.alert('PIN', 'What would you like to do?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Change PIN', onPress: () => router.push('/pin-setup'),
+        },
+        {
+          text: 'Remove PIN', style: 'destructive', onPress: () => {
+            Alert.alert('Remove PIN', 'This will disable the app lock. Are you sure?', [
+              { text: 'Cancel', style: 'cancel' },
+              {
+                text: 'Remove', style: 'destructive', onPress: async () => {
+                  await clearPIN();
+                  setHasPIN(false);
+                }
+              },
+            ]);
+          }
+        },
+      ]);
+    } else {
+      router.push('/pin-setup');
+    }
+  };
+
+  const handleLockTimeout = async (minutes: number) => {
+    await saveLockTimeout(minutes);
+    setLockTimeout(minutes);
+    setShowTimeoutPicker(false);
+  };
+
+  const handleEmergencyLock = () => {
+    lock();
+  };
+
+  const currentTimeoutLabel = LOCK_TIMEOUTS.find(t => t.value === lockTimeoutMinutes)?.label ?? 'Immediately';
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -73,9 +141,13 @@ export default function SettingsScreen() {
           <View style={styles.profileAvatar}>
             <Text style={styles.avatarEmoji}>🐦</Text>
           </View>
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={styles.profileName}>My Archive</Text>
             <Text style={styles.profileEmail}>{user?.email ?? ''}</Text>
+          </View>
+          <View style={[styles.ownerBadge]}>
+            <Ionicons name="shield-checkmark" size={13} color="rgba(255,255,255,0.9)" />
+            <Text style={styles.ownerText}>Owner</Text>
           </View>
         </View>
 
@@ -98,19 +170,110 @@ export default function SettingsScreen() {
         {/* Security */}
         <Text style={[styles.sectionLabel, { color: colors.textMuted }]}>Security</Text>
         <View style={[styles.section, { backgroundColor: colors.surface, shadowColor: colors.shadowDeep }]}>
-          {biometricAvailable && (
-            <View style={styles.row}>
-              <Ionicons name="finger-print-outline" size={20} color={colors.navy} />
-              <Text style={[styles.rowLabel, { color: colors.text }]}>Biometric Lock</Text>
-              <Switch
-                value={biometricEnabled}
-                onValueChange={handleBiometricToggle}
-                trackColor={{ false: colors.border, true: colors.primary }}
-                thumbColor="#fff"
-              />
+
+          {/* PIN Lock */}
+          <TouchableOpacity style={styles.row} onPress={handlePINAction} activeOpacity={0.7}>
+            <Ionicons name="keypad-outline" size={20} color={colors.navy} />
+            <Text style={[styles.rowLabel, { color: colors.text }]}>
+              {hasPIN ? 'Change PIN' : 'Set Up PIN Lock'}
+            </Text>
+            <View style={styles.rowRight}>
+              {hasPIN && (
+                <View style={[styles.activeBadge, { backgroundColor: colors.successLight }]}>
+                  <Text style={[styles.activeBadgeText, { color: colors.success }]}>On</Text>
+                </View>
+              )}
+              <Ionicons name="chevron-forward" size={16} color={colors.textLight} />
             </View>
+          </TouchableOpacity>
+
+          <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
+
+          {/* Biometric */}
+          {(biometricAvailable || Platform.OS === 'web') && (
+            <>
+              <View style={styles.row}>
+                <Ionicons name="finger-print-outline" size={20} color={colors.navy} />
+                <Text style={[styles.rowLabel, { color: colors.text }]}>Biometric Lock</Text>
+                <Switch
+                  value={biometricEnabled}
+                  onValueChange={handleBiometricToggle}
+                  trackColor={{ false: colors.border, true: colors.primary }}
+                  thumbColor="#fff"
+                  disabled={!hasPIN}
+                />
+              </View>
+              {!hasPIN && (
+                <Text style={[styles.rowHint, { color: colors.textLight }]}>Set up a PIN first to enable biometrics</Text>
+              )}
+              <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
+            </>
+          )}
+
+          {/* Lock Timeout */}
+          {hasPIN && (
+            <>
+              <TouchableOpacity style={styles.row} onPress={() => setShowTimeoutPicker(!showTimeoutPicker)} activeOpacity={0.7}>
+                <Ionicons name="timer-outline" size={20} color={colors.navy} />
+                <Text style={[styles.rowLabel, { color: colors.text }]}>Lock After</Text>
+                <View style={styles.rowRight}>
+                  <Text style={[styles.rowValue, { color: colors.textMuted }]}>{currentTimeoutLabel}</Text>
+                  <Ionicons name={showTimeoutPicker ? 'chevron-up' : 'chevron-down'} size={16} color={colors.textLight} />
+                </View>
+              </TouchableOpacity>
+              {showTimeoutPicker && (
+                <View style={[styles.pickerList, { borderTopColor: colors.borderLight }]}>
+                  {LOCK_TIMEOUTS.map((opt) => (
+                    <TouchableOpacity
+                      key={opt.value}
+                      style={[styles.pickerRow, { borderBottomColor: colors.borderLight }]}
+                      onPress={() => handleLockTimeout(opt.value)}
+                    >
+                      <Text style={[styles.pickerText, { color: colors.text }]}>{opt.label}</Text>
+                      {lockTimeoutMinutes === opt.value && (
+                        <Ionicons name="checkmark" size={16} color={colors.primary} />
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </>
           )}
         </View>
+
+        {/* Vault */}
+        <Text style={[styles.sectionLabel, { color: colors.textMuted }]}>Secret Vault</Text>
+        <TouchableOpacity
+          style={[styles.vaultCard, { shadowColor: colors.shadowDeep }]}
+          onPress={() => router.push('/vault')}
+          activeOpacity={0.85}
+        >
+          <View style={styles.vaultLeft}>
+            <View style={styles.vaultIconCircle}>
+              <Ionicons name="lock-closed" size={20} color="#7EC8E3" />
+            </View>
+            <View>
+              <Text style={styles.vaultTitle}>Secret Vault</Text>
+              <Text style={styles.vaultDesc}>Hidden entries, photos & messages</Text>
+            </View>
+          </View>
+          <Ionicons name="chevron-forward" size={16} color="rgba(255,255,255,0.4)" />
+        </TouchableOpacity>
+
+        {/* Emergency Lock */}
+        {hasPIN && (
+          <>
+            <Text style={[styles.sectionLabel, { color: colors.textMuted }]}>Emergency</Text>
+            <TouchableOpacity
+              onPress={handleEmergencyLock}
+              style={[styles.emergencyBtn, { backgroundColor: '#1A1A2E', borderColor: '#7EC8E3' + '30' }]}
+              activeOpacity={0.85}
+            >
+              <Ionicons name="lock-closed" size={18} color="#7EC8E3" />
+              <Text style={styles.emergencyText}>Lock Archive Now</Text>
+            </TouchableOpacity>
+          </>
+        )}
 
         {/* Notifications */}
         <Text style={[styles.sectionLabel, { color: colors.textMuted }]}>Reminders</Text>
@@ -119,8 +282,8 @@ export default function SettingsScreen() {
             <Ionicons name="notifications-outline" size={20} color={colors.navy} />
             <Text style={[styles.rowLabel, { color: colors.text }]}>Daily Journal Reminder</Text>
             <Switch
-              value={notificationsEnabled}
-              onValueChange={setNotificationsEnabled}
+              value={false}
+              onValueChange={() => {}}
               trackColor={{ false: colors.border, true: colors.primary }}
               thumbColor="#fff"
             />
@@ -152,7 +315,6 @@ export default function SettingsScreen() {
           <Text style={[styles.signOutText, { color: colors.error }]}>Sign Out</Text>
         </TouchableOpacity>
 
-        {/* Brand */}
         <Text style={[styles.brand, { color: colors.textLight }]}>Life in Drafts · The Archive of Becoming</Text>
       </ScrollView>
     </View>
@@ -176,6 +338,12 @@ const styles = StyleSheet.create({
   avatarEmoji: { fontSize: 26 },
   profileName: { color: '#fff', fontSize: 16, fontFamily: 'Nunito_700Bold' },
   profileEmail: { color: 'rgba(255,255,255,0.75)', fontSize: 13, fontFamily: 'Nunito_400Regular', marginTop: 2 },
+  ownerBadge: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12,
+  },
+  ownerText: { color: 'rgba(255,255,255,0.9)', fontSize: 11, fontFamily: 'Nunito_700Bold' },
   statsRow: { flexDirection: 'row', gap: 10, marginBottom: 24 },
   statItem: {
     flex: 1, alignItems: 'center', padding: 16, borderRadius: 16, gap: 4,
@@ -189,9 +357,38 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 8, elevation: 3,
   },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 14 },
+  rowRight: { flexDirection: 'row', alignItems: 'center', gap: 8, marginLeft: 'auto' },
   rowLabel: { flex: 1, fontSize: 15, fontFamily: 'Nunito_600SemiBold' },
   rowValue: { fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
+  rowHint: { fontSize: 12, fontFamily: 'Nunito_400Regular', paddingHorizontal: 16, paddingBottom: 10, marginTop: -4 },
   divider: { height: 1, marginHorizontal: 16 },
+  activeBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
+  activeBadgeText: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
+  pickerList: { borderTopWidth: 1 },
+  pickerRow: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1,
+  },
+  pickerText: { fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
+  vaultCard: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    backgroundColor: '#1A1A2E', borderRadius: 16, padding: 18, marginBottom: 16,
+    shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 4,
+    borderWidth: 1, borderColor: 'rgba(126,200,227,0.15)',
+  },
+  vaultLeft: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  vaultIconCircle: {
+    width: 44, height: 44, borderRadius: 22,
+    backgroundColor: 'rgba(126,200,227,0.1)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  vaultTitle: { color: '#fff', fontSize: 15, fontFamily: 'Nunito_700Bold' },
+  vaultDesc: { color: 'rgba(255,255,255,0.45)', fontSize: 12, fontFamily: 'Nunito_400Regular', marginTop: 2 },
+  emergencyBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
+    padding: 16, borderRadius: 16, borderWidth: 1, marginBottom: 16,
+  },
+  emergencyText: { fontSize: 15, fontFamily: 'Nunito_700Bold', color: '#7EC8E3' },
   signOutBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
     padding: 16, borderRadius: 16, borderWidth: 1, marginBottom: 16,
