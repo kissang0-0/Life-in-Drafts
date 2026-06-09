@@ -1,36 +1,23 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useColors } from '@/hooks/useColors';
-import { NIMBUS_MESSAGES, NIMBUS_MOOD_MESSAGES } from '@/constants/nimbus';
+import { getDailyNimbusMessage } from '@/constants/nimbusMessages';
 import NimbusBird from '@/components/NimbusBird';
 
 type Props = {
   message?: string;
   mood?: string;
   style?: object;
+  size?: number;
 };
 
-export function NimbusMessage({ message, mood, style }: Props) {
+export function NimbusMessage({ message, mood, style, size = 72 }: Props) {
   const colors = useColors();
-
-  const moodMessage = useMemo(() => {
-    if (mood && NIMBUS_MOOD_MESSAGES[mood]) {
-      const msgs = NIMBUS_MOOD_MESSAGES[mood];
-      return msgs[Math.floor(Math.random() * msgs.length)];
-    }
-    return null;
-  }, [mood]);
-
-  const randomMessage = useMemo(
-    () => NIMBUS_MESSAGES[Math.floor(Math.random() * NIMBUS_MESSAGES.length)],
-    []
-  );
-
-  const displayMessage = message ?? moodMessage ?? randomMessage;
+  const displayMessage = message ?? getDailyNimbusMessage(mood);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surfaceAlt, borderColor: colors.border }, style]}>
-      <NimbusBird size={68} />
+      <NimbusBird size={size} />
       <View style={styles.bubble}>
         <Text style={[styles.name, { color: colors.primary }]}>Nimbus</Text>
         <Text style={[styles.message, { color: colors.text }]}>{displayMessage}</Text>
@@ -45,22 +32,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
     borderWidth: 1.5,
-    padding: 12,
-    gap: 10,
+    padding: 14,
+    gap: 12,
   },
-  bubble: {
-    flex: 1,
-    gap: 3,
-  },
-  name: {
-    fontSize: 11,
-    fontFamily: 'Nunito_700Bold',
-    letterSpacing: 0.8,
-    textTransform: 'uppercase',
-  },
-  message: {
-    fontSize: 14,
-    fontFamily: 'Nunito_600SemiBold',
-    lineHeight: 20,
-  },
+  bubble: { flex: 1, gap: 4 },
+  name: { fontSize: 11, fontFamily: 'Nunito_700Bold', letterSpacing: 0.8, textTransform: 'uppercase' },
+  message: { fontSize: 14, fontFamily: 'Nunito_600SemiBold', lineHeight: 21 },
 });

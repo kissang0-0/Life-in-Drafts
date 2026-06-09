@@ -5,10 +5,10 @@ type Props = {
   size?: number;
 };
 
-export default function NimbusBird({ size = 48 }: Props) {
+export default function NimbusBird({ size = 80 }: Props) {
   return (
     <Image
-      source={require('@/assets/nimbus-logo.png')}
+      source={require('@/assets/nimbus-bird.png')}
       style={{ width: size, height: size }}
       resizeMode="contain"
     />

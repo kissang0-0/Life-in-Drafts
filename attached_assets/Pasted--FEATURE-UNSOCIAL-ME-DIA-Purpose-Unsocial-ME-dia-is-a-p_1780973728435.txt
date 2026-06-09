@@ -1,0 +1,380 @@
+# FEATURE: UNSOCIAL ME-DIA
+
+## Purpose
+
+Unsocial ME-dia is a private social media platform that exists only for the owner.
+
+It should feel like Instagram, Twitter/X, Threads, Tumblr, and a personal scrapbook combined.
+
+No one else can see the content.
+
+There are:
+
+* No followers
+* No friends
+* No public profiles
+* No sharing
+* No messaging
+
+The owner is the only user.
+
+The purpose is to document thoughts, daily life, emotions, rants, wins, memories, and random moments in a familiar social media format.
+
+---
+
+# Home Feed
+
+Create a vertically scrolling feed.
+
+Display posts in reverse chronological order.
+
+Newest posts first.
+
+Each post should display:
+
+* Date
+* Time
+* Content
+* Images
+* Mood
+* Tags
+* Favorite status
+
+---
+
+# Create Post
+
+Users can create a new post.
+
+Fields:
+
+* Text content
+* Mood
+* Images
+* Tags
+* Location (optional)
+* Favorite toggle
+
+---
+
+# Mood Options
+
+Allow:
+
+😀 Happy
+
+😌 Calm
+
+😔 Sad
+
+😡 Angry
+
+😰 Anxious
+
+🤩 Excited
+
+😴 Tired
+
+😶 Neutral
+
+Store mood with post.
+
+---
+
+# Character Counter
+
+Display live character count.
+
+Suggested limits:
+
+* Soft warning at 500 characters
+* Hard limit at 5000 characters
+
+---
+
+# Image Posts
+
+Allow:
+
+* Multiple image uploads
+* Camera
+* Gallery
+* Reordering images
+
+Display:
+
+* Single image view
+* Swipeable image carousel
+
+Images stored in Firebase Storage.
+
+---
+
+# Post Types
+
+Support:
+
+### Text Post
+
+Only text.
+
+---
+
+### Photo Post
+
+Images with caption.
+
+---
+
+### Mood Post
+
+Quick emotional update.
+
+Example:
+
+"Feeling proud today."
+
+---
+
+### Life Update
+
+Milestone or important event.
+
+Example:
+
+"Finished my final exam."
+
+---
+
+### Daily Rant
+
+A dedicated rant category.
+
+Allow longer text.
+
+---
+
+### Random Thought
+
+Short thought dump.
+
+---
+
+# Self Interactions
+
+Since this is a platform for one person:
+
+Allow:
+
+* Like own posts
+* Save own posts
+* Comment on own posts
+* Add reflections later
+
+Example:
+
+Original Post:
+"I was nervous today."
+
+Reflection Added Months Later:
+"Turns out everything worked out."
+
+---
+
+# Post Reflections
+
+Allow users to revisit old posts.
+
+Add a reflection section.
+
+Fields:
+
+* Reflection text
+* Reflection date
+
+Useful for personal growth.
+
+---
+
+# Favorites
+
+Allow favorite/starred posts.
+
+Favorite posts appear in:
+
+* Memory Jar
+* Memory Scrapbook
+
+---
+
+# Pinning
+
+Allow users to pin posts.
+
+Pinned posts appear at top of feed.
+
+Maximum:
+
+* 5 pinned posts
+
+---
+
+# Tags
+
+Allow custom tags.
+
+Examples:
+
+#school
+
+#friends
+
+#family
+
+#growth
+
+#random
+
+#rant
+
+#memory
+
+---
+
+# Search
+
+Search by:
+
+* Text
+* Mood
+* Tags
+* Date
+
+---
+
+# Filters
+
+Allow filtering by:
+
+* Mood
+* Month
+* Year
+* Post type
+* Favorites
+
+---
+
+# Archive System
+
+Allow archiving posts.
+
+Archived posts:
+
+* Hidden from main feed
+* Accessible through archive screen
+
+---
+
+# Monthly Recap
+
+Generate automatic recap.
+
+Include:
+
+* Number of posts
+* Most common mood
+* Favorite post
+* Most active day
+
+Display as beautiful cards.
+
+---
+
+# Yearly Recap
+
+Generate yearly insights.
+
+Examples:
+
+"You created 483 posts."
+
+"Happy was your most common mood."
+
+"You posted most often in March."
+
+---
+
+# Memory Integration
+
+Allow posts to become memories.
+
+User can save any post into:
+
+Memory Jar
+
+Memory Scrapbook
+
+---
+
+# Layout Style
+
+The feed should feel like:
+
+* Instagram
+* Threads
+* Tumblr
+
+But softer and more personal.
+
+Use:
+
+* Rounded cards
+* Soft blue accents
+* Polaroid images
+* Cute icons
+
+---
+
+# Draft System
+
+Allow unfinished posts.
+
+Features:
+
+* Save draft
+* Continue later
+* Auto-save
+
+---
+
+# Empty State
+
+If no posts exist:
+
+Show Nimbus.
+
+Message:
+
+"Your story starts with a single post."
+
+Provide button:
+
+Create First Post
+
+---
+
+# User Experience Goal
+
+The user should feel like they have their own private social network.
+
+A place to rant.
+
+A place to celebrate.
+
+A place to remember.
+
+A place to look back and see growth.
+
+Unsocial ME-dia should feel like:
+
+"The internet, but only for me."
