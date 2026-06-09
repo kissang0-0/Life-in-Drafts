@@ -217,10 +217,7 @@ export default function UnsocialScreen() {
           </View>
         ) : (
           <View style={styles.headerRow}>
-            <View>
-              <Text style={[styles.headerTitle, { color: colors.navy }]}>Unsocial</Text>
-              <Text style={[styles.headerSub, { color: colors.textMuted }]}>Me-dia 🪐</Text>
-            </View>
+            <Text style={[styles.headerTitle, { color: colors.navy }]}>Unsocial Me-dia 🪐</Text>
             <View style={styles.headerActions}>
               <TouchableOpacity onPress={() => setShowSearch(true)} style={[styles.headerBtn, { backgroundColor: colors.surfaceAlt }]}>
                 <Ionicons name="search-outline" size={18} color={colors.textMuted} />
