@@ -9,6 +9,7 @@ import {
   Platform,
   Animated,
 } from 'react-native';
+import NimbusBird from '@/components/NimbusBird';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -132,7 +133,7 @@ export default function UnsentScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { paddingTop: topPad + 12, borderBottomColor: colors.border, backgroundColor: colors.surface }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => router.replace('/(tabs)/unsent' as any)} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={22} color={colors.navy} />
         </TouchableOpacity>
         <View style={styles.headerCenter}>
@@ -184,7 +185,10 @@ function EmptyConversations({ colors, onNew }: { colors: any; onNew: () => void 
 
   return (
     <View style={styles.emptyContainer}>
-      <Animated.Text style={[styles.emptyBird, { transform: [{ translateY: bounce }] }]}>🐦</Animated.Text>
+      <Animated.View style={{ transform: [{ translateY: bounce }] }}>
+        <NimbusBird size={110} />
+      </Animated.View>
+      <Text style={[styles.nimbusLabel, { color: '#5BB8D4' }]}>✦ Nimbus</Text>
       <Text style={[styles.emptyTitle, { color: colors.navy }]}>
         Some conversations only need a place to exist.
       </Text>
@@ -245,8 +249,8 @@ const styles = StyleSheet.create({
   countText: { fontSize: 11, fontFamily: 'Nunito_700Bold', color: '#fff' },
   separator: { height: 1, marginLeft: 80 },
 
-  emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40, gap: 14 },
-  emptyBird: { fontSize: 64, marginBottom: 8 },
+  emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40, gap: 12 },
+  nimbusLabel: { fontSize: 11, fontFamily: 'Nunito_700Bold', letterSpacing: 1, textTransform: 'uppercase' },
   emptyTitle: { fontSize: 18, fontFamily: 'Nunito_700Bold', textAlign: 'center', lineHeight: 26 },
   emptySubtitle: { fontSize: 14, fontFamily: 'Nunito_400Regular', textAlign: 'center', lineHeight: 22 },
   emptyBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 24, marginTop: 8 },
