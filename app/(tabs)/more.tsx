@@ -41,11 +41,11 @@ export default function MoreScreen() {
     },
     {
       icon: 'school-outline' as const,
-      label: 'Study Space',
-      subtitle: 'Notes & focus sessions',
+      label: 'Study Buddy',
+      subtitle: 'Subjects, sessions & deadlines',
       count: studyNotes.length,
       color: colors.success,
-      route: '/study/index' as const,
+      route: '/(tabs)/study' as const,
     },
     {
       icon: 'settings-outline' as const,
