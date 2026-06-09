@@ -1,0 +1,519 @@
+# FEATURE: MOOD GARDEN
+
+## Purpose
+
+Mood Garden is a visual representation of the user's emotional journey.
+
+Instead of charts and numbers, moods become living flowers growing in a personal garden.
+
+Every diary entry, mood check-in, and emotional reflection contributes to the garden.
+
+The goal is to make emotional tracking feel beautiful, calming, and rewarding.
+
+---
+
+# CORE CONCEPT
+
+Every recorded mood creates a flower.
+
+Each flower should be a fully illustrated plant with:
+
+* Stem
+* Leaves
+* Petals
+* Bloom animation
+
+DO NOT use emoji flowers.
+
+DO NOT use flat icons.
+
+Flowers should look like real illustrated flowers growing from the ground.
+
+The garden should feel alive.
+
+---
+
+# MOOD FLOWERS
+
+Assign each mood its own flower species.
+
+😀 Happy
+Sunflower
+
+Visual:
+
+* Tall stem
+* Bright petals
+* Slight glow effect
+
+---
+
+😌 Calm
+Forget-Me-Not
+
+Visual:
+
+* Small blue petals
+* Gentle sway
+
+---
+
+🤩 Excited
+Daisy
+
+Visual:
+
+* Open bloom
+* Bright appearance
+
+---
+
+😔 Sad
+Bluebell
+
+Visual:
+
+* Slightly drooping flower
+* Soft animation
+
+---
+
+😰 Anxious
+Lavender
+
+Visual:
+
+* Thin stems
+* Gentle movement
+
+---
+
+😡 Angry
+Poppy
+
+Visual:
+
+* Strong red bloom
+* Sharper petals
+
+---
+
+😴 Tired
+Moonflower
+
+Visual:
+
+* Closed petals
+* Night-themed appearance
+
+---
+
+😶 Neutral
+White Tulip
+
+Visual:
+
+* Simple balanced bloom
+
+---
+
+# FLOWER GENERATION
+
+Every mood entry plants a flower.
+
+Each flower stores:
+
+* Date
+* Mood
+* Weather
+* Energy level
+* Related diary entry
+
+Flower becomes clickable.
+
+Opening flower shows:
+
+* Mood
+* Date
+* Journal entry
+* Notes
+* Photos
+
+---
+
+# GARDEN LAYOUT
+
+Display flowers inside a scrollable garden.
+
+Not a grid.
+
+Not a list.
+
+Flowers should appear naturally placed.
+
+The garden should slowly become fuller over time.
+
+---
+
+# FLOWER GROWTH SYSTEM
+
+Flowers grow based on consistency.
+
+Day 1:
+Seedling
+
+Day 3:
+Small Plant
+
+Day 7:
+Young Flower
+
+Day 30:
+Fully Bloomed Flower
+
+Long streaks create larger flowers.
+
+---
+
+# SEASONAL CHANGES
+
+Garden changes based on month.
+
+Spring:
+Fresh blooms
+
+Summer:
+Bright colors
+
+Autumn:
+Falling leaves
+
+Winter:
+Snow effects
+
+Season changes automatically.
+
+---
+
+# WEATHER INTEGRATION
+
+Use the weather selected in Dear Me.
+
+The entire garden environment changes.
+
+---
+
+## SUNNY DAY
+
+If journal entry weather is Sunny:
+
+Add:
+
+* Sun rays
+* Light particles
+* Soft sunshine glow
+* Butterfly animations
+
+Garden appears brighter.
+
+---
+
+## CLOUDY DAY
+
+If weather is Cloudy:
+
+Add:
+
+* Slow moving clouds
+* Softer lighting
+* Cool color tones
+
+---
+
+## RAINY DAY
+
+If weather is Rainy:
+
+Add:
+
+* Falling rain
+* Water droplets on flowers
+* Gentle ripple effects
+* Reflection puddles
+
+Flowers sway slightly.
+
+---
+
+## STORMY DAY
+
+If weather is Stormy:
+
+Add:
+
+* Dark clouds
+* Wind animations
+* Occasional distant lightning
+* Strong flower movement
+
+Keep cozy, not scary.
+
+---
+
+## WINDY DAY
+
+If weather is Windy:
+
+Add:
+
+* Grass movement
+* Flower swaying
+* Floating leaves
+* Drifting petals
+
+Entire garden feels alive.
+
+---
+
+## NIGHT
+
+If weather is Night:
+
+Add:
+
+* Moonlight
+* Fireflies
+* Stars
+* Glow effects
+
+Moonflowers bloom brighter.
+
+---
+
+# DYNAMIC ENVIRONMENT
+
+The garden should never feel static.
+
+Continuously animate:
+
+* Grass movement
+* Flower swaying
+* Clouds
+* Floating particles
+* Butterflies
+* Fireflies
+
+Animations should be subtle.
+
+Never distracting.
+
+---
+
+# GARDEN PATHS
+
+As more entries are created:
+
+Small pathways appear.
+
+Examples:
+
+10 entries:
+Stone path appears.
+
+50 entries:
+Garden bridge appears.
+
+100 entries:
+Pond appears.
+
+250 entries:
+Gazebo appears.
+
+500 entries:
+Entire sanctuary expands.
+
+The garden visually grows with the user's life.
+
+---
+
+# SPECIAL FLOWERS
+
+Certain milestones unlock rare flowers.
+
+Examples:
+
+7 Day Journal Streak:
+Blue Hydrangea
+
+30 Day Journal Streak:
+Moon Orchid
+
+100 Entries:
+Golden Lily
+
+1 Year Streak:
+Celestial Rose
+
+Rare flowers should feel rewarding.
+
+---
+
+# MEMORY BLOOMS
+
+Favorite diary entries create Memory Flowers.
+
+These flowers glow softly.
+
+Selecting them opens:
+
+* Favorite journal entries
+* Photos
+* Reflections
+
+---
+
+# NIMBUS INTERACTION
+
+Nimbus occasionally visits the garden.
+
+Display:
+
+* Sitting near flowers
+* Flying across screen
+* Resting on branches
+
+Tapping Nimbus gives:
+
+* Encouragement
+* Mood insights
+* Garden facts
+
+---
+
+# MOOD CLUSTERS
+
+Flowers planted near each other based on emotional similarity.
+
+Example:
+
+Happy flowers naturally group together.
+
+Calm flowers form peaceful areas.
+
+Creates emotional landscapes.
+
+---
+
+# GARDEN TIMELINE
+
+Allow viewing:
+
+* This Week
+* This Month
+* This Year
+* All Time
+
+Garden should visually represent emotional history.
+
+---
+
+# PHOTO BLOOMS
+
+Diary entries containing photos create larger flowers.
+
+Opening them displays:
+
+* Flower
+* Entry
+* Attached photos
+
+---
+
+# SEARCH
+
+Search flowers by:
+
+* Mood
+* Date
+* Tags
+* Journal entries
+
+---
+
+# ACHIEVEMENTS
+
+Examples:
+
+🌱 First Flower
+
+🌼 First Bloom
+
+🌸 100 Flowers
+
+🌳 One Year Garden
+
+Unlock special garden decorations.
+
+---
+
+# EMPTY STATE
+
+Before first mood entry:
+
+Display empty field.
+
+Small seed in soil.
+
+Nimbus standing beside it.
+
+Message:
+
+"Every garden begins with a single seed."
+
+Button:
+
+Plant Your First Flower
+
+---
+
+# VISUAL DESIGN
+
+Inspiration:
+
+* Cozy Grove
+* Stardew Valley
+* Animal Crossing
+* Monument Valley environments
+
+Style:
+
+* Soft illustrations
+* Rounded shapes
+* Dreamy atmosphere
+* Gentle blue palette
+
+Avoid:
+
+* Emoji flowers
+* Flat charts
+* Clinical mood trackers
+
+---
+
+# USER EXPERIENCE GOAL
+
+Mood Garden should feel like a living world.
+
+A place users want to visit.
+
+A visual story of emotions.
+
+A garden grown from memories, moods, reflections, and experiences.
+
+Every flower represents a moment.
+
+Every bloom represents growth.
+
+A living section of:
+
+The Archive of Becoming.
