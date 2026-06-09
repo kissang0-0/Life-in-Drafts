@@ -1,5 +1,5 @@
 import { Tabs, Redirect } from 'expo-router';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/store/authStore';
 import { useDataSync } from '@/hooks/useData';
@@ -60,20 +60,20 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="memories"
+        name="planner"
         options={{
-          title: 'Memories',
+          title: "To Do/n't",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="images-outline" size={size} color={color} />
+            <Ionicons name="checkmark-done-outline" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="planner"
+        name="unsocial"
         options={{
-          title: 'Planner',
+          title: 'Unsocial',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" size={size} color={color} />
+            <Ionicons name="planet-outline" size={size} color={color} />
           ),
         }}
       />
@@ -84,6 +84,13 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="grid-outline" size={size} color={color} />
           ),
+        }}
+      />
+      {/* Memories is accessible via route but hidden from tab bar */}
+      <Tabs.Screen
+        name="memories"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

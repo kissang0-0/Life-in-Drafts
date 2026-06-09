@@ -24,6 +24,14 @@ export default function MoreScreen() {
 
   const items = [
     {
+      icon: 'images-outline' as const,
+      label: 'Memories',
+      subtitle: 'Photos & moments',
+      count: memories.length,
+      color: colors.lavenderDeep,
+      route: '/(tabs)/memories' as const,
+    },
+    {
       icon: 'mail-outline' as const,
       label: 'Unsent Messages',
       subtitle: 'Letters never sent',
