@@ -79,7 +79,7 @@ export default function NewMemory() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 12, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.navBtn}>
+        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/home' as any)} style={styles.navBtn}>
           <Ionicons name="close" size={24} color={colors.textMuted} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.navy }]}>New Memory</Text>

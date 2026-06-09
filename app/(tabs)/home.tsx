@@ -219,7 +219,8 @@ export default function HomeScreen() {
         {/* ── Empty state ── */}
         {recentEntries.length === 0 && todayHabits.length === 0 && (
           <View style={[styles.emptyCard, { backgroundColor: colors.surface, shadowColor: colors.shadowDeep }]}>
-            <Text style={styles.emptyEmoji}>📖</Text>
+            <NimbusBird size={96} />
+            <Text style={[styles.nimbusLabel, { color: colors.primary }]}>✦ Nimbus</Text>
             <Text style={[styles.emptyTitle, { color: colors.navy }]}>Your archive awaits</Text>
             <Text style={[styles.emptyText, { color: colors.textMuted }]}>
               Write your first entry, capture a memory, or start a daily habit.
@@ -313,7 +314,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', borderRadius: 24, padding: 32, gap: 10,
     shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 10, elevation: 3,
   },
-  emptyEmoji: { fontSize: 48, marginBottom: 4 },
+  nimbusLabel: { fontSize: 11, fontFamily: 'Nunito_700Bold', letterSpacing: 1, textTransform: 'uppercase' },
   emptyTitle: { fontSize: 18, fontFamily: 'Nunito_700Bold' },
   emptyText: { fontSize: 14, fontFamily: 'Nunito_400Regular', textAlign: 'center', lineHeight: 20 },
   emptyBtn: {

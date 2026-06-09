@@ -199,7 +199,7 @@ function TimelineView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
     return Object.entries(map).map(([date, items]) => ({ date, items }));
   }, [entries]);
 
-  if (grouped.length === 0) return <EmptyState icon="book-outline" title="Your diary is empty" subtitle="Write your first entry to begin your archive" />;
+  if (grouped.length === 0) return <EmptyState icon="book-outline" nimbus title="Your diary is empty" subtitle="Write your first entry to begin your archive" />;
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={tlStyles.container}>
@@ -519,6 +519,7 @@ export default function DiaryScreen() {
           ListEmptyComponent={
             <EmptyState
               icon="book-outline"
+              nimbus
               title={search || filterMood || filterFavorites ? 'No matching entries' : 'Start your archive'}
               subtitle={search || filterMood || filterFavorites ? 'Try a different search or filter' : 'Write your first entry — future you will thank you 💙'}
             />

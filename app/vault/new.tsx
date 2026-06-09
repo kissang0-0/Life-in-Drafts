@@ -61,7 +61,7 @@ export default function NewVaultEntry() {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.headerRow}>
-            <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+            <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/more' as any)} style={styles.backBtn}>
               <Ionicons name="close" size={22} color="rgba(255,255,255,0.7)" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>New Vault Entry</Text>

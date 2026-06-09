@@ -94,7 +94,7 @@ export default function DiaryEntryScreen() {
     return (
       <View style={[styles.container, { backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }]}>
         <Text style={[styles.notFound, { color: colors.textMuted }]}>Entry not found</Text>
-        <TouchableOpacity onPress={() => router.back()} style={[styles.backBtn, { backgroundColor: colors.primary }]}>
+        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/diary' as any)} style={[styles.backBtn, { backgroundColor: colors.primary }]}>
           <Text style={styles.backBtnText}>Go back</Text>
         </TouchableOpacity>
       </View>
@@ -105,7 +105,7 @@ export default function DiaryEntryScreen() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 12, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.navBtn}>
+        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/diary' as any)} style={styles.navBtn}>
           <Ionicons name="arrow-back" size={22} color={colors.navy} />
         </TouchableOpacity>
         <View style={{ flex: 1 }} />

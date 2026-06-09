@@ -107,7 +107,7 @@ export default function NewSocialPost() {
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 8, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.iconBtn}>
+        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/unsocial' as any)} style={styles.iconBtn}>
           <Ionicons name="close" size={22} color={colors.textMuted} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.navy }]}>New Post</Text>

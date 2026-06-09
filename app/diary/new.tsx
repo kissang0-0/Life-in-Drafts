@@ -152,7 +152,7 @@ export default function NewDiaryEntry() {
           colors={['#080E1A', '#0C1420']}
           style={[styles.header, { paddingTop: topPad + 8 }]}
         >
-          <TouchableOpacity onPress={() => router.back()} style={styles.iconBtn}>
+          <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/diary' as any)} style={styles.iconBtn}>
             <Ionicons name="chevron-down" size={22} color={mutedColor} />
           </TouchableOpacity>
           <View style={styles.headerMid}>
@@ -172,7 +172,7 @@ export default function NewDiaryEntry() {
         </LinearGradient>
       ) : (
         <View style={[styles.header, { paddingTop: topPad + 8, backgroundColor: '#FFFFFF', borderBottomColor: border }]}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.iconBtn}>
+          <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/diary' as any)} style={styles.iconBtn}>
             <Ionicons name="chevron-down" size={22} color={mutedColor} />
           </TouchableOpacity>
           <View style={styles.headerMid}>

@@ -51,7 +51,7 @@ export default function SocialPostDetail() {
         <View style={styles.notFound}>
           <NimbusBird size={80} />
           <Text style={[styles.notFoundText, { color: colors.textMuted }]}>Post not found.</Text>
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/unsocial' as any)}>
             <Text style={[styles.backLink, { color: colors.primary }]}>Go back</Text>
           </TouchableOpacity>
         </View>
@@ -114,7 +114,7 @@ export default function SocialPostDetail() {
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 8, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.iconBtn}>
+        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/unsocial' as any)} style={styles.iconBtn}>
           <Ionicons name="chevron-back" size={22} color={colors.textMuted} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.navy }]}>Post</Text>

@@ -118,7 +118,7 @@ export default function VaultScreen() {
     return (
       <LinearGradient colors={['#1A1A2E', '#16213E', '#0F3460']} style={styles.lockGradient}>
         <View style={[styles.lockInner, { paddingTop: topPad + 20 }]}>
-          <TouchableOpacity onPress={() => router.back()} style={[styles.backBtn, { top: topPad + 8 }]}>
+          <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/more' as any)} style={[styles.backBtn, { top: topPad + 8 }]}>
             <Ionicons name="arrow-back" size={22} color="rgba(255,255,255,0.7)" />
           </TouchableOpacity>
           <View style={styles.lockIcon}>
@@ -149,7 +149,7 @@ export default function VaultScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerRow}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+          <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/more' as any)} style={styles.backBtn}>
             <Ionicons name="arrow-back" size={22} color="rgba(255,255,255,0.7)" />
           </TouchableOpacity>
           <View style={styles.headerTitleGroup}>

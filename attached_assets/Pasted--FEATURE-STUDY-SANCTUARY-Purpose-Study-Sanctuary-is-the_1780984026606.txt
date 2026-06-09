@@ -1,0 +1,486 @@
+# FEATURE: STUDY SANCTUARY
+
+## Purpose
+
+Study Sanctuary is the academic hub of Life in Drafts.
+
+It should help the user:
+
+* Study consistently
+* Track academic progress
+* Build focus habits
+* Manage deadlines
+* Prepare for exams
+* Reflect on learning
+
+The experience should feel calm, motivating, and cozy.
+
+Not stressful.
+
+Not corporate.
+
+Not overly competitive.
+
+The goal is progress, not perfection.
+
+---
+
+# MAIN DASHBOARD
+
+Display:
+
+* Today's study time
+* Weekly study time
+* Current focus streak
+* Upcoming deadlines
+* Current subject focus
+* Active study goals
+
+Show a greeting from Nimbus.
+
+Examples:
+
+"One page at a time."
+
+"Progress counts, even when it's slow."
+
+---
+
+# SUBJECT MANAGEMENT
+
+Allow creating subjects.
+
+Fields:
+
+* Subject Name
+* Subject Color
+* Subject Icon
+* Teacher (optional)
+* Notes (optional)
+
+Examples:
+
+📚 English
+
+➗ Mathematics
+
+🔬 Science
+
+💻 Programming
+
+🎨 Art
+
+Custom subjects allowed.
+
+---
+
+# SUBJECT PAGE
+
+Each subject should have its own page.
+
+Display:
+
+* Total hours studied
+* Upcoming assessments
+* Notes
+* Progress charts
+* Recent study sessions
+
+---
+
+# STUDY SESSION SYSTEM
+
+Users can start study sessions.
+
+Fields:
+
+* Subject
+* Session Goal
+* Session Type
+
+Examples:
+
+* Reading
+* Homework
+* Revision
+* Practice Problems
+* Essay Writing
+
+---
+
+# POMODORO TIMER
+
+Built-in Pomodoro timer.
+
+Default:
+
+25 minutes focus
+
+5 minutes break
+
+Customizable.
+
+Allow:
+
+* Start
+* Pause
+* Resume
+* End session
+
+Track all sessions automatically.
+
+---
+
+# CUSTOM TIMER
+
+Support:
+
+* 15 min
+* 25 min
+* 45 min
+* 60 min
+* Custom duration
+
+---
+
+# FOCUS MODE
+
+During study sessions:
+
+Hide distractions.
+
+Display:
+
+* Timer
+* Goal
+* Subject
+* Encouragement
+
+Optional:
+
+* Full screen mode
+
+---
+
+# SESSION COMPLETION
+
+When a session ends:
+
+Ask:
+
+Did you complete your goal?
+
+Options:
+
+* Yes
+* Partially
+* No
+
+Store response.
+
+---
+
+# SESSION REFLECTION
+
+After every session:
+
+Prompt user:
+
+What did you accomplish?
+
+What was difficult?
+
+What should you focus on next time?
+
+Store reflections.
+
+---
+
+# STUDY NOTES
+
+Allow notes per subject.
+
+Features:
+
+* Rich text
+* Images
+* Attachments
+* Search
+
+---
+
+# EXAM TRACKER
+
+Allow adding exams.
+
+Fields:
+
+* Exam name
+* Subject
+* Date
+* Priority
+
+Display countdown.
+
+Examples:
+
+📅 Final Exam
+14 Days Remaining
+
+---
+
+# ASSIGNMENT TRACKER
+
+Allow adding:
+
+* Homework
+* Projects
+* Essays
+* Presentations
+
+Fields:
+
+* Due date
+* Priority
+* Status
+
+---
+
+# DEADLINE DASHBOARD
+
+Display:
+
+* Upcoming assignments
+* Upcoming exams
+* Overdue tasks
+
+Sort by urgency.
+
+---
+
+# STUDY ANALYTICS
+
+Track:
+
+* Total study hours
+* Weekly study hours
+* Monthly study hours
+* Subject breakdown
+* Most studied subject
+* Average session length
+
+Display charts.
+
+---
+
+# FOCUS HEATMAP
+
+Generate heatmap.
+
+Show:
+
+Which days were most productive.
+
+Examples:
+
+Monday → 3 Hours
+
+Tuesday → 1 Hour
+
+Wednesday → 4 Hours
+
+---
+
+# PRODUCTIVITY SCORE
+
+Generate a score based on:
+
+* Consistency
+* Session completion
+* Goal completion
+
+Display trends.
+
+---
+
+# STUDY STREAKS
+
+Track:
+
+* Daily study streak
+* Weekly study streak
+* Longest streak
+
+Display visually.
+
+---
+
+# ACHIEVEMENTS
+
+Examples:
+
+📚 First Study Session
+
+🔥 7 Day Streak
+
+🎓 50 Study Hours
+
+⭐ 100 Study Hours
+
+🏆 Exam Survivor
+
+---
+
+# FOCUS MUSIC SECTION
+
+Create optional study sounds.
+
+Examples:
+
+☔ Rain
+
+🌊 Ocean
+
+☁️ Clouds
+
+📖 Library
+
+🌙 Midnight Ambience
+
+Allow playback during sessions.
+
+---
+
+# CYCLE & STUDY INSIGHTS
+
+Integrate with Menstrual Cycle Sanctuary.
+
+Examples:
+
+"You tend to focus longer during Week 2."
+
+"Study sessions are shorter during your first cycle day."
+
+Display gently.
+
+Never feel clinical.
+
+---
+
+# MOOD & STUDY CONNECTION
+
+Allow mood logging after study sessions.
+
+Examples:
+
+Focused
+
+Tired
+
+Motivated
+
+Frustrated
+
+Proud
+
+Store for analytics.
+
+---
+
+# TO DO/N'T INTEGRATION
+
+Examples:
+
+Task:
+Study Biology
+
+↓
+
+Start Study Session
+
+↓
+
+Session Completed
+
+↓
+
+Task Automatically Completed
+
+---
+
+# DEAR ME INTEGRATION
+
+Allow study reflections to be saved into diary.
+
+Example:
+
+"Today I finally understood quadratic equations."
+
+---
+
+# NIMBUS INTEGRATION
+
+Examples:
+
+"You studied for 30 minutes. Nice work."
+
+"Progress is still progress."
+
+"Future you is grateful."
+
+---
+
+# EMPTY STATE
+
+Show Nimbus.
+
+Message:
+
+"Every expert started as a beginner."
+
+Button:
+
+Create First Subject
+
+---
+
+# VISUAL DESIGN
+
+The feature should feel like:
+
+* Forest
+* Notion
+* Finch
+* Study Bunny
+
+Combined with Life in Drafts aesthetics.
+
+Use:
+
+* Soft blues
+* Rounded cards
+* Progress clouds
+* Cute charts
+* Cozy illustrations
+
+---
+
+# USER EXPERIENCE GOAL
+
+The user should feel:
+
+Calm.
+
+Focused.
+
+Motivated.
+
+Capable.
+
+Study Sanctuary should feel like a quiet corner where learning becomes part of the story of growth.
+
+A place where effort is remembered.
+
+A place where progress is celebrated.
+
+A place within The Archive of Becoming.
