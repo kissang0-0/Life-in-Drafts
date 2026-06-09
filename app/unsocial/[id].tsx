@@ -72,18 +72,23 @@ export default function SocialPostDetail() {
   const handleAddReflection = async () => {
     if (!user || !reflectionText.trim()) return;
     setSaving(true);
-    const newReflection: SocialPostReflection = {
-      text: reflectionText.trim(),
-      createdAt: new Date(),
-    };
-    const updated = [...post.reflections, newReflection];
-    await updateSocialPost(user.uid, post.id, {
-      reflections: updated.map(r => ({ text: r.text, createdAt: r.createdAt })),
-    });
-    setReflectionText('');
-    setAddingReflection(false);
-    setSaving(false);
-    showToast('✨ Reflection added!');
+    try {
+      const newReflection: SocialPostReflection = {
+        text: reflectionText.trim(),
+        createdAt: new Date(),
+      };
+      const updated = [...post.reflections, newReflection];
+      await updateSocialPost(user.uid, post.id, {
+        reflections: updated.map(r => ({ text: r.text, createdAt: r.createdAt })),
+      });
+      setReflectionText('');
+      setAddingReflection(false);
+      showToast('✨ Reflection added!');
+    } catch {
+      showToast('Could not save reflection. Try again.', 'error');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = () => {

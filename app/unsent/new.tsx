@@ -54,6 +54,7 @@ export default function NewConversation() {
       router.replace(`/unsent/${ref.id}`);
     } catch {
       Alert.alert('Error', 'Could not start this conversation.');
+    } finally {
       setSaving(false);
     }
   };

@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -39,8 +40,14 @@ export default function NewVaultEntry() {
   const handleSave = async () => {
     if (!title.trim() || !content.trim() || !user?.uid) return;
     setSaving(true);
-    await addVaultEntry(user.uid, { type, title: title.trim(), content: content.trim() });
-    router.back();
+    try {
+      await addVaultEntry(user.uid, { type, title: title.trim(), content: content.trim() });
+      router.back();
+    } catch {
+      Alert.alert('Error', 'Could not save. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

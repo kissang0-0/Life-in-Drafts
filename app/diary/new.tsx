@@ -137,6 +137,7 @@ export default function NewDiaryEntry() {
       setTimeout(() => router.back(), 1200);
     } catch {
       showToast('Could not save. Please try again.', 'error');
+    } finally {
       setSaving(false);
     }
   };

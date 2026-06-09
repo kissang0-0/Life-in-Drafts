@@ -98,6 +98,7 @@ export default function NewSocialPost() {
       setTimeout(() => router.back(), 1000);
     } catch {
       showToast('Could not save. Try again.', 'error');
+    } finally {
       setSaving(false);
     }
   };

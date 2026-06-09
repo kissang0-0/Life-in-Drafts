@@ -6,8 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  Modal,
   Alert,
+  Modal,
   Platform,
   ScrollView,
 } from 'react-native';
@@ -75,10 +75,16 @@ export default function StudyScreen() {
   const handleAddNote = async () => {
     if (!noteTitle.trim() || !user) return;
     setSaving(true);
-    await addStudyNote(user.uid, { title: noteTitle.trim(), content: noteContent.trim(), tags: [] });
-    setNoteTitle(''); setNoteContent('');
-    setSaving(false);
-    setShowModal(false);
+    try {
+      await addStudyNote(user.uid, { title: noteTitle.trim(), content: noteContent.trim(), tags: [] });
+      setNoteTitle('');
+      setNoteContent('');
+      setShowModal(false);
+    } catch {
+      Alert.alert('Error', 'Could not save note. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = (note: StudyNote) => {
