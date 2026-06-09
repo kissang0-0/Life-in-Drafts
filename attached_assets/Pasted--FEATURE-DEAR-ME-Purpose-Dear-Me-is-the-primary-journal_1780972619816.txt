@@ -1,0 +1,239 @@
+# FEATURE: DEAR ME
+
+## Purpose
+
+Dear Me is the primary journaling system of Life in Drafts.
+
+This is not a simple notes app.
+
+The goal is to help users document their life, emotions, memories, and daily experiences in a structured but personal way.
+
+The experience should feel like writing inside a beautiful digital diary.
+
+---
+
+# Create Entry Screen
+
+Users should be able to create a new journal entry.
+
+Required fields:
+
+* Title
+* Date
+* Time
+* Mood
+* Energy Level
+* Weather
+* Main Journal Content
+
+The date should automatically default to today.
+
+The time should automatically default to current time.
+
+---
+
+# Mood Selector
+
+Provide visual mood options.
+
+Examples:
+
+😀 Happy
+😌 Calm
+😔 Sad
+😡 Angry
+😰 Anxious
+😴 Tired
+🤩 Excited
+😶 Neutral
+
+Store selected mood in database.
+
+Display mood history later in analytics.
+
+---
+
+# Energy Level Selector
+
+Provide:
+
+* Very Low
+* Low
+* Medium
+* High
+* Very High
+
+Display as cute battery or cloud icons.
+
+Store value in database.
+
+---
+
+# Weather Selector
+
+Allow:
+
+☀️ Sunny
+☁️ Cloudy
+🌧 Rainy
+⛈ Stormy
+🌙 Night
+❄️ Cold
+
+Used for memory context.
+
+---
+
+# Journal Editor
+
+Large writing area.
+
+Features:
+
+* Rich text
+* Bold
+* Italics
+* Underline
+* Lists
+* Quotes
+
+Auto-save every few seconds.
+
+Never lose writing progress.
+
+---
+
+# Reflection Prompts
+
+Optional expandable prompts:
+
+What happened today?
+
+What made me smile?
+
+What challenged me?
+
+What did I learn?
+
+What am I grateful for?
+
+What do I want tomorrow to look like?
+
+User can answer any or all.
+
+---
+
+# Image Support
+
+Allow uploading multiple images.
+
+Features:
+
+* Camera upload
+* Gallery upload
+* Multiple images
+* Image preview
+* Full screen viewer
+
+Images stored in Firebase Storage.
+
+---
+
+# Voice Notes
+
+Allow attaching voice recordings.
+
+Features:
+
+* Record
+* Play
+* Pause
+* Delete
+
+Store recordings with the journal entry.
+
+---
+
+# Stickers
+
+Allow decorating entries.
+
+Available stickers:
+
+* Clouds
+* Stars
+* Hearts
+* Moons
+* Books
+* Coffee cups
+* Whales
+
+Purely visual and optional.
+
+---
+
+# Entry Views
+
+Provide four views.
+
+Calendar View:
+Display entries on calendar.
+
+Timeline View:
+Display entries chronologically.
+
+Gallery View:
+Display entries with photos.
+
+Search View:
+Search all entries.
+
+---
+
+# Favorites
+
+Allow entries to be starred.
+
+Favorite entries appear in Memory Jar.
+
+---
+
+# Analytics
+
+Track:
+
+* Total entries
+* Current writing streak
+* Longest writing streak
+* Most common mood
+* Entries per month
+
+---
+
+# Special Entry Types
+
+Normal Entry
+
+Memory Entry
+
+Travel Entry
+
+Achievement Entry
+
+Midnight Thoughts Entry
+
+Users can select type when creating entry.
+
+---
+
+# User Experience
+
+The diary should feel:
+
+* Cozy
+* Personal
+* Safe
+* Beautiful
+* Emotional
+
+The user should feel like they are opening a personal journal, not a notes application.

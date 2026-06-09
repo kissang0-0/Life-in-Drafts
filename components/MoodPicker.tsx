@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useColors } from '@/hooks/useColors';
 import { MOOD_OPTIONS } from '@/constants/nimbus';
 
@@ -24,22 +23,19 @@ export function MoodPicker({ selected, onSelect }: Props) {
         return (
           <TouchableOpacity
             key={mood.key}
-            onPress={() => onSelect(mood.key)}
+            onPress={() => onSelect(isSelected ? '' : mood.key)}
             style={[
               styles.item,
               {
                 backgroundColor: isSelected ? moodColor : colors.surfaceAlt,
-                borderColor: isSelected ? colors.navy : 'transparent',
-                borderWidth: isSelected ? 1.5 : 0,
+                borderColor: isSelected ? colors.navy + '40' : 'transparent',
+                borderWidth: isSelected ? 2 : 0,
+                transform: [{ scale: isSelected ? 1.08 : 1 }],
               },
             ]}
-            activeOpacity={0.8}
+            activeOpacity={0.75}
           >
-            <Ionicons
-              name={mood.icon}
-              size={18}
-              color={isSelected ? colors.navy : colors.textMuted}
-            />
+            <Text style={styles.emoji}>{mood.emoji}</Text>
             <Text
               style={[
                 styles.label,
@@ -48,6 +44,9 @@ export function MoodPicker({ selected, onSelect }: Props) {
             >
               {mood.label}
             </Text>
+            {isSelected && (
+              <View style={[styles.selectedDot, { backgroundColor: colors.navy + '60' }]} />
+            )}
           </TouchableOpacity>
         );
       })}
@@ -59,20 +58,31 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 8,
-    paddingVertical: 4,
+    paddingVertical: 6,
     paddingHorizontal: 16,
   },
   item: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4,
-    paddingVertical: 10,
+    gap: 5,
+    paddingVertical: 12,
     paddingHorizontal: 14,
-    borderRadius: 16,
-    minWidth: 68,
+    borderRadius: 18,
+    minWidth: 72,
+    position: 'relative',
+  },
+  emoji: {
+    fontSize: 26,
   },
   label: {
     fontSize: 11,
-    fontFamily: 'Nunito_600SemiBold',
+    fontFamily: 'Nunito_700Bold',
+  },
+  selectedDot: {
+    position: 'absolute',
+    bottom: 6,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
   },
 });

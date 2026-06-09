@@ -8,6 +8,7 @@ import {
   TextInput,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -22,8 +23,9 @@ import { MOOD_OPTIONS } from '@/constants/nimbus';
 import { MOOD_FLOWERS } from '@/constants/quotes';
 import { DiaryEntry } from '@/lib/firestore';
 import { todayString } from '@/lib/dateUtils';
+import { format } from '@/lib/dateUtils';
 
-type ViewMode = 'list' | 'calendar' | 'timeline';
+type ViewMode = 'list' | 'calendar' | 'timeline' | 'gallery';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -59,11 +61,11 @@ function MoodBar({ entries }: { entries: DiaryEntry[] }) {
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={moodBarStyles.legend}>
-          {sorted.slice(0, 5).map((m) => {
+          {sorted.slice(0, 6).map((m) => {
             const flower = MOOD_FLOWERS[m.key];
             return (
               <View key={m.key} style={moodBarStyles.legendItem}>
-                <Text style={moodBarStyles.flower}>{flower?.emoji ?? ''}</Text>
+                <Text style={moodBarStyles.moodEmoji}>{m.emoji}</Text>
                 <Text style={[moodBarStyles.legendLabel, { color: colors.textMuted }]}>{m.label}</Text>
                 <Text style={[moodBarStyles.legendCount, { color: colors.navy }]}>{counts[m.key]}</Text>
               </View>
@@ -82,7 +84,7 @@ const moodBarStyles = StyleSheet.create({
   segment: { height: '100%' },
   legend: { flexDirection: 'row', gap: 14 },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  flower: { fontSize: 14 },
+  moodEmoji: { fontSize: 14 },
   legendLabel: { fontSize: 11, fontFamily: 'Nunito_400Regular' },
   legendCount: { fontSize: 11, fontFamily: 'Nunito_700Bold' },
 });
@@ -142,6 +144,7 @@ function CalendarView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
           const isToday = k === today;
           const topMood = dayEntries[0]?.mood;
           const moodColor = topMood ? colors.moodColors[topMood] ?? colors.surfaceAlt : null;
+          const topMoodObj = topMood ? MOOD_OPTIONS.find(m => m.key === topMood) : null;
           return (
             <TouchableOpacity
               key={k}
@@ -153,10 +156,13 @@ function CalendarView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
               onPress={() => dayEntries.length > 0 && onPress(dayEntries[0].id)}
               activeOpacity={dayEntries.length > 0 ? 0.7 : 1}
             >
-              <Text style={[calStyles.dayNum, { color: isToday ? colors.primary : dayEntries.length > 0 ? colors.navy : colors.textLight }]}>
-                {day}
-              </Text>
-              {dayEntries.length > 0 && <View style={[calStyles.dot, { backgroundColor: colors.navy + '60' }]} />}
+              {topMoodObj && dayEntries.length > 0 ? (
+                <Text style={calStyles.calMoodEmoji}>{topMoodObj.emoji}</Text>
+              ) : (
+                <Text style={[calStyles.dayNum, { color: isToday ? colors.primary : dayEntries.length > 0 ? colors.navy : colors.textLight }]}>
+                  {day}
+                </Text>
+              )}
               {dayEntries.length > 1 && <Text style={[calStyles.multiCount, { color: colors.navy }]}>+{dayEntries.length - 1}</Text>}
             </TouchableOpacity>
           );
@@ -176,6 +182,7 @@ const calStyles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap' },
   cell: { width: `${100 / 7}%`, aspectRatio: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 8, padding: 2 },
   dayNum: { fontSize: 13, fontFamily: 'Nunito_600SemiBold' },
+  calMoodEmoji: { fontSize: 18 },
   dot: { width: 4, height: 4, borderRadius: 2, marginTop: 2 },
   multiCount: { fontSize: 8, fontFamily: 'Nunito_700Bold' },
 });
@@ -215,13 +222,16 @@ function TimelineView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (i
                 >
                   {mood && (
                     <View style={[tlStyles.moodStripe, { backgroundColor: moodColor }]}>
-                      <Ionicons name={mood.icon} size={14} color={colors.navy} />
+                      <Text style={tlStyles.moodStripeEmoji}>{mood.emoji}</Text>
                     </View>
                   )}
                   <View style={tlStyles.cardContent}>
-                    <Text style={[tlStyles.time, { color: colors.textLight }]}>
-                      {entry.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </Text>
+                    <View style={tlStyles.cardTop}>
+                      <Text style={[tlStyles.time, { color: colors.textLight }]}>
+                        {entry.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </Text>
+                      {entry.isFavorite && <Ionicons name="star" size={12} color="#FFD700" />}
+                    </View>
                     {entry.title ? <Text style={[tlStyles.title, { color: colors.navy }]} numberOfLines={1}>{entry.title}</Text> : null}
                     <Text style={[tlStyles.preview, { color: colors.textMuted }]} numberOfLines={2}>{entry.content}</Text>
                   </View>
@@ -247,11 +257,98 @@ const tlStyles = StyleSheet.create({
     flexDirection: 'row', borderRadius: 14, overflow: 'hidden',
     shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 6, elevation: 2,
   },
-  moodStripe: { width: 6 },
+  moodStripe: { width: 44, alignItems: 'center', justifyContent: 'center' },
+  moodStripeEmoji: { fontSize: 20 },
   cardContent: { flex: 1, padding: 12, gap: 4 },
+  cardTop: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   time: { fontSize: 11, fontFamily: 'Nunito_600SemiBold' },
   title: { fontSize: 14, fontFamily: 'Nunito_700Bold' },
   preview: { fontSize: 13, fontFamily: 'Nunito_400Regular', lineHeight: 18 },
+});
+
+function GalleryView({ entries, onPress }: { entries: DiaryEntry[]; onPress: (id: string) => void }) {
+  const colors = useColors();
+  const withPhotos = entries.filter((e) => e.photos && e.photos.length > 0);
+
+  if (withPhotos.length === 0) {
+    return (
+      <EmptyState
+        icon="images-outline"
+        title="No photo entries yet"
+        subtitle="Add photos to your diary entries to see them here"
+      />
+    );
+  }
+
+  return (
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={galleryStyles.container}>
+      <View style={galleryStyles.grid}>
+        {withPhotos.map((entry) => {
+          const mood = MOOD_OPTIONS.find((m) => m.key === entry.mood);
+          return (
+            <TouchableOpacity
+              key={entry.id}
+              style={[galleryStyles.tile, { backgroundColor: colors.surface }]}
+              onPress={() => onPress(entry.id)}
+              activeOpacity={0.85}
+            >
+              <Image source={{ uri: entry.photos[0] }} style={galleryStyles.tileImage} resizeMode="cover" />
+              {entry.photos.length > 1 && (
+                <View style={[galleryStyles.photoCount, { backgroundColor: 'rgba(0,0,0,0.45)' }]}>
+                  <Ionicons name="images-outline" size={10} color="#fff" />
+                  <Text style={galleryStyles.photoCountText}>{entry.photos.length}</Text>
+                </View>
+              )}
+              {entry.isFavorite && (
+                <View style={galleryStyles.starBadge}>
+                  <Text style={{ fontSize: 12 }}>⭐</Text>
+                </View>
+              )}
+              <View style={[galleryStyles.tileFooter, { backgroundColor: colors.surface }]}>
+                {mood && <Text style={galleryStyles.tileEmoji}>{mood.emoji}</Text>}
+                <Text style={[galleryStyles.tileTitle, { color: colors.navy }]} numberOfLines={1}>
+                  {entry.title || entry.content.slice(0, 30)}
+                </Text>
+                <Text style={[galleryStyles.tileDate, { color: colors.textMuted }]}>
+                  {entry.createdAt.toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+      <View style={{ height: 100 }} />
+    </ScrollView>
+  );
+}
+
+const galleryStyles = StyleSheet.create({
+  container: { paddingHorizontal: 16, paddingTop: 12 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  tile: {
+    width: '47%',
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  tileImage: { width: '100%', height: 130 },
+  photoCount: {
+    position: 'absolute',
+    top: 8, right: 8,
+    flexDirection: 'row', alignItems: 'center', gap: 3,
+    paddingHorizontal: 6, paddingVertical: 3, borderRadius: 10,
+  },
+  photoCountText: { color: '#fff', fontSize: 10, fontFamily: 'Nunito_700Bold' },
+  starBadge: {
+    position: 'absolute', top: 8, left: 8,
+  },
+  tileFooter: { padding: 10, gap: 2 },
+  tileEmoji: { fontSize: 14 },
+  tileTitle: { fontSize: 13, fontFamily: 'Nunito_700Bold' },
+  tileDate: { fontSize: 11, fontFamily: 'Nunito_400Regular' },
 });
 
 export default function DiaryScreen() {
@@ -261,6 +358,7 @@ export default function DiaryScreen() {
   const diary = useAppStore((s) => s.diary);
   const [search, setSearch] = useState('');
   const [filterMood, setFilterMood] = useState('');
+  const [filterFavorites, setFilterFavorites] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
@@ -273,13 +371,15 @@ export default function DiaryScreen() {
       e.title.toLowerCase().includes(search.toLowerCase()) ||
       e.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
     const matchMood = !filterMood || e.mood === filterMood;
-    return matchSearch && matchMood;
-  }), [diary, search, filterMood]);
+    const matchFav = !filterFavorites || !!e.isFavorite;
+    return matchSearch && matchMood && matchFav;
+  }), [diary, search, filterMood, filterFavorites]);
 
   const VIEW_MODES: { key: ViewMode; icon: string }[] = [
     { key: 'list',     icon: 'list-outline'      },
     { key: 'timeline', icon: 'git-branch-outline' },
     { key: 'calendar', icon: 'calendar-outline'   },
+    { key: 'gallery',  icon: 'images-outline'     },
   ];
 
   return (
@@ -340,20 +440,49 @@ export default function DiaryScreen() {
           )}
         </View>
 
-        {/* Mood filter chips */}
-        {viewMode === 'list' && (
-          <FlatList
-            horizontal
-            data={[{ key: '', label: 'All ✨', icon: 'apps-outline' as const }, ...MOOD_OPTIONS]}
-            keyExtractor={(item) => item.key}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filters}
-            renderItem={({ item }) => {
+        {/* Mood + favorites filter chips */}
+        {(viewMode === 'list' || viewMode === 'gallery') && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>
+            {/* All */}
+            <TouchableOpacity
+              onPress={() => { setFilterMood(''); setFilterFavorites(false); }}
+              activeOpacity={0.75}
+              style={[
+                styles.filterChip,
+                {
+                  backgroundColor: !filterMood && !filterFavorites ? colors.lavender : 'rgba(255,255,255,0.8)',
+                  borderColor: !filterMood && !filterFavorites ? colors.navy + '30' : colors.border,
+                  borderWidth: 1.5,
+                },
+              ]}
+            >
+              <Text style={[styles.filterEmoji]}>✨</Text>
+              <Text style={[styles.filterLabel, { color: !filterMood && !filterFavorites ? colors.navy : colors.textMuted }]}>All</Text>
+            </TouchableOpacity>
+            {/* Favorites */}
+            <TouchableOpacity
+              onPress={() => { setFilterFavorites(!filterFavorites); setFilterMood(''); }}
+              activeOpacity={0.75}
+              style={[
+                styles.filterChip,
+                {
+                  backgroundColor: filterFavorites ? '#FFF3CD' : 'rgba(255,255,255,0.8)',
+                  borderColor: filterFavorites ? '#FFD700' : colors.border,
+                  borderWidth: 1.5,
+                },
+              ]}
+            >
+              <Text style={styles.filterEmoji}>⭐</Text>
+              <Text style={[styles.filterLabel, { color: filterFavorites ? colors.navy : colors.textMuted }]}>Favorites</Text>
+            </TouchableOpacity>
+            {/* Moods */}
+            {MOOD_OPTIONS.map((item) => {
               const isActive = filterMood === item.key;
-              const mc = item.key ? colors.moodColors[item.key] ?? colors.surfaceAlt : colors.lavender;
+              const mc = colors.moodColors[item.key] ?? colors.surfaceAlt;
               return (
                 <TouchableOpacity
-                  onPress={() => setFilterMood(item.key)}
+                  key={item.key}
+                  onPress={() => { setFilterMood(isActive ? '' : item.key); setFilterFavorites(false); }}
                   activeOpacity={0.75}
                   style={[
                     styles.filterChip,
@@ -364,14 +493,14 @@ export default function DiaryScreen() {
                     },
                   ]}
                 >
-                  <Ionicons name={item.icon as any} size={12} color={isActive ? colors.navy : colors.textMuted} />
+                  <Text style={styles.filterEmoji}>{item.emoji}</Text>
                   <Text style={[styles.filterLabel, { color: isActive ? colors.navy : colors.textMuted }]}>
                     {item.label}
                   </Text>
                 </TouchableOpacity>
               );
-            }}
-          />
+            })}
+          </ScrollView>
         )}
       </LinearGradient>
 
@@ -390,8 +519,8 @@ export default function DiaryScreen() {
           ListEmptyComponent={
             <EmptyState
               icon="book-outline"
-              title={search || filterMood ? 'No matching entries' : 'Start your archive'}
-              subtitle={search || filterMood ? 'Try a different search or filter' : 'Write your first entry — future you will thank you 💙'}
+              title={search || filterMood || filterFavorites ? 'No matching entries' : 'Start your archive'}
+              subtitle={search || filterMood || filterFavorites ? 'Try a different search or filter' : 'Write your first entry — future you will thank you 💙'}
             />
           }
           showsVerticalScrollIndicator={false}
@@ -412,6 +541,10 @@ export default function DiaryScreen() {
         >
           <CalendarView entries={filtered} onPress={(id) => router.push(`/diary/${id}`)} />
         </ScrollView>
+      )}
+
+      {viewMode === 'gallery' && (
+        <GalleryView entries={filtered} onPress={(id) => router.push(`/diary/${id}`)} />
       )}
 
       <FloatingButton onPress={() => router.push('/diary/new')} />
@@ -443,6 +576,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', gap: 5,
     paddingHorizontal: 11, paddingVertical: 7, borderRadius: 20,
   },
+  filterEmoji: { fontSize: 13 },
   filterLabel: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
   list: { paddingHorizontal: 20, paddingTop: 10 },
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useColors } from '@/hooks/useColors';
 import { DiaryEntry } from '@/lib/firestore';
-import { MOOD_OPTIONS } from '@/constants/nimbus';
+import { MOOD_OPTIONS, ENTRY_TYPES } from '@/constants/nimbus';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from '@/lib/dateUtils';
 
@@ -15,7 +15,9 @@ export function DiaryCard({ entry, onPress }: Props) {
   const colors = useColors();
   const mood = MOOD_OPTIONS.find((m) => m.key === entry.mood);
   const moodColor = entry.mood ? colors.moodColors[entry.mood] ?? colors.surfaceAlt : colors.primary + '30';
+  const entryType = entry.entryType ? ENTRY_TYPES.find((t) => t.key === entry.entryType) : null;
   const hasTitle = !!entry.title;
+  const hasPhotos = entry.photos && entry.photos.length > 0;
 
   return (
     <TouchableOpacity
@@ -26,17 +28,49 @@ export function DiaryCard({ entry, onPress }: Props) {
       {/* Top accent strip */}
       <View style={[styles.topStrip, { backgroundColor: moodColor }]}>
         <View style={styles.stripRow}>
-          <Text style={[styles.date, { color: colors.navy + 'CC' }]}>
-            {format(entry.createdAt)}
-          </Text>
-          {mood && (
-            <View style={[styles.moodPill, { backgroundColor: 'rgba(255,255,255,0.55)' }]}>
-              <Ionicons name={mood.icon} size={13} color={colors.navy} />
-              <Text style={[styles.moodLabel, { color: colors.navy }]}>{mood.label}</Text>
+          <View style={styles.stripLeft}>
+            {mood && (
+              <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+            )}
+            <Text style={[styles.date, { color: colors.navy + 'CC' }]}>
+              {format(entry.createdAt)}
+            </Text>
+          </View>
+          <View style={styles.stripRight}>
+            {entryType && (
+              <View style={[styles.typeBadge, { backgroundColor: 'rgba(255,255,255,0.55)' }]}>
+                <Text style={styles.typeEmoji}>{entryType.emoji}</Text>
+                <Text style={[styles.typeLabel, { color: colors.navy }]}>{entryType.label}</Text>
+              </View>
+            )}
+            {entry.isFavorite && (
+              <Ionicons name="star" size={14} color={colors.navy + 'CC'} />
+            )}
+          </View>
+        </View>
+      </View>
+
+      {/* Photo strip if has images */}
+      {hasPhotos && (
+        <View style={styles.photoStrip}>
+          {entry.photos.slice(0, 3).map((uri, i) => (
+            <Image
+              key={i}
+              source={{ uri }}
+              style={[
+                styles.photoThumb,
+                entry.photos.length === 1 && styles.photoThumbFull,
+              ]}
+              resizeMode="cover"
+            />
+          ))}
+          {entry.photos.length > 3 && (
+            <View style={[styles.photoMore, { backgroundColor: colors.surfaceAlt }]}>
+              <Text style={[styles.photoMoreText, { color: colors.textMuted }]}>+{entry.photos.length - 3}</Text>
             </View>
           )}
         </View>
-      </View>
+      )}
 
       {/* Body */}
       <View style={styles.body}>
@@ -85,21 +119,59 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  stripLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  stripRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  moodEmoji: {
+    fontSize: 16,
+  },
   date: {
     fontSize: 11,
     fontFamily: 'Nunito_700Bold',
     letterSpacing: 0.3,
   },
-  moodPill: {
+  typeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 9,
+    gap: 3,
+    paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 20,
   },
-  moodLabel: {
+  typeEmoji: {
     fontSize: 11,
+  },
+  typeLabel: {
+    fontSize: 10,
+    fontFamily: 'Nunito_700Bold',
+  },
+  photoStrip: {
+    flexDirection: 'row',
+    height: 90,
+    gap: 2,
+  },
+  photoThumb: {
+    flex: 1,
+    height: 90,
+  },
+  photoThumbFull: {
+    flex: 1,
+  },
+  photoMore: {
+    width: 50,
+    height: 90,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photoMoreText: {
+    fontSize: 13,
     fontFamily: 'Nunito_700Bold',
   },
   body: {

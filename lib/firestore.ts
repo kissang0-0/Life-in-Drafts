@@ -29,6 +29,8 @@ export type DiaryEntry = {
   energyLevel?: number;
   isTimeCapsule?: boolean;
   unlocksAt?: Date | null;
+  isFavorite?: boolean;
+  entryType?: string;
 };
 
 export type Memory = {

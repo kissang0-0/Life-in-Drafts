@@ -94,16 +94,25 @@ export const NIMBUS_CELEBRATIONS = [
 ];
 
 export const MOOD_OPTIONS = [
-  { key: 'happy',      label: 'Happy',      icon: 'sunny-outline'        as const },
-  { key: 'calm',       label: 'Calm',        icon: 'water-outline'        as const },
-  { key: 'grateful',   label: 'Grateful',    icon: 'heart-outline'        as const },
-  { key: 'hopeful',    label: 'Hopeful',     icon: 'leaf-outline'         as const },
-  { key: 'excited',    label: 'Excited',     icon: 'flash-outline'        as const },
-  { key: 'tired',      label: 'Tired',       icon: 'moon-outline'         as const },
-  { key: 'melancholy', label: 'Thoughtful',  icon: 'cloud-outline'        as const },
-  { key: 'sad',        label: 'Sad',         icon: 'rainy-outline'        as const },
-  { key: 'anxious',    label: 'Anxious',     icon: 'thunderstorm-outline' as const },
-  { key: 'angry',      label: 'Frustrated',  icon: 'flame-outline'        as const },
+  { key: 'happy',      label: 'Happy',      emoji: '😀', icon: 'sunny-outline'        as const },
+  { key: 'calm',       label: 'Calm',        emoji: '😌', icon: 'water-outline'        as const },
+  { key: 'grateful',   label: 'Grateful',    emoji: '🥹', icon: 'heart-outline'        as const },
+  { key: 'hopeful',    label: 'Hopeful',     emoji: '🌱', icon: 'leaf-outline'         as const },
+  { key: 'excited',    label: 'Excited',     emoji: '🤩', icon: 'flash-outline'        as const },
+  { key: 'tired',      label: 'Tired',       emoji: '😴', icon: 'moon-outline'         as const },
+  { key: 'melancholy', label: 'Thoughtful',  emoji: '🤔', icon: 'cloud-outline'        as const },
+  { key: 'sad',        label: 'Sad',         emoji: '😔', icon: 'rainy-outline'        as const },
+  { key: 'anxious',    label: 'Anxious',     emoji: '😰', icon: 'thunderstorm-outline' as const },
+  { key: 'angry',      label: 'Frustrated',  emoji: '😡', icon: 'flame-outline'        as const },
+  { key: 'neutral',    label: 'Neutral',     emoji: '😶', icon: 'remove-outline'       as const },
+];
+
+export const ENTRY_TYPES = [
+  { key: 'normal',      label: 'Normal',          emoji: '📖' },
+  { key: 'memory',      label: 'Memory',           emoji: '🌟' },
+  { key: 'travel',      label: 'Travel',           emoji: '✈️' },
+  { key: 'achievement', label: 'Achievement',      emoji: '🏆' },
+  { key: 'midnight',    label: 'Midnight Thoughts',emoji: '🌙' },
 ];
 
 export type MoodKey = typeof MOOD_OPTIONS[number]['key'];

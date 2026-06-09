@@ -12,11 +12,12 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useColors } from '@/hooks/useColors';
 import { useAppStore } from '@/store/appStore';
 import { useAuthStore } from '@/store/authStore';
-import { deleteDiaryEntry } from '@/lib/firestore';
-import { MOOD_OPTIONS } from '@/constants/nimbus';
+import { deleteDiaryEntry, updateDiaryEntry } from '@/lib/firestore';
+import { MOOD_OPTIONS, ENTRY_TYPES } from '@/constants/nimbus';
 import { MOOD_FLOWERS } from '@/constants/quotes';
 import { format } from '@/lib/dateUtils';
 
@@ -27,10 +28,17 @@ const WEATHER_MAP: Record<string, string> = {
   snowy: '❄️',
   foggy: '🌫️',
   stormy: '⛈️',
+  night: '🌙',
   windy: '🌬️',
 };
 
-const ENERGY_EMOJI = ['', '😴', '😞', '😐', '🙂', '⚡'];
+const ENERGY_LABELS: Record<number, { label: string; emoji: string }> = {
+  1: { label: 'Very Low',  emoji: '🪫' },
+  2: { label: 'Low',       emoji: '🔋' },
+  3: { label: 'Medium',    emoji: '⚡' },
+  4: { label: 'High',      emoji: '✨' },
+  5: { label: 'Very High', emoji: '🌟' },
+};
 
 export default function DiaryEntryScreen() {
   const colors = useColors();
@@ -41,9 +49,14 @@ export default function DiaryEntryScreen() {
   const diary = useAppStore((s) => s.diary);
 
   const entry = diary.find((e) => e.id === id);
+  const [isFavorite, setIsFavorite] = useState(entry?.isFavorite ?? false);
+  const [togglingFav, setTogglingFav] = useState(false);
+
   const mood = entry ? MOOD_OPTIONS.find((m) => m.key === entry.mood) : null;
   const moodColor = entry?.mood ? colors.moodColors[entry.mood] ?? colors.surfaceAlt : colors.surfaceAlt;
   const flower = entry?.mood ? MOOD_FLOWERS[entry.mood] : null;
+  const entryType = entry?.entryType ? ENTRY_TYPES.find((t) => t.key === entry.entryType) : null;
+  const energyInfo = entry?.energyLevel ? ENERGY_LABELS[entry.energyLevel] : null;
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
@@ -61,6 +74,20 @@ export default function DiaryEntryScreen() {
         },
       },
     ]);
+  };
+
+  const handleToggleFavorite = async () => {
+    if (!user || !id || togglingFav) return;
+    setTogglingFav(true);
+    const newVal = !isFavorite;
+    setIsFavorite(newVal);
+    try {
+      await updateDiaryEntry(user.uid, id, { isFavorite: newVal });
+    } catch {
+      setIsFavorite(!newVal);
+    } finally {
+      setTogglingFav(false);
+    }
   };
 
   if (!entry) {
@@ -82,6 +109,9 @@ export default function DiaryEntryScreen() {
           <Ionicons name="arrow-back" size={22} color={colors.navy} />
         </TouchableOpacity>
         <View style={{ flex: 1 }} />
+        <TouchableOpacity onPress={handleToggleFavorite} style={styles.navBtn}>
+          <Ionicons name={isFavorite ? 'star' : 'star-outline'} size={22} color={isFavorite ? '#FFD700' : colors.textMuted} />
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleDelete} style={styles.navBtn}>
           <Ionicons name="trash-outline" size={20} color={colors.error} />
         </TouchableOpacity>
@@ -94,20 +124,30 @@ export default function DiaryEntryScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Mood banner with flower */}
+        {/* Mood banner */}
         {mood && (
-          <View style={[styles.moodBanner, { backgroundColor: moodColor }]}>
-            <Ionicons name={mood.icon} size={22} color={colors.navy} />
-            <Text style={[styles.moodText, { color: colors.navy }]}>{mood.label}</Text>
-            {flower && <Text style={styles.flowerEmoji}>{flower.emoji}</Text>}
-            {flower && (
-              <Text style={[styles.flowerName, { color: colors.navy + '80' }]}>{flower.name}</Text>
+          <LinearGradient
+            colors={[moodColor, moodColor + '88']}
+            style={styles.moodBanner}
+          >
+            <Text style={styles.moodBannerEmoji}>{mood.emoji}</Text>
+            <View style={styles.moodBannerText}>
+              <Text style={[styles.moodLabel, { color: colors.navy }]}>{mood.label}</Text>
+              {flower && (
+                <Text style={[styles.flowerName, { color: colors.navy + '90' }]}>{flower.emoji} {flower.name}</Text>
+              )}
+            </View>
+            {entryType && (
+              <View style={[styles.typePill, { backgroundColor: 'rgba(255,255,255,0.55)' }]}>
+                <Text style={styles.typeEmoji}>{entryType.emoji}</Text>
+                <Text style={[styles.typeLabel, { color: colors.navy }]}>{entryType.label}</Text>
+              </View>
             )}
-          </View>
+          </LinearGradient>
         )}
 
         <View style={styles.content}>
-          {/* Meta row: date, weather, energy */}
+          {/* Meta row */}
           <View style={styles.metaRow}>
             <Text style={[styles.date, { color: colors.textMuted }]}>{format(entry.createdAt)}</Text>
             <View style={styles.metaPills}>
@@ -119,12 +159,16 @@ export default function DiaryEntryScreen() {
                   </Text>
                 </View>
               )}
-              {!!entry.energyLevel && entry.energyLevel > 0 && (
+              {energyInfo && (
                 <View style={[styles.pill, { backgroundColor: colors.surfaceAlt }]}>
-                  <Text style={styles.pillEmoji}>{ENERGY_EMOJI[entry.energyLevel]}</Text>
-                  <Text style={[styles.pillText, { color: colors.textMuted }]}>
-                    {['', 'Drained', 'Low', 'Okay', 'Good', 'Energized'][entry.energyLevel]}
-                  </Text>
+                  <Text style={styles.pillEmoji}>{energyInfo.emoji}</Text>
+                  <Text style={[styles.pillText, { color: colors.textMuted }]}>{energyInfo.label}</Text>
+                </View>
+              )}
+              {isFavorite && (
+                <View style={[styles.pill, { backgroundColor: '#FFF3CD' }]}>
+                  <Text style={styles.pillEmoji}>⭐</Text>
+                  <Text style={[styles.pillText, { color: colors.navy }]}>Favorite</Text>
                 </View>
               )}
             </View>
@@ -145,7 +189,14 @@ export default function DiaryEntryScreen() {
                 <Image
                   key={i}
                   source={{ uri }}
-                  style={[styles.photo, entry.photos.length === 1 ? styles.photoFull : styles.photoHalf]}
+                  style={[
+                    styles.photo,
+                    entry.photos.length === 1
+                      ? styles.photoFull
+                      : entry.photos.length === 2
+                        ? styles.photoHalf
+                        : styles.photoThird,
+                  ]}
                   resizeMode="cover"
                 />
               ))}
@@ -182,30 +233,38 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   header: {
     flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingBottom: 12,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1, gap: 4,
   },
   navBtn: { padding: 6 },
   scroll: {},
   moodBanner: {
-    flexDirection: 'row', alignItems: 'center', gap: 8,
-    paddingHorizontal: 20, paddingVertical: 14,
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    paddingHorizontal: 20, paddingVertical: 18,
   },
-  moodText: { fontSize: 15, fontFamily: 'Nunito_600SemiBold' },
-  flowerEmoji: { fontSize: 20, marginLeft: 4 },
-  flowerName: { fontSize: 12, fontFamily: 'Nunito_400Regular' },
+  moodBannerEmoji: { fontSize: 36 },
+  moodBannerText: { flex: 1, gap: 2 },
+  moodLabel: { fontSize: 17, fontFamily: 'Nunito_700Bold' },
+  flowerName: { fontSize: 13, fontFamily: 'Nunito_400Regular' },
+  typePill: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20,
+  },
+  typeEmoji: { fontSize: 13 },
+  typeLabel: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
   content: { paddingHorizontal: 24, paddingTop: 20, gap: 16 },
   metaRow: { gap: 8 },
   date: { fontSize: 12, fontFamily: 'Nunito_600SemiBold', textTransform: 'uppercase', letterSpacing: 0.5 },
   metaPills: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
-  pill: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  pillEmoji: { fontSize: 13 },
+  pill: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20 },
+  pillEmoji: { fontSize: 14 },
   pillText: { fontSize: 12, fontFamily: 'Nunito_600SemiBold' },
   title: { fontSize: 26, fontFamily: 'Nunito_800ExtraBold', lineHeight: 32 },
   body: { fontSize: 16, fontFamily: 'Nunito_400Regular', lineHeight: 26 },
   photosGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  photo: { borderRadius: 12 },
-  photoFull: { width: '100%', height: 240 },
+  photo: { borderRadius: 14 },
+  photoFull: { width: '100%', height: 260 },
   photoHalf: { width: '48%', height: 160 },
+  photoThird: { width: '30%', height: 120 },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   tag: { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20 },
   tagText: { fontSize: 13, fontFamily: 'Nunito_600SemiBold' },
