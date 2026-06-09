@@ -815,3 +815,48 @@ export const upsertCycleCheckin = async (uid: string, date: string, data: Partia
     return updateDoc(snap.docs[0].ref, { ...data, updatedAt: serverTimestamp() });
   }
 };
+
+// ─── Memory Jar ───────────────────────────────────────────────────────────────
+export type MemorySlip = {
+  id: string;
+  title: string;
+  content: string;
+  date: string;
+  source: string;
+  sourceId?: string;
+  mood?: string;
+  photos?: string[];
+  category: string;
+  isFavorite?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+const memorySlipsRef = (uid: string) => collection(db, 'users', uid, 'memorySlips');
+
+export const subscribeMemorySlips = (uid: string, cb: (slips: MemorySlip[]) => void) =>
+  onSnapshot(query(memorySlipsRef(uid), orderBy('createdAt', 'desc'), limit(200)), (snap) =>
+    cb(snap.docs.map((d) => ({
+      id: d.id,
+      title: d.data().title ?? '',
+      content: d.data().content ?? '',
+      date: d.data().date ?? '',
+      source: d.data().source ?? 'manual',
+      sourceId: d.data().sourceId,
+      mood: d.data().mood,
+      photos: d.data().photos ?? [],
+      category: d.data().category ?? 'Special Moment',
+      isFavorite: d.data().isFavorite ?? false,
+      createdAt: toDate(d.data().createdAt),
+      updatedAt: toDate(d.data().updatedAt),
+    })))
+  );
+
+export const addMemorySlip = (uid: string, slip: Omit<MemorySlip, 'id' | 'createdAt' | 'updatedAt'>) =>
+  addDoc(memorySlipsRef(uid), { ...slip, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+
+export const updateMemorySlip = (uid: string, id: string, data: Partial<Omit<MemorySlip, 'id' | 'createdAt'>>) =>
+  updateDoc(doc(memorySlipsRef(uid), id), { ...data, updatedAt: serverTimestamp() });
+
+export const deleteMemorySlip = (uid: string, id: string) =>
+  deleteDoc(doc(memorySlipsRef(uid), id));

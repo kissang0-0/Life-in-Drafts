@@ -1,0 +1,305 @@
+# FEATURE: MEMORY JAR
+
+## Purpose
+
+Memory Jar is a collection of the user's most meaningful moments.
+
+Think of it as a digital keepsake box.
+
+A place where favorite memories are stored safely and rediscovered later.
+
+Unlike Dear Me, which stores everything, Memory Jar only contains moments worth remembering.
+
+The goal is nostalgia, gratitude, reflection, and growth.
+
+---
+
+# CORE CONCEPT
+
+The user can save memories from anywhere in the app.
+
+Sources:
+
+* Dear Me entries
+* Unsocial ME-dia posts
+* My Unsent Messages
+* To Do/n't achievements
+* Study Sanctuary milestones
+* Cycle & Error reflections
+
+Saved moments become "Memory Slips."
+
+---
+
+# MEMORY JAR HOME
+
+Display a beautiful glass jar.
+
+The jar should gradually fill with memory slips.
+
+Not a list.
+
+Not a folder.
+
+An actual visual memory jar.
+
+As memories increase:
+
+* More paper slips appear
+* Jar becomes fuller
+* Visual celebration of lived experiences
+
+---
+
+# MEMORY SLIPS
+
+Each memory contains:
+
+* Title
+* Date
+* Source
+* Preview
+* Mood
+* Photos (optional)
+
+Display as folded paper notes.
+
+---
+
+# SAVE TO MEMORY JAR
+
+Every major feature should have:
+
+⭐ Save to Memory Jar
+
+button.
+
+One tap saves memory.
+
+---
+
+# RANDOM MEMORY FEATURE
+
+Core feature.
+
+Button:
+
+"Pull a Memory"
+
+When tapped:
+
+Random memory appears.
+
+Display:
+
+* Original content
+* Date
+* Mood
+* Photos
+
+Example:
+
+"1 year ago today..."
+
+---
+
+# MEMORY TYPES
+
+Allow categorization.
+
+Examples:
+
+🌟 Achievement
+
+❤️ Special Moment
+
+📚 School
+
+👨‍👩‍👧 Family
+
+👯 Friendship
+
+🌱 Growth
+
+😄 Funny
+
+📸 Photo Memory
+
+🌙 Reflection
+
+---
+
+# MEMORY POLAROIDS
+
+If memory contains photos:
+
+Display as Polaroid cards.
+
+Include:
+
+* Date
+* Caption
+* Mood
+
+---
+
+# ON THIS DAY
+
+Display memories from:
+
+* 1 month ago
+* 6 months ago
+* 1 year ago
+* Multiple years ago
+
+Example:
+
+"On this day, 2 years ago..."
+
+---
+
+# MEMORY TIMELINE
+
+Create a visual timeline.
+
+Allow scrolling through years.
+
+Display:
+
+* Memories
+* Milestones
+* Favorite moments
+
+---
+
+# MEMORY COLLECTIONS
+
+Allow custom collections.
+
+Examples:
+
+Summer 2026
+
+College Life
+
+Best Memories
+
+Travel
+
+Favorite Photos
+
+---
+
+# MEMORY CAPSULES
+
+Allow grouping memories into capsules.
+
+Examples:
+
+Freshman Year
+
+Senior High
+
+Vacation 2027
+
+Relationship Memories
+
+---
+
+# PHOTO WALL
+
+Display memory photos as:
+
+* Scrapbook
+* Polaroid wall
+* Memory collage
+
+---
+
+# FAVORITE MEMORIES
+
+Allow users to:
+
+Pin memories
+
+Highlight memories
+
+Feature memories
+
+---
+
+# MEMORY ANNIVERSARIES
+
+Generate notifications.
+
+Examples:
+
+"This memory turns 1 year old today."
+
+"You saved this memory 6 months ago."
+
+---
+
+# MEMORY STATS
+
+Display:
+
+* Total memories
+* Most common mood
+* Most saved year
+* Favorite category
+
+---
+
+# SEARCH
+
+Search by:
+
+* Keyword
+* Mood
+* Date
+* Category
+
+---
+
+# NIMBUS INTEGRATION
+
+Examples:
+
+"Remember this?"
+
+"Look how far you've come."
+
+"This moment mattered."
+
+---
+
+# EMPTY STATE
+
+Display empty jar.
+
+One folded note inside.
+
+Nimbus nearby.
+
+Message:
+
+"Some moments deserve to be kept forever."
+
+Button:
+
+Save Your First Memory
+
+---
+
+# USER EXPERIENCE GOAL
+
+Memory Jar should feel like opening a box of keepsakes from different chapters of life.
+
+Not productivity.
+
+Not analytics.
+
+Pure nostalgia.
+
+A collection of moments that shaped who you became.

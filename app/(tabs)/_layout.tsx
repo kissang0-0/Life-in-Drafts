@@ -119,6 +119,10 @@ export default function TabsLayout() {
         options={{ href: null }}
       />
       <Tabs.Screen
+        name="memoryjar"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
         name="more"
         options={{
           title: 'More',

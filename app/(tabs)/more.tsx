@@ -18,7 +18,7 @@ export default function MoreScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { diary, memories, habits, unsent, studyNotes } = useAppStore();
+  const { diary, memories, habits, memorySlips } = useAppStore();
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
@@ -32,28 +32,20 @@ export default function MoreScreen() {
       route: '/(tabs)/garden' as const,
     },
     {
+      icon: 'archive-outline' as const,
+      label: 'Memory Jar',
+      subtitle: 'Your digital keepsake box',
+      count: memorySlips.length,
+      color: '#A78BFA',
+      route: '/(tabs)/memoryjar' as const,
+    },
+    {
       icon: 'images-outline' as const,
       label: 'Memories',
       subtitle: 'Photos & moments',
       count: memories.length,
       color: colors.lavenderDeep,
       route: '/(tabs)/memories' as const,
-    },
-    {
-      icon: 'mail-outline' as const,
-      label: 'Unsent Messages',
-      subtitle: 'Letters never sent',
-      count: unsent.length,
-      color: colors.accentDeep,
-      route: '/unsent/index' as const,
-    },
-    {
-      icon: 'school-outline' as const,
-      label: 'Study Buddy',
-      subtitle: 'Subjects, sessions & deadlines',
-      count: studyNotes.length,
-      color: colors.success,
-      route: '/(tabs)/study' as const,
     },
     {
       icon: 'settings-outline' as const,
@@ -66,10 +58,10 @@ export default function MoreScreen() {
   ];
 
   const stats = [
-    { label: 'Diary Entries', value: diary.length, icon: 'book-outline' as const, color: colors.primary },
-    { label: 'Memories', value: memories.length, icon: 'images-outline' as const, color: colors.lavenderDeep },
-    { label: 'Habits', value: habits.length, icon: 'checkmark-circle-outline' as const, color: colors.accentDeep },
-    { label: 'Letters', value: unsent.length, icon: 'mail-outline' as const, color: colors.success },
+    { label: 'Diary Entries', value: diary.length,       icon: 'book-outline' as const,           color: colors.primary },
+    { label: 'Memories',      value: memories.length,    icon: 'images-outline' as const,         color: colors.lavenderDeep },
+    { label: 'Habits',        value: habits.length,      icon: 'checkmark-circle-outline' as const, color: colors.accentDeep },
+    { label: 'Memory Slips',  value: memorySlips.length, icon: 'archive-outline' as const,        color: '#A78BFA' },
   ];
 
   return (
@@ -118,11 +110,11 @@ export default function MoreScreen() {
                 <Text style={[styles.navSub, { color: colors.textMuted }]}>{item.subtitle}</Text>
               </View>
               <View style={styles.navRight}>
-                {item.count !== null && item.count > 0 && (
+                {item.count !== null && item.count > 0 ? (
                   <View style={[styles.badge, { backgroundColor: item.color + '25' }]}>
                     <Text style={[styles.badgeText, { color: item.color }]}>{item.count}</Text>
                   </View>
-                )}
+                ) : null}
                 <Ionicons name="chevron-forward" size={16} color={colors.textLight} />
               </View>
             </TouchableOpacity>
