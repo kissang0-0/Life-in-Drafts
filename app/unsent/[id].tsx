@@ -20,6 +20,7 @@ import * as Haptics from 'expo-haptics';
 import { useColors } from '@/hooks/useColors';
 import { useAuthStore } from '@/store/authStore';
 import { useAppStore } from '@/store/appStore';
+import NimbusBird from '@/components/NimbusBird';
 import {
   subscribeUnsentMessages,
   addUnsentChatMessage,
@@ -78,6 +79,7 @@ export default function ConversationScreen() {
   const conv = conversations.find((c) => c.id === id);
 
   const [messages, setMessages] = useState<UnsentChatMessage[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
   const [selectedMsg, setSelectedMsg] = useState<UnsentChatMessage | null>(null);
@@ -93,6 +95,7 @@ export default function ConversationScreen() {
     if (!user || !id) return;
     const unsub = subscribeUnsentMessages(user.uid, id, (msgs) => {
       setMessages(msgs);
+      setLoaded(true);
       setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 100);
     });
     return unsub;
@@ -272,15 +275,21 @@ export default function ConversationScreen() {
         ]}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View style={styles.emptyChatContainer}>
-            <Text style={styles.emptyChatEmoji}>💬</Text>
-            <Text style={[styles.emptyChatText, { color: colors.textMuted }]}>
-              Say what you've always wanted to say.
-            </Text>
-            <Text style={[styles.emptyChatSub, { color: colors.textLight }]}>
-              Everything stays here, safe and unsent.
-            </Text>
-          </View>
+          loaded ? (
+            <View style={styles.emptyChatContainer}>
+              <NimbusBird size={90} />
+              <Text style={[styles.emptyChatText, { color: colors.navy }]}>
+                Ready to release your thoughts?
+              </Text>
+              <Text style={[styles.emptyChatSub, { color: colors.textMuted }]}>
+                Send an unsent message — it stays safe here, just for you.
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.emptyChatContainer}>
+              <ActivityIndicator size="large" color={themeColor} />
+            </View>
+          )
         }
         onContentSizeChange={() => messages.length > 0 && listRef.current?.scrollToEnd({ animated: false })}
       />

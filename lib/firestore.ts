@@ -349,11 +349,14 @@ export const addUnsentChatMessage = async (
     isPinned: false,
     createdAt: serverTimestamp(),
   });
-  await updateDoc(doc(unsentConvsRef(uid), convId), {
-    lastMessage: message.content,
-    lastMessageAt: serverTimestamp(),
-    messageCount: (await getDocs(unsentMsgsRef(uid, convId))).size,
-  });
+  try {
+    const snap = await getDocs(unsentMsgsRef(uid, convId));
+    await updateDoc(doc(unsentConvsRef(uid), convId), {
+      lastMessage: message.content,
+      lastMessageAt: serverTimestamp(),
+      messageCount: snap.size,
+    });
+  } catch {}
   return msgRef;
 };
 

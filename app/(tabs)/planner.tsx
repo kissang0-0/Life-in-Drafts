@@ -90,7 +90,7 @@ export default function PlannerScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <Text style={[styles.title, { color: colors.navy }]}>Planner</Text>
+        <Text style={[styles.title, { color: colors.navy }]}>To Do/n't</Text>
         <Text style={[styles.date, { color: colors.textMuted }]}>{formatDate(new Date())}</Text>
 
         {/* Progress card */}
