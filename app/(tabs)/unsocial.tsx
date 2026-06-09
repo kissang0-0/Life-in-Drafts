@@ -260,7 +260,8 @@ export default function UnsocialScreen() {
       {/* Feed */}
       {isEmpty ? (
         <View style={styles.empty}>
-          <NimbusBird size={120} />
+          <NimbusBird size={110} />
+          <Text style={[styles.nimbusLabel, { color: colors.primary }]}>✦ Nimbus</Text>
           <Text style={[styles.emptyTitle, { color: colors.navy }]}>Your story starts with a single post.</Text>
           <Text style={[styles.emptySub, { color: colors.textMuted }]}>This is your private space — rant, celebrate, remember.</Text>
           <TouchableOpacity
@@ -375,7 +376,8 @@ const styles = StyleSheet.create({
   actionLabel: { fontSize: 12, fontFamily: 'Nunito_600SemiBold' },
 
   // Empty
-  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40, gap: 14 },
+  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40, gap: 12 },
+  nimbusLabel: { fontSize: 11, fontFamily: 'Nunito_700Bold', letterSpacing: 1, textTransform: 'uppercase' },
   emptyTitle: { fontSize: 20, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
   emptySub: { fontSize: 14, fontFamily: 'Nunito_400Regular', textAlign: 'center', lineHeight: 21 },
   emptyBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 24, paddingVertical: 13, borderRadius: 22, marginTop: 8 },

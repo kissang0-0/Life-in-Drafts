@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import * as Haptics from 'expo-haptics';
+import NimbusBird from '@/components/NimbusBird';
 import { useColors } from '@/hooks/useColors';
 import { useAppStore } from '@/store/appStore';
 import { useAuthStore } from '@/store/authStore';
@@ -275,7 +276,9 @@ export default function PlannerScreen() {
           style={styles.nimbusCard}
         >
           <View style={styles.nimbusTop}>
+            <NimbusBird size={72} />
             <View style={styles.nimbusLeft}>
+              <Text style={styles.nimbusName}>✦ Nimbus</Text>
               <Text style={styles.nimbusMsg}>{nimbusMsg}</Text>
               <View style={styles.statsRow}>
                 <View style={styles.statItem}>
@@ -383,7 +386,8 @@ export default function PlannerScreen() {
 
           {displayed.length === 0 ? (
             <View style={[styles.emptyCard, { backgroundColor: colors.surface }]}>
-              <Text style={styles.emptyBird}>🐦</Text>
+              <NimbusBird size={90} />
+              <Text style={[styles.nimbusLabel, { color: activeTab === 'todo' ? colors.primary : '#B48DE8' }]}>✦ Nimbus</Text>
               <Text style={[styles.emptyTitle, { color: colors.navy }]}>
                 {activeTab === 'todo' ? 'Big goals begin with small checkboxes.' : 'Nothing to avoid yet.'}
               </Text>
@@ -630,11 +634,13 @@ const styles = StyleSheet.create({
   date: { fontSize: 13, fontFamily: 'Nunito_400Regular', marginBottom: 18 },
 
   nimbusCard: {
-    borderRadius: 22, padding: 20, marginBottom: 20, gap: 14,
+    borderRadius: 22, padding: 16, marginBottom: 20, gap: 12,
   },
-  nimbusTop: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  nimbusLeft: { flex: 1, gap: 12 },
-  nimbusMsg: { color: '#fff', fontSize: 14, fontFamily: 'Nunito_700Bold', lineHeight: 20 },
+  nimbusTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  nimbusLeft: { flex: 1, gap: 6 },
+  nimbusName: { color: 'rgba(255,255,255,0.85)', fontSize: 10, fontFamily: 'Nunito_700Bold', letterSpacing: 1, textTransform: 'uppercase' },
+  nimbusMsg: { color: '#fff', fontSize: 13, fontFamily: 'Nunito_700Bold', lineHeight: 19 },
+  nimbusLabel: { fontSize: 11, fontFamily: 'Nunito_700Bold', letterSpacing: 1, textTransform: 'uppercase' },
   statsRow: { flexDirection: 'row', alignItems: 'center', gap: 16 },
   statItem: { alignItems: 'center', gap: 1 },
   statNum: { color: '#fff', fontSize: 20, fontFamily: 'Nunito_800ExtraBold' },
@@ -670,10 +676,9 @@ const styles = StyleSheet.create({
   addBtn: { width: 32, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
 
   emptyCard: {
-    borderRadius: 20, padding: 28, alignItems: 'center', gap: 10,
+    borderRadius: 20, padding: 28, alignItems: 'center', gap: 8,
   },
-  emptyBird: { fontSize: 42 },
-  emptyTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
+  emptyTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold', textAlign: 'center', marginTop: 2 },
   emptySub: { fontSize: 13, fontFamily: 'Nunito_400Regular', textAlign: 'center', lineHeight: 18, maxWidth: 240 },
   emptyBtn: { borderRadius: 12, paddingHorizontal: 20, paddingVertical: 10, marginTop: 4 },
   emptyBtnText: { color: '#fff', fontSize: 14, fontFamily: 'Nunito_700Bold' },
