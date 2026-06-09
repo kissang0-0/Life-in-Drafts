@@ -37,7 +37,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "EXPO_NO_INSPECTOR_PROXY=1 BROWSER=none ./node_modules/.bin/expo start --web --port 5000 --tunnel"
+args = "EXPO_NO_INSPECTOR_PROXY=1 BROWSER=none ./node_modules/.bin/expo start --web --port 5000"
 waitForPort = 5000
 
 [[ports]]
