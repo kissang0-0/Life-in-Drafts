@@ -62,7 +62,7 @@ export default function NewConversation() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { paddingTop: topPad + 12, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/unsent' as any)} style={styles.navBtn}>
+        <TouchableOpacity onPress={() => router.replace('/(tabs)/unsent' as any)} style={styles.navBtn}>
           <Ionicons name="close" size={24} color={colors.textMuted} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.navy }]}>New Conversation</Text>

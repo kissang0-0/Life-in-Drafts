@@ -235,7 +235,7 @@ export default function ConversationScreen() {
       keyboardVerticalOffset={0}
     >
       <View style={[styles.header, { paddingTop: topPad + 8, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/unsent' as any)} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => router.replace('/(tabs)/unsent' as any)} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={22} color={colors.navy} />
         </TouchableOpacity>
         <View style={[styles.headerAvatar, { backgroundColor: themeColor + '30', borderColor: themeColor }]}>
