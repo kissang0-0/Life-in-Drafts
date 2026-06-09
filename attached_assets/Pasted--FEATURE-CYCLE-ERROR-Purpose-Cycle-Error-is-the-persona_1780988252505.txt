@@ -1,0 +1,482 @@
+# FEATURE: CYCLE & ERROR
+
+## Purpose
+
+Cycle & Error is the personal menstrual cycle and wellness companion inside Life in Drafts.
+
+The goal is to help the user understand patterns between:
+
+* Menstrual cycle
+* Mood
+* Energy
+* Productivity
+* Study habits
+* Emotional well-being
+
+This feature should feel supportive, insightful, and cozy.
+
+Never clinical.
+
+Never overwhelming.
+
+Never judgmental.
+
+The goal is awareness, not diagnosis.
+
+---
+
+# MAIN DASHBOARD
+
+Display:
+
+* Current Cycle Day
+* Current Cycle Phase
+* Days Until Next Period
+* Today's Mood
+* Today's Energy
+* Recent Symptoms
+
+Include a gentle Nimbus message.
+
+Examples:
+
+"Your body is doing important work."
+
+"Be extra kind to yourself today."
+
+"Rest is productive too."
+
+---
+
+# CYCLE PHASES
+
+Display:
+
+🌙 Menstrual Phase
+
+🌱 Follicular Phase
+
+☀️ Ovulation Phase
+
+☁️ Luteal Phase
+
+Each phase should include:
+
+* Short explanation
+* Typical energy level
+* Typical mood tendencies
+
+Keep explanations friendly and simple.
+
+---
+
+# PERIOD LOGGING
+
+Allow user to log:
+
+* Start Date
+* End Date
+* Flow Intensity
+
+Flow options:
+
+🩸 Light
+
+🩸🩸 Medium
+
+🩸🩸🩸 Heavy
+
+Store complete cycle history.
+
+---
+
+# CYCLE CALENDAR
+
+Provide a monthly calendar view.
+
+Highlight:
+
+🩸 Period Days
+
+⭐ Ovulation Day
+
+🌼 Fertile Window
+
+☁️ PMS Window
+
+Allow month-to-month navigation.
+
+---
+
+# SMART PREDICTIONS
+
+Automatically calculate:
+
+* Next Predicted Period
+* Ovulation Window
+* Fertile Window
+
+Display prediction confidence.
+
+Example:
+
+Predicted Period:
+July 12
+
+Confidence:
+High
+
+---
+
+# DAILY CHECK-IN
+
+Create a simple daily wellness check-in.
+
+Prompt:
+
+"How are you feeling today?"
+
+---
+
+# MOOD TRACKER
+
+Options:
+
+😀 Happy
+
+😌 Calm
+
+😔 Sad
+
+😡 Irritable
+
+😰 Anxious
+
+😴 Tired
+
+🤩 Energized
+
+😶 Neutral
+
+Store mood history.
+
+---
+
+# ENERGY TRACKER
+
+Options:
+
+🔋 Very Low
+
+🔋 Low
+
+🔋 Medium
+
+🔋 High
+
+🔋 Very High
+
+Track patterns over time.
+
+---
+
+# SYMPTOM TRACKER
+
+Physical Symptoms:
+
+* Cramps
+* Headache
+* Bloating
+* Fatigue
+* Back Pain
+* Acne
+* Breast Tenderness
+* Nausea
+
+Emotional Symptoms:
+
+* Irritable
+* Emotional
+* Sensitive
+* Overwhelmed
+* Unmotivated
+* Relaxed
+* Motivated
+
+Allow custom symptoms.
+
+---
+
+# PAIN TRACKER
+
+Optional pain scale:
+
+0–10
+
+Display trends across cycles.
+
+---
+
+# JOURNAL INTEGRATION
+
+Connect directly with Dear Me.
+
+When creating diary entries:
+
+Optionally display:
+
+* Cycle Day
+* Current Phase
+* Energy Trend
+
+Allow hiding this information.
+
+---
+
+# MOOD GARDEN INTEGRATION
+
+Compare:
+
+* Mood logs
+* Cycle data
+
+Generate insights.
+
+Examples:
+
+"You often feel calmer during the follicular phase."
+
+"Your highest-energy days tend to occur around ovulation."
+
+---
+
+# CLOUD CORNER INTEGRATION
+
+Include cycle information in wellness insights.
+
+Examples:
+
+"Low energy commonly appears 1–2 days before your period."
+
+"Stress levels appear higher during late luteal days."
+
+---
+
+# STUDY SANCTUARY INTEGRATION
+
+Analyze:
+
+* Focus time
+* Session duration
+* Productivity
+
+against cycle phases.
+
+Examples:
+
+"You average longer study sessions during Week 2."
+
+"Focus tends to decrease during the first cycle day."
+
+Present insights gently.
+
+---
+
+# TO DO/N'T INTEGRATION
+
+Analyze:
+
+* Task completion rates
+* Habit consistency
+* Productivity trends
+
+alongside cycle data.
+
+Examples:
+
+"You complete the most tasks during follicular days."
+
+---
+
+# SELF-CARE HUB
+
+Dedicated self-care section.
+
+Suggestions:
+
+💧 Hydrate
+
+🧘 Stretch
+
+🚶 Take a Walk
+
+📖 Journal
+
+🛌 Rest
+
+☕ Slow Down
+
+Recommendations should be supportive, never prescriptive.
+
+---
+
+# PERIOD KIT CHECKLIST
+
+Create customizable checklist.
+
+Examples:
+
+* Pads
+* Tampons
+* Medicine
+* Heating Pad
+* Water Bottle
+* Snacks
+
+Allow custom items.
+
+---
+
+# CYCLE INSIGHTS
+
+Generate monthly summaries.
+
+Display:
+
+* Average Cycle Length
+* Average Period Length
+* Most Common Symptoms
+* Mood Trends
+* Energy Trends
+* Productivity Trends
+
+Use beautiful cards and charts.
+
+---
+
+# CYCLE TIMELINE
+
+Create visual timeline showing:
+
+* Periods
+* Symptoms
+* Mood
+* Energy
+* Notes
+
+Allow scrolling through previous months and years.
+
+---
+
+# REMINDERS
+
+Optional notifications.
+
+Examples:
+
+"Your period may start in 3 days."
+
+"Remember to hydrate today."
+
+"How are you feeling?"
+
+All reminders can be disabled.
+
+---
+
+# PRIVACY FEATURES
+
+Allow:
+
+* Hide Cycle & Error from Dashboard
+* Hide Notifications
+* Lock Behind PIN
+* Move Data to Secret Vault
+
+Privacy first.
+
+---
+
+# SEARCH & HISTORY
+
+Allow viewing:
+
+* Past cycles
+* Symptoms
+* Mood records
+* Energy logs
+
+Search by date range.
+
+---
+
+# NIMBUS INTEGRATION
+
+Examples:
+
+"Take care of yourself today."
+
+"It's okay to move a little slower."
+
+"Listen to your body."
+
+"You don't have to be productive every day."
+
+---
+
+# EMPTY STATE
+
+Show Nimbus.
+
+Message:
+
+"Understanding your patterns starts with a single entry."
+
+Button:
+
+Log First Cycle
+
+---
+
+# VISUAL DESIGN
+
+Use:
+
+* Moon phases
+* Stars
+* Clouds
+* Soft gradients
+* Gentle animations
+
+Colors:
+
+* Soft Blue
+* Lavender
+* White
+* Silver
+
+Avoid:
+
+* Clinical appearance
+* Hospital-style interfaces
+* Harsh red color schemes
+
+The feature should feel like a cozy wellness journal.
+
+---
+
+# USER EXPERIENCE GOAL
+
+Cycle & Error should feel like a personal companion that helps the user understand their body, emotions, energy, and habits over time.
+
+Not a medical app.
+
+Not a symptom checklist.
+
+A thoughtful part of Life in Drafts.
+
+A living record of patterns, growth, and self-understanding.
+
+A chapter within:
+
+The Archive of Becoming.

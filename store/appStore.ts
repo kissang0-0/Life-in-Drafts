@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import {
   DiaryEntry, Memory, Habit, UnsentMessage, UnsentConversation,
   StudyNote, SocialPost, Todo, Subject, StudySession, StudyDeadline,
+  CycleLog, CycleCheckin,
 } from '@/lib/firestore';
 
 type AppState = {
@@ -16,6 +17,8 @@ type AppState = {
   subjects: Subject[];
   studySessions: StudySession[];
   studyDeadlines: StudyDeadline[];
+  cycleLogs: CycleLog[];
+  cycleCheckins: CycleCheckin[];
   todayMood: string | null;
   biometricEnabled: boolean;
   notificationsEnabled: boolean;
@@ -30,6 +33,8 @@ type AppState = {
   setSubjects: (subjects: Subject[]) => void;
   setStudySessions: (sessions: StudySession[]) => void;
   setStudyDeadlines: (deadlines: StudyDeadline[]) => void;
+  setCycleLogs: (logs: CycleLog[]) => void;
+  setCycleCheckins: (checkins: CycleCheckin[]) => void;
   setTodayMood: (mood: string) => void;
   setBiometricEnabled: (v: boolean) => void;
   setNotificationsEnabled: (v: boolean) => void;
@@ -48,6 +53,8 @@ const initialState = {
   subjects: [] as Subject[],
   studySessions: [] as StudySession[],
   studyDeadlines: [] as StudyDeadline[],
+  cycleLogs: [] as CycleLog[],
+  cycleCheckins: [] as CycleCheckin[],
   todayMood: null as string | null,
   biometricEnabled: false,
   notificationsEnabled: false,
@@ -66,6 +73,8 @@ export const useAppStore = create<AppState>((set) => ({
   setSubjects: (subjects) => set({ subjects }),
   setStudySessions: (studySessions) => set({ studySessions }),
   setStudyDeadlines: (studyDeadlines) => set({ studyDeadlines }),
+  setCycleLogs: (cycleLogs) => set({ cycleLogs }),
+  setCycleCheckins: (cycleCheckins) => set({ cycleCheckins }),
   setTodayMood: (todayMood) => set({ todayMood }),
   setBiometricEnabled: (biometricEnabled) => set({ biometricEnabled }),
   setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),

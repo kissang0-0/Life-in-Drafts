@@ -736,3 +736,82 @@ export const updateStudyDeadline = (uid: string, id: string, data: Partial<Study
 
 export const deleteStudyDeadline = (uid: string, id: string) =>
   deleteDoc(doc(deadlinesRef(uid), id));
+
+// ── Cycle & Error ────────────────────────────────────────────────────────────
+
+export type FlowIntensity = 'light' | 'medium' | 'heavy';
+
+export type CycleLog = {
+  id: string;
+  startDate: string;
+  endDate?: string;
+  flowIntensity: FlowIntensity;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CycleMood = 'happy' | 'calm' | 'sad' | 'irritable' | 'anxious' | 'tired' | 'energized' | 'neutral';
+export type CycleEnergy = 'very_low' | 'low' | 'medium' | 'high' | 'very_high';
+
+export type CycleCheckin = {
+  id: string;
+  date: string;
+  mood?: CycleMood;
+  energy?: CycleEnergy;
+  symptoms: string[];
+  painLevel?: number;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+const cycleLogsRef = (uid: string) => collection(db, 'users', uid, 'cycleLogs');
+const cycleCheckinsRef = (uid: string) => collection(db, 'users', uid, 'cycleCheckins');
+
+export const subscribeCycleLogs = (uid: string, cb: (logs: CycleLog[]) => void) =>
+  onSnapshot(query(cycleLogsRef(uid), orderBy('startDate', 'desc')), (snap) =>
+    cb(snap.docs.map((d) => ({
+      id: d.id,
+      startDate: d.data().startDate ?? '',
+      endDate: d.data().endDate,
+      flowIntensity: d.data().flowIntensity ?? 'medium',
+      notes: d.data().notes,
+      createdAt: toDate(d.data().createdAt),
+      updatedAt: toDate(d.data().updatedAt),
+    })))
+  );
+
+export const addCycleLog = (uid: string, log: Omit<CycleLog, 'id' | 'createdAt' | 'updatedAt'>) =>
+  addDoc(cycleLogsRef(uid), { ...log, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+
+export const updateCycleLog = (uid: string, id: string, data: Partial<Omit<CycleLog, 'id' | 'createdAt'>>) =>
+  updateDoc(doc(cycleLogsRef(uid), id), { ...data, updatedAt: serverTimestamp() });
+
+export const deleteCycleLog = (uid: string, id: string) =>
+  deleteDoc(doc(cycleLogsRef(uid), id));
+
+export const subscribeCycleCheckins = (uid: string, cb: (checkins: CycleCheckin[]) => void) =>
+  onSnapshot(query(cycleCheckinsRef(uid), orderBy('date', 'desc'), limit(180)), (snap) =>
+    cb(snap.docs.map((d) => ({
+      id: d.id,
+      date: d.data().date ?? '',
+      mood: d.data().mood,
+      energy: d.data().energy,
+      symptoms: d.data().symptoms ?? [],
+      painLevel: d.data().painLevel,
+      notes: d.data().notes,
+      createdAt: toDate(d.data().createdAt),
+      updatedAt: toDate(d.data().updatedAt),
+    })))
+  );
+
+export const upsertCycleCheckin = async (uid: string, date: string, data: Partial<Omit<CycleCheckin, 'id' | 'createdAt' | 'updatedAt' | 'date'>>) => {
+  const q = query(cycleCheckinsRef(uid), where('date', '==', date));
+  const snap = await getDocs(q);
+  if (snap.empty) {
+    return addDoc(cycleCheckinsRef(uid), { ...data, date, symptoms: data.symptoms ?? [], createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+  } else {
+    return updateDoc(snap.docs[0].ref, { ...data, updatedAt: serverTimestamp() });
+  }
+};
