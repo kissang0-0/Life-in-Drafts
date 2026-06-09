@@ -446,6 +446,87 @@ export const deleteVaultEntry = async (uid: string, id: string) => {
   return deleteDoc(doc(vaultRef(uid), id));
 };
 
+// ── To Do/n't ──────────────────────────────────────────────────────────────
+
+export type TodoPriority = 'low' | 'medium' | 'high' | 'urgent';
+export type TodoRepeat = 'none' | 'daily' | 'weekdays' | 'weekly' | 'monthly';
+export type TodoType = 'todo' | 'todont';
+
+export type Todo = {
+  id: string;
+  title: string;
+  type: TodoType;
+  category: string;
+  priority: TodoPriority;
+  description: string;
+  repeat: TodoRepeat;
+  requiresProof: boolean;
+  proofImageUri: string;
+  completedDates: string[];
+  streak: number;
+  reflection: string;
+  isArchived: boolean;
+  isFocused: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+const todosRef = (uid: string) => collection(db, 'users', uid, 'todos');
+
+export const subscribeTodos = (
+  uid: string,
+  callback: (todos: Todo[]) => void
+) => {
+  const q = query(todosRef(uid), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, (snap) => {
+    const todos: Todo[] = snap.docs.map((d) => ({
+      id: d.id,
+      title: d.data().title ?? '',
+      type: d.data().type ?? 'todo',
+      category: d.data().category ?? 'Personal',
+      priority: d.data().priority ?? 'medium',
+      description: d.data().description ?? '',
+      repeat: d.data().repeat ?? 'none',
+      requiresProof: d.data().requiresProof ?? false,
+      proofImageUri: d.data().proofImageUri ?? '',
+      completedDates: d.data().completedDates ?? [],
+      streak: d.data().streak ?? 0,
+      reflection: d.data().reflection ?? '',
+      isArchived: d.data().isArchived ?? false,
+      isFocused: d.data().isFocused ?? false,
+      createdAt: toDate(d.data().createdAt),
+      updatedAt: toDate(d.data().updatedAt),
+    }));
+    callback(todos);
+  });
+};
+
+export const addTodo = async (
+  uid: string,
+  todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt'>
+) => {
+  return addDoc(todosRef(uid), {
+    ...todo,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+};
+
+export const updateTodo = async (
+  uid: string,
+  id: string,
+  data: Partial<Omit<Todo, 'id' | 'createdAt'>>
+) => {
+  return updateDoc(doc(todosRef(uid), id), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+};
+
+export const deleteTodo = async (uid: string, id: string) => {
+  return deleteDoc(doc(todosRef(uid), id));
+};
+
 // ── Social Posts (Unsocial Me-dia) ─────────────────────────────────────────
 
 export type SocialPostReflection = {

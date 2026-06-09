@@ -1,0 +1,439 @@
+# FEATURE: TO DO/N'T
+
+## Purpose
+
+To Do/n't is the productivity and accountability system of Life in Drafts.
+
+Unlike a traditional to-do list, it manages both:
+
+### To Do
+
+Things I want to accomplish.
+
+### To Don't
+
+Things I want to avoid.
+
+The goal is to help the user build good habits, avoid bad habits, and document progress.
+
+---
+
+# Main Screen
+
+Divide the screen into two sections.
+
+### TO DO
+
+Positive actions.
+
+Examples:
+
+* Finish assignment
+* Study for 1 hour
+* Drink water
+* Exercise
+* Read a book
+
+---
+
+### TO DON'T
+
+Behaviors to avoid.
+
+Examples:
+
+* Doomscrolling
+* Procrastinating
+* Skipping meals
+* Sleeping late
+* Excessive spending
+
+---
+
+# Dashboard Summary
+
+Display:
+
+* Tasks completed today
+* Tasks remaining
+* Current streak
+* Weekly progress
+* Productivity score
+
+Include motivational message from Nimbus.
+
+---
+
+# Create Task
+
+Required fields:
+
+* Task title
+* Category
+* Type (To Do or To Don't)
+
+Optional:
+
+* Description
+* Due date
+* Reminder
+* Priority
+* Repeat schedule
+
+---
+
+# Categories
+
+Provide presets:
+
+📚 School
+
+💪 Health
+
+🏠 Personal
+
+💰 Finance
+
+🧠 Mental Health
+
+🎨 Hobby
+
+🌱 Growth
+
+✨ Custom
+
+---
+
+# Priority Levels
+
+Low
+
+Medium
+
+High
+
+Urgent
+
+Display visually.
+
+---
+
+# Recurring Tasks
+
+Support:
+
+* Daily
+* Weekdays
+* Weekly
+* Monthly
+* Custom schedule
+
+---
+
+# Completion System
+
+Users can mark tasks complete.
+
+Display:
+
+* Completion time
+* Completion date
+
+Store in history.
+
+---
+
+# Proof System
+
+One of the core features.
+
+Allow users to upload proof that a task was completed.
+
+Examples:
+
+Study Task:
+Upload notes.
+
+Workout:
+Upload gym selfie.
+
+Cleaning:
+Upload room photo.
+
+Assignment:
+Upload screenshot.
+
+---
+
+# Proof Requirements
+
+Task can be configured as:
+
+Optional Proof
+
+or
+
+Required Proof
+
+If required:
+
+Task cannot be completed without proof upload.
+
+---
+
+# Proof Gallery
+
+Create a gallery showing:
+
+* Completed tasks
+* Associated proof images
+* Completion date
+
+Acts as a visual archive of accomplishments.
+
+---
+
+# Reflection After Completion
+
+Optional prompt:
+
+How did it go?
+
+What did I learn?
+
+How do I feel?
+
+Store reflection with task.
+
+---
+
+# Anti-Habit Tracking
+
+For To Don't items:
+
+Examples:
+
+Did not doomscroll today.
+
+Did not skip breakfast.
+
+Did not procrastinate.
+
+Mark success when avoided.
+
+Track streaks.
+
+---
+
+# Streak System
+
+Track:
+
+* Daily streaks
+* Weekly streaks
+* Longest streak
+
+Display visually.
+
+---
+
+# Achievement System
+
+Unlock badges.
+
+Examples:
+
+🌟 First Task Completed
+
+🔥 7 Day Streak
+
+📚 Study Warrior
+
+💪 Healthy Habit Builder
+
+🌱 Growth Champion
+
+---
+
+# Habit Tracker Mode
+
+Allow tasks to become habits.
+
+Examples:
+
+Drink Water
+
+Read 10 Pages
+
+Stretch
+
+Journal
+
+Track:
+
+* Daily completion
+* Streak
+* Consistency percentage
+
+---
+
+# Daily Focus
+
+Allow selecting:
+
+Top 3 priorities today.
+
+Display prominently.
+
+---
+
+# Weekly Review
+
+Generate:
+
+Tasks Completed
+
+Most Productive Day
+
+Missed Tasks
+
+Habit Success Rate
+
+Reflection Summary
+
+---
+
+# Monthly Review
+
+Generate:
+
+Completion statistics
+
+Best habit
+
+Weakest habit
+
+Longest streak
+
+Most common category
+
+---
+
+# School Integration
+
+Integrate with Study Sanctuary.
+
+Examples:
+
+Study task completed
+
+↓
+
+Automatically updates study statistics.
+
+---
+
+# Mood Integration
+
+When completing a task:
+
+Ask:
+
+How do you feel?
+
+Store mood.
+
+Useful for productivity analytics.
+
+---
+
+# Nimbus Integration
+
+Nimbus celebrates accomplishments.
+
+Examples:
+
+"One step closer."
+
+"You showed up today."
+
+"Small wins become big victories."
+
+---
+
+# Search & Filters
+
+Search by:
+
+* Task name
+* Category
+* Date
+
+Filter by:
+
+* Completed
+* Incomplete
+* Priority
+* Category
+
+---
+
+# Archive
+
+Keep completed tasks forever.
+
+Allow reviewing old accomplishments.
+
+Acts as a personal growth archive.
+
+---
+
+# Empty State
+
+Show Nimbus.
+
+Message:
+
+"Big goals begin with small checkboxes."
+
+Button:
+
+Create First Task
+
+---
+
+# Visual Design
+
+The feature should feel like:
+
+* Finch
+* Todoist
+* Habitica
+
+But softer and more personal.
+
+Use:
+
+* Rounded cards
+* Progress clouds
+* Achievement stars
+* Blue theme
+* Cute animations
+
+---
+
+# User Experience Goal
+
+The user should feel:
+
+Motivated.
+
+Capable.
+
+Accountable.
+
+Proud.
+
+To Do/n't should not feel like a boring checklist.
+
+It should feel like a visual record of effort, growth, discipline, and progress.
