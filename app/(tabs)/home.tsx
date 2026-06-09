@@ -116,13 +116,13 @@ export default function HomeScreen() {
           <View style={styles.nimbusBubble}>
             <Text style={[styles.nimbusName, { color: colors.primary }]}>✦ Nimbus</Text>
             <Text style={[styles.nimbusMsg, { color: colors.navy }]}>{nimbusMessage}</Text>
-            {todayMood && (
-              <View style={[styles.moodBadge, { backgroundColor: colors.moodColors?.[todayMood] + '50' ?? colors.surfaceAlt }]}>
+            {todayMood ? (
+              <View style={[styles.moodBadge, { backgroundColor: (colors.moodColors?.[todayMood] ?? colors.surfaceAlt) + '50' }]}>
                 <Text style={styles.moodBadgeText}>
                   {MOOD_OPTIONS.find(m => m.key === todayMood)?.emoji ?? '💙'} Feeling {MOOD_OPTIONS.find(m => m.key === todayMood)?.label ?? todayMood}
                 </Text>
               </View>
-            )}
+            ) : null}
           </View>
         </LinearGradient>
 
