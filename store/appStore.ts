@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-import { DiaryEntry, Memory, Habit, UnsentMessage, UnsentConversation, StudyNote, SocialPost, Todo } from '@/lib/firestore';
+import {
+  DiaryEntry, Memory, Habit, UnsentMessage, UnsentConversation,
+  StudyNote, SocialPost, Todo, Subject, StudySession, StudyDeadline,
+} from '@/lib/firestore';
 
 type AppState = {
   diary: DiaryEntry[];
@@ -10,6 +13,9 @@ type AppState = {
   studyNotes: StudyNote[];
   socialPosts: SocialPost[];
   todos: Todo[];
+  subjects: Subject[];
+  studySessions: StudySession[];
+  studyDeadlines: StudyDeadline[];
   todayMood: string | null;
   biometricEnabled: boolean;
   notificationsEnabled: boolean;
@@ -21,6 +27,9 @@ type AppState = {
   setStudyNotes: (notes: StudyNote[]) => void;
   setSocialPosts: (posts: SocialPost[]) => void;
   setTodos: (todos: Todo[]) => void;
+  setSubjects: (subjects: Subject[]) => void;
+  setStudySessions: (sessions: StudySession[]) => void;
+  setStudyDeadlines: (deadlines: StudyDeadline[]) => void;
   setTodayMood: (mood: string) => void;
   setBiometricEnabled: (v: boolean) => void;
   setNotificationsEnabled: (v: boolean) => void;
@@ -36,6 +45,9 @@ const initialState = {
   studyNotes: [] as StudyNote[],
   socialPosts: [] as SocialPost[],
   todos: [] as Todo[],
+  subjects: [] as Subject[],
+  studySessions: [] as StudySession[],
+  studyDeadlines: [] as StudyDeadline[],
   todayMood: null as string | null,
   biometricEnabled: false,
   notificationsEnabled: false,
@@ -51,6 +63,9 @@ export const useAppStore = create<AppState>((set) => ({
   setStudyNotes: (studyNotes) => set({ studyNotes }),
   setSocialPosts: (socialPosts) => set({ socialPosts }),
   setTodos: (todos) => set({ todos }),
+  setSubjects: (subjects) => set({ subjects }),
+  setStudySessions: (studySessions) => set({ studySessions }),
+  setStudyDeadlines: (studyDeadlines) => set({ studyDeadlines }),
   setTodayMood: (todayMood) => set({ todayMood }),
   setBiometricEnabled: (biometricEnabled) => set({ biometricEnabled }),
   setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),

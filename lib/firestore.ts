@@ -616,3 +616,123 @@ export const updateSocialPost = async (
 export const deleteSocialPost = async (uid: string, id: string) => {
   return deleteDoc(doc(socialRef(uid), id));
 };
+
+// ── Study Sanctuary ──────────────────────────────────────────────────────────
+
+export type Subject = {
+  id: string;
+  name: string;
+  color: string;
+  icon: string;
+  teacher?: string;
+  notes?: string;
+  totalMinutes: number;
+  createdAt: Date;
+};
+
+const subjectsRef = (uid: string) => collection(db, 'users', uid, 'subjects');
+
+export const subscribeSubjects = (uid: string, cb: (s: Subject[]) => void) =>
+  onSnapshot(query(subjectsRef(uid), orderBy('createdAt', 'asc')), (snap) =>
+    cb(snap.docs.map((d) => ({
+      id: d.id,
+      name: d.data().name ?? '',
+      color: d.data().color ?? '#5BB8D4',
+      icon: d.data().icon ?? '📚',
+      teacher: d.data().teacher,
+      notes: d.data().notes,
+      totalMinutes: d.data().totalMinutes ?? 0,
+      createdAt: toDate(d.data().createdAt),
+    })))
+  );
+
+export const addSubject = (uid: string, s: Omit<Subject, 'id' | 'createdAt'>) =>
+  addDoc(subjectsRef(uid), { ...s, createdAt: serverTimestamp() });
+
+export const updateSubject = (uid: string, id: string, data: Partial<Subject>) =>
+  updateDoc(doc(subjectsRef(uid), id), data);
+
+export const deleteSubject = (uid: string, id: string) =>
+  deleteDoc(doc(subjectsRef(uid), id));
+
+export type SessionType = 'reading' | 'homework' | 'revision' | 'practice' | 'essay' | 'other';
+export type CompletionStatus = 'yes' | 'partial' | 'no';
+
+export type StudySession = {
+  id: string;
+  subjectId: string;
+  subjectName: string;
+  subjectColor: string;
+  durationMinutes: number;
+  goalText: string;
+  sessionType: SessionType;
+  completionStatus: CompletionStatus;
+  reflection: string;
+  mood: string;
+  date: string;
+  createdAt: Date;
+};
+
+const sessionsRef = (uid: string) => collection(db, 'users', uid, 'studySessions');
+
+export const subscribeStudySessions = (uid: string, cb: (s: StudySession[]) => void) =>
+  onSnapshot(query(sessionsRef(uid), orderBy('createdAt', 'desc'), limit(200)), (snap) =>
+    cb(snap.docs.map((d) => ({
+      id: d.id,
+      subjectId: d.data().subjectId ?? '',
+      subjectName: d.data().subjectName ?? '',
+      subjectColor: d.data().subjectColor ?? '#5BB8D4',
+      durationMinutes: d.data().durationMinutes ?? 0,
+      goalText: d.data().goalText ?? '',
+      sessionType: d.data().sessionType ?? 'other',
+      completionStatus: d.data().completionStatus ?? 'yes',
+      reflection: d.data().reflection ?? '',
+      mood: d.data().mood ?? '',
+      date: d.data().date ?? '',
+      createdAt: toDate(d.data().createdAt),
+    })))
+  );
+
+export const addStudySession = (uid: string, s: Omit<StudySession, 'id' | 'createdAt'>) =>
+  addDoc(sessionsRef(uid), { ...s, createdAt: serverTimestamp() });
+
+export type DeadlineType = 'exam' | 'assignment' | 'project' | 'essay' | 'presentation';
+export type DeadlinePriority = 'low' | 'medium' | 'high';
+
+export type StudyDeadline = {
+  id: string;
+  title: string;
+  type: DeadlineType;
+  subjectId: string;
+  subjectName: string;
+  dueDate: Date;
+  priority: DeadlinePriority;
+  status: 'pending' | 'done';
+  createdAt: Date;
+};
+
+const deadlinesRef = (uid: string) => collection(db, 'users', uid, 'studyDeadlines');
+
+export const subscribeStudyDeadlines = (uid: string, cb: (d: StudyDeadline[]) => void) =>
+  onSnapshot(query(deadlinesRef(uid), orderBy('dueDate', 'asc')), (snap) =>
+    cb(snap.docs.map((d) => ({
+      id: d.id,
+      title: d.data().title ?? '',
+      type: d.data().type ?? 'assignment',
+      subjectId: d.data().subjectId ?? '',
+      subjectName: d.data().subjectName ?? '',
+      dueDate: toDate(d.data().dueDate),
+      priority: d.data().priority ?? 'medium',
+      status: d.data().status ?? 'pending',
+      createdAt: toDate(d.data().createdAt),
+    })))
+  );
+
+export const addStudyDeadline = (uid: string, d: Omit<StudyDeadline, 'id' | 'createdAt'>) =>
+  addDoc(deadlinesRef(uid), { ...d, createdAt: serverTimestamp() });
+
+export const updateStudyDeadline = (uid: string, id: string, data: Partial<StudyDeadline>) =>
+  updateDoc(doc(deadlinesRef(uid), id), data);
+
+export const deleteStudyDeadline = (uid: string, id: string) =>
+  deleteDoc(doc(deadlinesRef(uid), id));
