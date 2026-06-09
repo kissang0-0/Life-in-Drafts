@@ -1,0 +1,18 @@
+[2026-06-09T03:51:16.658Z]  @firebase/firestore: Firestore (12.14.0): Uncaught Error in snapshot listener: FirebaseError: [code=permission-denied]: Missing or insufficient permissions.
+
+Call Stack
+  at Object.addLog (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:1085:32)
+  at consoleErrorMiddleware (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:882:16)
+  at console.error (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:821:29)
+  at Proxy.<anonymous> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/__replco/static/devtools/injected.js:37:27)
+  at Logger.defaultLogHandler [as _logHandler] (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:137312:22)
+  at Logger.error (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:137393:12)
+  at __PRIVATE_logError (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:141963:9)
+  at __PRIVATE_AsyncObserver.error (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:160177:78)
+  at __PRIVATE_QueryListener.onError (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:158584:15)
+  at __PRIVATE_eventManagerOnWatchError (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:158536:36)
+  at __PRIVATE_removeAndCleanupTarget (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:159514:60)
+  at <unknown> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:159426:113)
+  at async __PRIVATE_syncEngineRejectListen (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:159426:12)
+  at async __PRIVATE_handleTargetError (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:157836:32)
+  at async __PRIVATE_onWatchStreamChange (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:157828:9)
