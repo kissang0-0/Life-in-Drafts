@@ -116,12 +116,7 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="garden"
-        options={{
-          title: 'Garden',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="leaf-outline" size={size} color={color} />
-          ),
-        }}
+        options={{ href: null }}
       />
       <Tabs.Screen
         name="more"

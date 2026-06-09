@@ -24,6 +24,14 @@ export default function MoreScreen() {
 
   const items = [
     {
+      icon: 'leaf-outline' as const,
+      label: 'Mood Garden',
+      subtitle: 'Your emotional garden in bloom',
+      count: diary.filter((e) => e.mood).length,
+      color: '#5DBB63',
+      route: '/(tabs)/garden' as const,
+    },
+    {
       icon: 'images-outline' as const,
       label: 'Memories',
       subtitle: 'Photos & moments',
