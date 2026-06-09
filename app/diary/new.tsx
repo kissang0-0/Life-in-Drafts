@@ -134,7 +134,7 @@ export default function NewDiaryEntry() {
         weather, energyLevel, isFavorite, entryType,
       });
       showToast('✨ Entry saved to your archive!');
-      setTimeout(() => router.back(), 1200);
+      setTimeout(() => router.canGoBack() ? router.back() : router.replace('/(tabs)/home'), 1200);
     } catch {
       showToast('Could not save. Please try again.', 'error');
     } finally {

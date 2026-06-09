@@ -103,7 +103,7 @@ export default function SocialPostDetail() {
           onPress: async () => {
             if (!user) return;
             await deleteSocialPost(user.uid, post.id);
-            router.back();
+            router.canGoBack() ? router.back() : router.replace('/(tabs)/unsocial');
           },
         },
       ]

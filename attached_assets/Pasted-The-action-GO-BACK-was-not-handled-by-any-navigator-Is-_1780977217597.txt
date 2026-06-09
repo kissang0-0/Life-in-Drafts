@@ -1,0 +1,48 @@
+The action 'GO_BACK' was not handled by any navigator.
+
+Is there any screen to go back to?
+
+This is a development-only warning and won't be shown in production.
+
+Component Stack
+  at ContextNavigator (node_modules/expo-router/build/ExpoRoot.js:135:121)
+  at ExpoRoot (node_modules/expo-router/build/ExpoRoot.js:85:33)
+  at App (node_modules/expo-router/build/qualified-entry.js:20:91)
+  at WithDevTools (node_modules/expo/src/launch/withDevTools.web.tsx:11:9)
+
+Call Stack
+  at Object.addLog (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:1085:32)
+  at consoleErrorMiddleware (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:882:16)
+  at console.error (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:821:29)
+  at Proxy.<anonymous> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/__replco/static/devtools/injected.js:37:27)
+  at onUnhandledAction (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:93302:15)
+  at <unknown> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:40515:32)
+  at latestCallback (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:34314:26)
+  at Object.dispatch (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:41829:30)
+  at <unknown> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:34004:53)
+  at <unknown> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:41683:19)
+  at Array.<anonymous> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:41673:15)
+  at Object.<anonymous> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:34004:27)
+  at Object.latestCallback [as dispatch] (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:34314:26)
+  at Object.run (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:75269:25)
+  at <unknown> (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:74786:30)
+  at Object.react_stack_bottom_frame (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:18283:20)
+  at runWithFiberInDEV (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:5571:70)
+  at commitHookEffectListMount (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:11574:159)
+  at commitHookPassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:11611:58)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12625:27)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12682:11)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12624:11)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12624:11)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12682:11)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12629:11)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12624:11)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)
+  at commitPassiveMountOnFiber (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12624:11)
+  at recursivelyTraversePassiveMountEffects (https://ceadb2a8-f61f-45b1-9af1-78e53d7448cd-00-2i0b0uu3cucol.pike.replit.dev/node_modules/expo-router/entry.bundle:12608:9)

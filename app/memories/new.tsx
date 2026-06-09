@@ -67,7 +67,7 @@ export default function NewMemory() {
         date,
         frameColor,
       });
-      router.back();
+      router.canGoBack() ? router.back() : router.replace('/(tabs)/home');
     } catch {
       Alert.alert('Error', 'Could not save your memory. Please try again.');
     } finally {

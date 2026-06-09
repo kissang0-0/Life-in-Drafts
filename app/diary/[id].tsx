@@ -69,7 +69,7 @@ export default function DiaryEntryScreen() {
         onPress: async () => {
           if (user && id) {
             await deleteDiaryEntry(user.uid, id);
-            router.back();
+            router.canGoBack() ? router.back() : router.replace('/(tabs)/home');
           }
         },
       },

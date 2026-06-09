@@ -95,7 +95,7 @@ export default function NewSocialPost() {
         reflections: [],
       });
       showToast(draft ? '📝 Draft saved!' : '🪐 Posted to your feed!');
-      setTimeout(() => router.back(), 1000);
+      setTimeout(() => router.canGoBack() ? router.back() : router.replace('/(tabs)/unsocial'), 1000);
     } catch {
       showToast('Could not save. Try again.', 'error');
     } finally {

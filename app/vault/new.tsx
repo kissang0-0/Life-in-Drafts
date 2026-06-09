@@ -42,7 +42,7 @@ export default function NewVaultEntry() {
     setSaving(true);
     try {
       await addVaultEntry(user.uid, { type, title: title.trim(), content: content.trim() });
-      router.back();
+      router.canGoBack() ? router.back() : router.replace('/(tabs)/home');
     } catch {
       Alert.alert('Error', 'Could not save. Please try again.');
     } finally {
