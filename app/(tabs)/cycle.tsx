@@ -511,18 +511,18 @@ export default function CycleScreen() {
             <Text style={[s.cardTitle, { color: colors.navy }]}>💙 Today</Text>
             {todayCheckin?.mood || todayCheckin?.energy ? (
               <View style={s.todayRow}>
-                {todayCheckin.mood && (
+                {todayCheckin.mood ? (
                   <View style={[s.todayChip, { backgroundColor: colors.lavender + '60' }]}>
                     <Text style={s.todayChipEmoji}>{MOODS.find((m) => m.key === todayCheckin.mood)?.emoji}</Text>
                     <Text style={[s.todayChipLabel, { color: colors.navy }]}>{todayCheckin.mood}</Text>
                   </View>
-                )}
-                {todayCheckin.energy && (
+                ) : null}
+                {todayCheckin.energy ? (
                   <View style={[s.todayChip, { backgroundColor: colors.surfaceAlt }]}>
                     <Text style={s.todayChipEmoji}>⚡</Text>
                     <Text style={[s.todayChipLabel, { color: colors.navy }]}>{todayCheckin.energy.replace('_', ' ')}</Text>
                   </View>
-                )}
+                ) : null}
                 {todayCheckin.symptoms.length > 0 && (
                   <View style={[s.todayChip, { backgroundColor: colors.surfaceAlt }]}>
                     <Text style={[s.todayChipLabel, { color: colors.textMuted }]}>{todayCheckin.symptoms.length} symptom{todayCheckin.symptoms.length !== 1 ? 's' : ''}</Text>
@@ -782,11 +782,11 @@ export default function CycleScreen() {
                   <Text style={[s.logMeta, { color: colors.textMuted }]}>
                     {flow.emoji} {flow.label}{dur ? `  ·  ${dur} day${dur !== 1 ? 's' : ''}` : '  ·  ongoing'}
                   </Text>
-                  {log.endDate && (
+                  {log.endDate ? (
                     <Text style={[s.logMeta, { color: colors.textLight }]}>
                       Ended {new Date(log.endDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </Text>
-                  )}
+                  ) : null}
                   {log.notes ? <Text style={[s.logNotes, { color: colors.textMuted }]}>{log.notes}</Text> : null}
                 </View>
                 <View style={s.logActions}>
@@ -835,11 +835,11 @@ export default function CycleScreen() {
           {Object.keys(moodCounts).length > 0 && (
             <View style={[s.card, { backgroundColor: colors.surface }]}>
               <Text style={[s.cardTitle, { color: colors.navy }]}>😊 Mood Patterns</Text>
-              {topMood && (
+              {topMood ? (
                 <Text style={[s.insightLine, { color: colors.text }]}>
                   Your most common mood is <Text style={{ fontFamily: 'Nunito_700Bold', color: colors.lavenderDeep }}>{topMood}</Text>.
                 </Text>
-              )}
+              ) : null}
               <View style={s.moodBarChart}>
                 {Object.entries(moodCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([mood, count]) => {
                   const m = MOODS.find((x) => x.key === mood);
