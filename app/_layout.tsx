@@ -151,6 +151,14 @@ export default function RootLayout() {
                 name="vault/new"
                 options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
               />
+              <Stack.Screen
+                name="unsocial/new"
+                options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+              />
+              <Stack.Screen
+                name="unsocial/[id]"
+                options={{ animation: 'slide_from_right' }}
+              />
             </Stack>
           </SecurityLayer>
         </QueryClientProvider>

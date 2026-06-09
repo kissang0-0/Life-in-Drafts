@@ -300,3 +300,93 @@ export const addVaultEntry = async (
 export const deleteVaultEntry = async (uid: string, id: string) => {
   return deleteDoc(doc(vaultRef(uid), id));
 };
+
+// ── Social Posts (Unsocial Me-dia) ─────────────────────────────────────────
+
+export type SocialPostReflection = {
+  text: string;
+  createdAt: Date;
+};
+
+export type SocialPost = {
+  id: string;
+  content: string;
+  mood: string;
+  images: string[];
+  tags: string[];
+  postType: string;
+  isLiked: boolean;
+  isFavorite: boolean;
+  isPinned: boolean;
+  isArchived: boolean;
+  isDraft: boolean;
+  location: string;
+  reflections: SocialPostReflection[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+const socialRef = (uid: string) => collection(db, 'users', uid, 'social');
+
+export const subscribeSocialPosts = (
+  uid: string,
+  callback: (posts: SocialPost[]) => void
+) => {
+  const q = query(socialRef(uid), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, (snap) => {
+    const posts: SocialPost[] = snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        content: data.content ?? '',
+        mood: data.mood ?? '',
+        images: data.images ?? [],
+        tags: data.tags ?? [],
+        postType: data.postType ?? 'text',
+        isLiked: data.isLiked ?? false,
+        isFavorite: data.isFavorite ?? false,
+        isPinned: data.isPinned ?? false,
+        isArchived: data.isArchived ?? false,
+        isDraft: data.isDraft ?? false,
+        location: data.location ?? '',
+        reflections: (data.reflections ?? []).map((r: any) => ({
+          text: r.text ?? '',
+          createdAt: toDate(r.createdAt),
+        })),
+        createdAt: toDate(data.createdAt),
+        updatedAt: toDate(data.updatedAt),
+      };
+    });
+    callback(posts);
+  });
+};
+
+export const addSocialPost = async (
+  uid: string,
+  post: Omit<SocialPost, 'id' | 'createdAt' | 'updatedAt'>
+) => {
+  return addDoc(socialRef(uid), {
+    ...post,
+    reflections: post.reflections.map((r) => ({
+      text: r.text,
+      createdAt: serverTimestamp(),
+    })),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+};
+
+export const updateSocialPost = async (
+  uid: string,
+  id: string,
+  data: Partial<Omit<SocialPost, 'id' | 'createdAt'>>
+) => {
+  return updateDoc(doc(socialRef(uid), id), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+};
+
+export const deleteSocialPost = async (uid: string, id: string) => {
+  return deleteDoc(doc(socialRef(uid), id));
+};

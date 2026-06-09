@@ -7,11 +7,12 @@ import {
   subscribeHabits,
   subscribeUnsent,
   subscribeStudyNotes,
+  subscribeSocialPosts,
 } from '@/lib/firestore';
 
 export function useDataSync() {
   const user = useAuthStore((s) => s.user);
-  const { setDiary, setMemories, setHabits, setUnsent, setStudyNotes } = useAppStore();
+  const { setDiary, setMemories, setHabits, setUnsent, setStudyNotes, setSocialPosts } = useAppStore();
 
   useEffect(() => {
     if (!user) return;
@@ -23,6 +24,7 @@ export function useDataSync() {
       subscribeHabits(uid, setHabits),
       subscribeUnsent(uid, setUnsent),
       subscribeStudyNotes(uid, setStudyNotes),
+      subscribeSocialPosts(uid, setSocialPosts),
     ];
 
     return () => unsubs.forEach((u) => u());

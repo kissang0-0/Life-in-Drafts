@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { DiaryEntry, Memory, Habit, UnsentMessage, StudyNote } from '@/lib/firestore';
+import { DiaryEntry, Memory, Habit, UnsentMessage, StudyNote, SocialPost } from '@/lib/firestore';
 
 type AppState = {
   diary: DiaryEntry[];
@@ -7,6 +7,7 @@ type AppState = {
   habits: Habit[];
   unsent: UnsentMessage[];
   studyNotes: StudyNote[];
+  socialPosts: SocialPost[];
   todayMood: string | null;
   biometricEnabled: boolean;
   notificationsEnabled: boolean;
@@ -15,6 +16,7 @@ type AppState = {
   setHabits: (habits: Habit[]) => void;
   setUnsent: (messages: UnsentMessage[]) => void;
   setStudyNotes: (notes: StudyNote[]) => void;
+  setSocialPosts: (posts: SocialPost[]) => void;
   setTodayMood: (mood: string) => void;
   setBiometricEnabled: (v: boolean) => void;
   setNotificationsEnabled: (v: boolean) => void;
@@ -27,6 +29,7 @@ const initialState = {
   habits: [] as Habit[],
   unsent: [] as UnsentMessage[],
   studyNotes: [] as StudyNote[],
+  socialPosts: [] as SocialPost[],
   todayMood: null as string | null,
   biometricEnabled: false,
   notificationsEnabled: false,
@@ -39,6 +42,7 @@ export const useAppStore = create<AppState>((set) => ({
   setHabits: (habits) => set({ habits }),
   setUnsent: (unsent) => set({ unsent }),
   setStudyNotes: (studyNotes) => set({ studyNotes }),
+  setSocialPosts: (socialPosts) => set({ socialPosts }),
   setTodayMood: (todayMood) => set({ todayMood }),
   setBiometricEnabled: (biometricEnabled) => set({ biometricEnabled }),
   setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
