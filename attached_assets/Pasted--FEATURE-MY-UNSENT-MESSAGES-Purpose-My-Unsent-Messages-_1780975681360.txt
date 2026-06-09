@@ -1,0 +1,401 @@
+# FEATURE: MY UNSENT MESSAGES
+
+## Purpose
+
+My Unsent Messages is a private messaging simulator.
+
+The user can write messages to people as if they are having a real conversation.
+
+However:
+
+* No messages are actually sent.
+* No real communication occurs.
+* No internet messaging features exist.
+* Everything remains private inside Life in Drafts.
+
+The goal is to create a safe place to express thoughts, feelings, conversations, confessions, apologies, gratitude, and things left unsaid.
+
+---
+
+# Main Screen
+
+The screen should look similar to:
+
+* iMessage
+* Messenger
+* WhatsApp
+* Telegram
+
+Display a conversation list.
+
+Each conversation shows:
+
+* Profile avatar
+* Recipient name
+* Last message preview
+* Last updated date
+* Unread indicator (optional personal marker)
+
+---
+
+# Create Conversation
+
+Allow creating a new conversation.
+
+Fields:
+
+* Recipient Name
+* Profile Picture (optional)
+* Relationship Type
+
+Relationship types:
+
+👨 Family
+
+👩 Friend
+
+❤️ Crush
+
+💔 Ex
+
+🎓 Teacher
+
+💼 Coworker
+
+🌎 Future Me
+
+🧠 Myself
+
+✨ Custom
+
+---
+
+# Chat Interface
+
+The conversation screen should feel like a real messaging app.
+
+Display:
+
+* Message bubbles
+* Timestamps
+* Date separators
+* Scrolling history
+
+Use:
+
+Outgoing bubbles only.
+
+Since the other person never actually replies.
+
+---
+
+# AI-Free Mode
+
+Default behavior:
+
+Only messages written by the user appear.
+
+Example:
+
+Me:
+"I miss talking to you."
+
+Me:
+"I hope you're doing okay."
+
+Me:
+"There are things I never got to say."
+
+The chat becomes a timeline of unsent thoughts.
+
+---
+
+# Optional Reflection Replies
+
+Allow creating reflection messages later.
+
+Example:
+
+2025 Message:
+"I don't think I'll ever move on."
+
+2026 Reflection:
+"I was wrong. Things got better."
+
+Display reflections as special system bubbles.
+
+Different color/style.
+
+---
+
+# Message Composer
+
+Bottom input bar should resemble real messaging apps.
+
+Features:
+
+* Text input
+* Emoji picker
+* Image attachment
+* Voice note attachment
+* Draft autosave
+
+---
+
+# Voice Notes
+
+Allow:
+
+* Record
+* Pause
+* Play
+* Delete
+
+Display voice notes inside chat bubbles.
+
+---
+
+# Images
+
+Allow attaching:
+
+* Camera photos
+* Gallery images
+
+Display as chat media bubbles.
+
+Tap to expand fullscreen.
+
+---
+
+# Pinned Messages
+
+Allow pinning important messages.
+
+Pinned messages appear at top of conversation.
+
+---
+
+# Search Messages
+
+Search inside conversation.
+
+Search by:
+
+* Keywords
+* Date
+* Mood
+* Tags
+
+---
+
+# Message Reactions
+
+Allow reacting to your own messages.
+
+Examples:
+
+❤️
+
+😂
+
+😭
+
+😔
+
+✨
+
+📌
+
+Useful for revisiting old thoughts.
+
+---
+
+# Emotional Tags
+
+Allow optional tags.
+
+Examples:
+
+* Gratitude
+* Closure
+* Love
+* Anger
+* Forgiveness
+* Regret
+* Missing Someone
+
+---
+
+# Mood Tracking
+
+Each conversation can have:
+
+Current emotional status.
+
+Examples:
+
+😀 Happy
+
+😔 Sad
+
+😡 Angry
+
+😰 Anxious
+
+💔 Heartbroken
+
+❤️ Loving
+
+Stored for analytics.
+
+---
+
+# Future Me Conversations
+
+Special conversation type.
+
+Recipient:
+
+Future Me
+
+Features:
+
+* Schedule messages
+* Future unlock dates
+* Time capsule messages
+
+Example:
+
+"Open this conversation in 1 year."
+
+---
+
+# Burn After Reading
+
+Optional mode.
+
+When opened:
+
+* User reads message
+* User confirms deletion
+
+Message permanently disappears.
+
+---
+
+# Secret Conversations
+
+Allow moving conversations to:
+
+Secret Vault
+
+Requirements:
+
+* Hidden from conversation list
+* Requires Vault PIN
+* Not searchable until unlocked
+
+---
+
+# Conversation Themes
+
+Allow themes.
+
+Examples:
+
+* Classic Blue
+* Midnight
+* Cloudy Sky
+* Notebook Paper
+* Stardust
+* Ocean
+
+Each conversation can have its own theme.
+
+---
+
+# Fake Contact Profiles
+
+Allow creating contact profiles.
+
+Fields:
+
+* Name
+* Nickname
+* Avatar
+* Birthday
+* Notes
+
+Example:
+
+Contact:
+"Best Friend"
+
+Notes:
+"Met in Grade 7."
+
+This makes conversations feel more real.
+
+---
+
+# Memory Integration
+
+Important messages can be saved to:
+
+* Memory Jar
+* Memory Scrapbook
+
+---
+
+# Empty State
+
+Show Nimbus.
+
+Message:
+
+"Some conversations only need a place to exist."
+
+Button:
+
+Start a Conversation
+
+---
+
+# Visual Design
+
+The feature should genuinely feel like a modern messaging app.
+
+Use:
+
+* Chat bubbles
+* Profile avatars
+* Smooth scrolling
+* Message timestamps
+* Typing-style input bar
+
+The only difference is:
+
+Every message stays private.
+
+Nothing is ever sent.
+
+---
+
+# User Experience Goal
+
+The user should feel like they are texting people from their life.
+
+Friends.
+
+Family.
+
+Crushes.
+
+Exes.
+
+Future versions of themselves.
+
+But in a completely private space.
+
+A safe place for conversations that never happened, things left unsaid, and thoughts that simply needed somewhere to go.

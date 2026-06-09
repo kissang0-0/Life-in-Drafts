@@ -204,7 +204,7 @@ export const deleteHabit = async (uid: string, id: string) => {
   return deleteDoc(doc(habitsRef(uid), id));
 };
 
-// Unsent Messages
+// Unsent Messages (legacy)
 export const subscribeUnsent = (
   uid: string,
   callback: (messages: UnsentMessage[]) => void
@@ -229,6 +229,148 @@ export const addUnsentMessage = async (
 
 export const deleteUnsentMessage = async (uid: string, id: string) => {
   return deleteDoc(doc(unsentRef(uid), id));
+};
+
+// ── Unsent Conversations (messaging app) ───────────────────────────────────
+
+export type RelationshipType =
+  | 'family' | 'friend' | 'crush' | 'ex'
+  | 'teacher' | 'coworker' | 'future-me' | 'myself' | 'custom';
+
+export const RELATIONSHIP_OPTIONS: { key: RelationshipType; label: string; emoji: string }[] = [
+  { key: 'family',     label: 'Family',     emoji: '👨' },
+  { key: 'friend',     label: 'Friend',     emoji: '👩' },
+  { key: 'crush',      label: 'Crush',      emoji: '❤️' },
+  { key: 'ex',         label: 'Ex',         emoji: '💔' },
+  { key: 'teacher',    label: 'Teacher',    emoji: '🎓' },
+  { key: 'coworker',   label: 'Coworker',   emoji: '💼' },
+  { key: 'future-me',  label: 'Future Me',  emoji: '🌎' },
+  { key: 'myself',     label: 'Myself',     emoji: '🧠' },
+  { key: 'custom',     label: 'Custom',     emoji: '✨' },
+];
+
+export type UnsentConversation = {
+  id: string;
+  recipientName: string;
+  relationshipType: RelationshipType;
+  lastMessage: string;
+  lastMessageAt: Date;
+  messageCount: number;
+  theme: string;
+  createdAt: Date;
+};
+
+export type UnsentChatMessage = {
+  id: string;
+  content: string;
+  type: 'text' | 'reflection';
+  reactions: string[];
+  isPinned: boolean;
+  tags: string[];
+  createdAt: Date;
+};
+
+const unsentConvsRef = (uid: string) =>
+  collection(db, 'users', uid, 'unsentConversations');
+const unsentMsgsRef = (uid: string, convId: string) =>
+  collection(db, 'users', uid, 'unsentConversations', convId, 'messages');
+
+export const subscribeUnsentConversations = (
+  uid: string,
+  callback: (convs: UnsentConversation[]) => void
+) => {
+  const q = query(unsentConvsRef(uid), orderBy('lastMessageAt', 'desc'));
+  return onSnapshot(q, (snap) => {
+    const convs: UnsentConversation[] = snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        recipientName: data.recipientName ?? '',
+        relationshipType: data.relationshipType ?? 'custom',
+        lastMessage: data.lastMessage ?? '',
+        lastMessageAt: toDate(data.lastMessageAt ?? data.createdAt),
+        messageCount: data.messageCount ?? 0,
+        theme: data.theme ?? 'blue',
+        createdAt: toDate(data.createdAt),
+      };
+    });
+    callback(convs);
+  });
+};
+
+export const addUnsentConversation = async (
+  uid: string,
+  conv: Omit<UnsentConversation, 'id' | 'createdAt' | 'lastMessageAt' | 'lastMessage' | 'messageCount'>
+) => {
+  return addDoc(unsentConvsRef(uid), {
+    ...conv,
+    lastMessage: '',
+    messageCount: 0,
+    createdAt: serverTimestamp(),
+    lastMessageAt: serverTimestamp(),
+  });
+};
+
+export const deleteUnsentConversation = async (uid: string, id: string) => {
+  return deleteDoc(doc(unsentConvsRef(uid), id));
+};
+
+export const subscribeUnsentMessages = (
+  uid: string,
+  convId: string,
+  callback: (msgs: UnsentChatMessage[]) => void
+) => {
+  const q = query(unsentMsgsRef(uid, convId), orderBy('createdAt', 'asc'));
+  return onSnapshot(q, (snap) => {
+    const msgs: UnsentChatMessage[] = snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        content: data.content ?? '',
+        type: data.type ?? 'text',
+        reactions: data.reactions ?? [],
+        isPinned: data.isPinned ?? false,
+        tags: data.tags ?? [],
+        createdAt: toDate(data.createdAt),
+      };
+    });
+    callback(msgs);
+  });
+};
+
+export const addUnsentChatMessage = async (
+  uid: string,
+  convId: string,
+  message: Pick<UnsentChatMessage, 'content' | 'type' | 'tags'>
+) => {
+  const msgRef = await addDoc(unsentMsgsRef(uid, convId), {
+    ...message,
+    reactions: [],
+    isPinned: false,
+    createdAt: serverTimestamp(),
+  });
+  await updateDoc(doc(unsentConvsRef(uid), convId), {
+    lastMessage: message.content,
+    lastMessageAt: serverTimestamp(),
+    messageCount: (await getDocs(unsentMsgsRef(uid, convId))).size,
+  });
+  return msgRef;
+};
+
+export const deleteUnsentChatMessage = async (uid: string, convId: string, msgId: string) => {
+  return deleteDoc(doc(unsentMsgsRef(uid, convId), msgId));
+};
+
+export const toggleUnsentMessagePin = async (
+  uid: string, convId: string, msgId: string, isPinned: boolean
+) => {
+  return updateDoc(doc(unsentMsgsRef(uid, convId), msgId), { isPinned });
+};
+
+export const addUnsentMessageReaction = async (
+  uid: string, convId: string, msgId: string, reactions: string[]
+) => {
+  return updateDoc(doc(unsentMsgsRef(uid, convId), msgId), { reactions });
 };
 
 // Study Notes

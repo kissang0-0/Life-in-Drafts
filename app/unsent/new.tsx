@@ -16,54 +16,65 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useColors } from '@/hooks/useColors';
 import { useAuthStore } from '@/store/authStore';
-import { addUnsentMessage } from '@/lib/firestore';
-import { MoodPicker } from '@/components/MoodPicker';
+import { addUnsentConversation, RELATIONSHIP_OPTIONS, RelationshipType } from '@/lib/firestore';
 
-export default function NewUnsentMessage() {
+const THEME_OPTIONS = [
+  { key: 'blue',     color: '#5BB8D4', label: 'Sky' },
+  { key: 'purple',   color: '#B48DE8', label: 'Lavender' },
+  { key: 'pink',     color: '#F5A0B5', label: 'Rose' },
+  { key: 'green',    color: '#5DB87A', label: 'Sage' },
+  { key: 'orange',   color: '#F5A555', label: 'Amber' },
+  { key: 'midnight', color: '#3A4A6B', label: 'Midnight' },
+  { key: 'teal',     color: '#3DBFB8', label: 'Teal' },
+];
+
+export default function NewConversation() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
 
-  const [to, setTo] = useState('');
-  const [content, setContent] = useState('');
-  const [mood, setMood] = useState('');
+  const [name, setName] = useState('');
+  const [relationship, setRelationship] = useState<RelationshipType>('friend');
+  const [theme, setTheme] = useState('blue');
   const [saving, setSaving] = useState(false);
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
   const handleSave = async () => {
-    if (!content.trim() || !user) return;
+    if (!name.trim() || !user) return;
     setSaving(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     try {
-      await addUnsentMessage(user.uid, {
-        to: to.trim() || 'you',
-        content: content.trim(),
-        mood,
+      const ref = await addUnsentConversation(user.uid, {
+        recipientName: name.trim(),
+        relationshipType: relationship,
+        theme,
       });
-      router.back();
+      router.replace(`/unsent/${ref.id}`);
     } catch {
-      Alert.alert('Error', 'Could not save your letter.');
-    } finally {
+      Alert.alert('Error', 'Could not start this conversation.');
       setSaving(false);
     }
   };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 12, backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.navBtn}>
           <Ionicons name="close" size={24} color={colors.textMuted} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.navy }]}>Unsent Letter</Text>
+        <Text style={[styles.headerTitle, { color: colors.navy }]}>New Conversation</Text>
         <TouchableOpacity
           onPress={handleSave}
-          disabled={saving || !content.trim()}
-          style={[styles.saveBtn, { backgroundColor: colors.accentDeep, opacity: !content.trim() ? 0.5 : 1 }]}
+          disabled={saving || !name.trim()}
+          style={[styles.saveBtn, { backgroundColor: colors.primary, opacity: !name.trim() ? 0.4 : 1 }]}
         >
-          {saving ? <ActivityIndicator color="#fff" size="small" /> : <Text style={styles.saveBtnText}>Seal</Text>}
+          {saving ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <Text style={styles.saveBtnText}>Start</Text>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -73,46 +84,76 @@ export default function NewUnsentMessage() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Notice */}
-        <View style={[styles.notice, { backgroundColor: colors.accent + '50', borderColor: colors.accentDeep + '40' }]}>
-          <Ionicons name="lock-closed-outline" size={16} color={colors.accentDeep} />
-          <Text style={[styles.noticeText, { color: colors.accentDeep }]}>
-            This letter will never be sent. It belongs only to you.
+        <View style={[styles.notice, { backgroundColor: colors.primary + '18', borderColor: colors.primary + '40' }]}>
+          <Ionicons name="lock-closed-outline" size={15} color={colors.primary} />
+          <Text style={[styles.noticeText, { color: colors.primaryDark ?? colors.primary }]}>
+            No messages will ever be sent. This is yours alone.
           </Text>
         </View>
 
-        {/* To field */}
-        <View style={[styles.toField, { borderColor: colors.border, backgroundColor: colors.surface }]}>
-          <Text style={[styles.toLabel, { color: colors.textMuted }]}>Dear</Text>
-          <TextInput
-            style={[styles.toInput, { color: colors.navy, fontFamily: 'Nunito_600SemiBold' }]}
-            placeholder="who is this for?"
-            placeholderTextColor={colors.textLight}
-            value={to}
-            onChangeText={setTo}
-          />
+        <View style={styles.section}>
+          <Text style={[styles.label, { color: colors.textMuted }]}>WHO IS THIS TO?</Text>
+          <View style={[styles.nameField, { borderColor: colors.border, backgroundColor: colors.surface }]}>
+            <Ionicons name="person-outline" size={18} color={colors.textLight} />
+            <TextInput
+              style={[styles.nameInput, { color: colors.navy }]}
+              placeholder="Name or nickname"
+              placeholderTextColor={colors.textLight}
+              value={name}
+              onChangeText={setName}
+              autoFocus
+              returnKeyType="done"
+            />
+          </View>
         </View>
 
-        {/* Mood */}
-        <View style={styles.moodSection}>
-          <Text style={[styles.label, { color: colors.text }]}>The feeling behind these words</Text>
-          <MoodPicker selected={mood} onSelect={setMood} />
+        <View style={styles.section}>
+          <Text style={[styles.label, { color: colors.textMuted }]}>RELATIONSHIP</Text>
+          <View style={styles.relGrid}>
+            {RELATIONSHIP_OPTIONS.map((opt) => {
+              const selected = relationship === opt.key;
+              return (
+                <TouchableOpacity
+                  key={opt.key}
+                  style={[
+                    styles.relChip,
+                    {
+                      backgroundColor: selected ? colors.navy : colors.surface,
+                      borderColor: selected ? colors.navy : colors.border,
+                    },
+                  ]}
+                  onPress={() => setRelationship(opt.key)}
+                >
+                  <Text style={styles.relEmoji}>{opt.emoji}</Text>
+                  <Text style={[styles.relLabel, { color: selected ? '#fff' : colors.text }]}>
+                    {opt.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
 
-        {/* Content */}
-        <TextInput
-          style={[
-            styles.contentInput,
-            { color: colors.text, fontFamily: 'Nunito_400Regular', borderColor: colors.border, backgroundColor: colors.surface },
-          ]}
-          placeholder={`Everything you wanted to say but couldn't...`}
-          placeholderTextColor={colors.textLight}
-          value={content}
-          onChangeText={setContent}
-          multiline
-          textAlignVertical="top"
-          autoFocus
-        />
+        <View style={styles.section}>
+          <Text style={[styles.label, { color: colors.textMuted }]}>CHAT THEME</Text>
+          <View style={styles.themeRow}>
+            {THEME_OPTIONS.map((t) => (
+              <TouchableOpacity
+                key={t.key}
+                style={[
+                  styles.themeCircle,
+                  { backgroundColor: t.color },
+                  theme === t.key && styles.themeCircleSelected,
+                ]}
+                onPress={() => setTheme(t.key)}
+              >
+                {theme === t.key && (
+                  <Ionicons name="checkmark" size={14} color="#fff" />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
 
         <View style={{ height: Platform.OS === 'web' ? 34 : 40 }} />
       </ScrollView>
@@ -130,23 +171,41 @@ const styles = StyleSheet.create({
   headerTitle: { flex: 1, fontSize: 17, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
   saveBtn: { paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20 },
   saveBtnText: { color: '#fff', fontFamily: 'Nunito_700Bold', fontSize: 14 },
+
   scroll: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20, paddingTop: 20, gap: 16 },
+  scrollContent: { padding: 20, gap: 24 },
+
   notice: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
     padding: 12, borderRadius: 12, borderWidth: 1,
   },
   noticeText: { flex: 1, fontSize: 13, fontFamily: 'Nunito_600SemiBold', lineHeight: 18 },
-  toField: {
-    flexDirection: 'row', alignItems: 'center', gap: 8, borderWidth: 1.5, borderRadius: 14,
-    paddingHorizontal: 14, paddingVertical: 12,
+
+  section: { gap: 10 },
+  label: { fontSize: 11, fontFamily: 'Nunito_700Bold', letterSpacing: 1 },
+
+  nameField: {
+    flexDirection: 'row', alignItems: 'center', gap: 10, borderWidth: 1.5,
+    borderRadius: 14, paddingHorizontal: 14, paddingVertical: 14,
   },
-  toLabel: { fontSize: 15, fontFamily: 'Nunito_600SemiBold' },
-  toInput: { flex: 1, fontSize: 15 },
-  moodSection: { gap: 8, marginHorizontal: -20 },
-  label: { fontSize: 14, fontFamily: 'Nunito_600SemiBold', paddingHorizontal: 20 },
-  contentInput: {
-    fontSize: 16, lineHeight: 26, minHeight: 220,
-    borderWidth: 1.5, borderRadius: 16, padding: 16, textAlignVertical: 'top',
+  nameInput: { flex: 1, fontSize: 16, fontFamily: 'Nunito_600SemiBold' },
+
+  relGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  relChip: {
+    flexDirection: 'row', alignItems: 'center', gap: 6,
+    paddingHorizontal: 14, paddingVertical: 9, borderRadius: 20, borderWidth: 1.5,
+  },
+  relEmoji: { fontSize: 16 },
+  relLabel: { fontSize: 13, fontFamily: 'Nunito_600SemiBold' },
+
+  themeRow: { flexDirection: 'row', gap: 12, flexWrap: 'wrap' },
+  themeCircle: {
+    width: 36, height: 36, borderRadius: 18,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  themeCircleSelected: {
+    borderWidth: 3, borderColor: '#fff',
+    shadowColor: '#000', shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3, shadowRadius: 4, elevation: 4,
   },
 });

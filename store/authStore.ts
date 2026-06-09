@@ -49,7 +49,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (err: unknown) {
       const code = (err as { code?: string })?.code ?? '';
       const msg = err instanceof Error ? err.message : 'Sign in failed';
-      console.error('[Auth] signIn error:', code, msg);
+      if (code !== 'auth/invalid-credential') console.warn('[Auth] signIn error:', code, msg);
       set({ loading: false, error: formatAuthError(code || msg) });
     }
   },
@@ -68,7 +68,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (err: unknown) {
       const code = (err as { code?: string })?.code ?? '';
       const msg = err instanceof Error ? err.message : 'Sign up failed';
-      console.error('[Auth] signUp error:', code, msg);
+      console.warn('[Auth] signUp error:', code, msg);
       set({ loading: false, error: formatAuthError(code || msg) });
     }
   },

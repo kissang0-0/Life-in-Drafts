@@ -1,11 +1,12 @@
 import { create } from 'zustand';
-import { DiaryEntry, Memory, Habit, UnsentMessage, StudyNote, SocialPost } from '@/lib/firestore';
+import { DiaryEntry, Memory, Habit, UnsentMessage, UnsentConversation, StudyNote, SocialPost } from '@/lib/firestore';
 
 type AppState = {
   diary: DiaryEntry[];
   memories: Memory[];
   habits: Habit[];
   unsent: UnsentMessage[];
+  unsentConversations: UnsentConversation[];
   studyNotes: StudyNote[];
   socialPosts: SocialPost[];
   todayMood: string | null;
@@ -15,6 +16,7 @@ type AppState = {
   setMemories: (memories: Memory[]) => void;
   setHabits: (habits: Habit[]) => void;
   setUnsent: (messages: UnsentMessage[]) => void;
+  setUnsentConversations: (convs: UnsentConversation[]) => void;
   setStudyNotes: (notes: StudyNote[]) => void;
   setSocialPosts: (posts: SocialPost[]) => void;
   setTodayMood: (mood: string) => void;
@@ -28,6 +30,7 @@ const initialState = {
   memories: [] as Memory[],
   habits: [] as Habit[],
   unsent: [] as UnsentMessage[],
+  unsentConversations: [] as UnsentConversation[],
   studyNotes: [] as StudyNote[],
   socialPosts: [] as SocialPost[],
   todayMood: null as string | null,
@@ -41,6 +44,7 @@ export const useAppStore = create<AppState>((set) => ({
   setMemories: (memories) => set({ memories }),
   setHabits: (habits) => set({ habits }),
   setUnsent: (unsent) => set({ unsent }),
+  setUnsentConversations: (unsentConversations) => set({ unsentConversations }),
   setStudyNotes: (studyNotes) => set({ studyNotes }),
   setSocialPosts: (socialPosts) => set({ socialPosts }),
   setTodayMood: (todayMood) => set({ todayMood }),
