@@ -32,6 +32,14 @@ export default function MoreScreen() {
       route: '/(tabs)/nest' as const,
     },
     {
+      icon: 'nutrition-outline' as const,
+      label: 'Forkcast',
+      subtitle: 'Food, fuel & feelings',
+      count: null,
+      color: '#5DB87A',
+      route: '/(tabs)/forkcast' as const,
+    },
+    {
       icon: 'moon-outline' as const,
       label: 'Cycle & Error',
       subtitle: 'Mood, cycle & pattern tracking',

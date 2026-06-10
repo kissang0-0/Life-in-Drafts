@@ -132,6 +132,10 @@ export default function TabsLayout() {
         name="memories"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="forkcast"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

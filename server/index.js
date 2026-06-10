@@ -4,7 +4,7 @@ const Groq = require('groq-sdk');
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '64kb' }));
+app.use(express.json({ limit: '20mb' }));
 
 const NIMBUS_SYSTEM = `You are Nimbus.
 
@@ -84,6 +84,70 @@ app.post('/api/nimbus/letter', async (req, res) => {
   } catch (err) {
     console.error('[Nimbus Letter]', err?.message ?? err);
     res.status(500).json({ error: 'Could not write your letter right now.' });
+  }
+});
+
+app.post('/api/food-vision', async (req, res) => {
+  try {
+    const { imageBase64, mimeType = 'image/jpeg' } = req.body;
+    if (!imageBase64) return res.status(400).json({ error: 'No image provided.' });
+
+    const groq = getGroqClient();
+
+    const prompt = `You are a nutrition expert analyzing a food photo. Identify every distinct food or drink item you can see.
+
+For each item, provide your best estimate of:
+- Name of the food
+- Portion size (e.g. "1 cup", "1 medium piece", "200g")
+- Calories (realistic estimate)
+- Protein in grams
+- Carbohydrates in grams
+- Fat in grams
+- Confidence: "high", "medium", or "low"
+
+Respond ONLY with valid JSON in this exact format, no other text:
+{
+  "items": [
+    {
+      "name": "White Rice",
+      "portion": "1 cup cooked",
+      "calories": 206,
+      "proteinG": 4,
+      "carbsG": 45,
+      "fatG": 0,
+      "confidence": "high"
+    }
+  ],
+  "totalCalories": 206,
+  "totalProteinG": 4,
+  "totalCarbsG": 45,
+  "totalFatG": 0,
+  "mealName": "Rice Bowl",
+  "nimbusNote": "A short warm encouraging note about this meal (1 sentence)"
+}`;
+
+    const completion = await groq.chat.completions.create({
+      model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: `data:${mimeType};base64,${imageBase64}` } },
+          { type: 'text', text: prompt },
+        ],
+      }],
+      max_tokens: 800,
+      temperature: 0.3,
+    });
+
+    const raw = completion.choices[0]?.message?.content ?? '';
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Could not parse food analysis.');
+
+    const result = JSON.parse(jsonMatch[0]);
+    res.json(result);
+  } catch (err) {
+    console.error('[Food Vision]', err?.message ?? err);
+    res.status(500).json({ error: 'Nimbus could not analyze the photo right now. Try again!' });
   }
 });
 

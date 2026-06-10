@@ -1,0 +1,571 @@
+🍓 FEATURE: FORKCAST
+Food, Fuel & Feelings
+Purpose
+
+Create a complete nutrition, calorie deficit, meal logging, and food reflection feature called Forkcast.
+
+Forkcast should help users build healthier eating habits, maintain a calorie deficit, track nutrition, and understand how food affects their body and mood.
+
+The experience should feel supportive, cute, and encouraging.
+
+Avoid:
+
+Diet culture language
+Shame-based messaging
+Harsh red warnings
+Punishment systems
+
+Focus on:
+
+Consistency
+Self-awareness
+Sustainable habits
+
+The visual style must match Life in Drafts:
+
+Soft blue theme
+Cute blueberry-inspired accents
+Rounded cards
+Cozy illustrations
+Gentle animations
+Main Dashboard
+
+Display:
+
+Daily Overview Card
+
+Show:
+
+Calories Consumed
+Calories Remaining
+Protein Progress
+Water Progress
+Deficit Status
+
+Example:
+
+Calories:
+1450 / 1700
+
+Remaining:
+250
+
+Protein:
+98g / 120g
+
+Water:
+6 / 8 glasses
+
+Use circular progress rings.
+
+Profile Setup
+
+During first use ask:
+
+Age
+
+Height
+
+Current Weight
+
+Goal Weight
+
+Gender
+
+Activity Level
+
+Goal Type:
+
+Lose Weight
+Maintain Weight
+Gain Weight
+
+Automatically calculate:
+
+BMR
+Maintenance Calories
+Recommended Calories
+Estimated Deficit
+
+Save these values.
+
+Allow editing anytime.
+
+Weight Journey
+
+Create a visual weight-loss journey.
+
+Display:
+
+Current Weight
+
+Goal Weight
+
+Progress
+
+Weekly Change
+
+Show path visualization instead of a boring graph.
+
+Allow weight check-ins.
+
+Store:
+
+Date
+
+Weight
+
+Notes
+
+Progress Photo (optional)
+
+Meal Logging
+
+Allow users to log:
+
+Breakfast
+
+Lunch
+
+Dinner
+
+Snacks
+
+Drinks
+
+Each meal should support:
+
+Food Name
+
+Calories
+
+Protein
+
+Carbs
+
+Fat
+
+Photo
+
+Notes
+
+Timestamp
+
+NIMBUS FOOD VISION
+
+Create an AI-assisted meal logging system.
+
+The user can:
+
+Take Photo
+
+or
+
+Upload Photo
+
+Nimbus analyzes the image.
+
+Food Detection Flow
+
+Step 1:
+
+User uploads photo.
+
+Step 2:
+
+Nimbus identifies foods.
+
+Example:
+
+Detected:
+
+✓ Rice
+
+✓ Fried Egg
+
+✓ Chicken Adobo
+
+Step 3:
+
+User confirms.
+
+Step 4:
+
+Nimbus estimates:
+
+Calories
+
+Protein
+
+Carbs
+
+Fat
+
+Step 5:
+
+Meal saved automatically.
+
+Confirmation Screen
+
+Display:
+
+Detected Foods
+
+Estimated Portions
+
+Estimated Calories
+
+Protein
+
+Carbs
+
+Fat
+
+Allow user to:
+
+Edit Food
+
+Remove Food
+
+Add Missing Food
+
+Adjust Portions
+
+Before saving.
+
+Portion Adjustment
+
+Allow:
+
+Small
+
+Medium
+
+Large
+
+or
+
+Custom Grams
+
+Example:
+
+Rice:
+
+○ Small
+
+● Medium
+
+○ Large
+
+Confidence System
+
+Show:
+
+High Confidence
+
+Medium Confidence
+
+Low Confidence
+
+If confidence is low:
+
+Nimbus asks questions.
+
+Example:
+
+"Is that one cup or two cups of rice?"
+
+Nutrition Tracking
+
+Track:
+
+Calories
+
+Protein
+
+Carbs
+
+Fat
+
+Fiber
+
+Display:
+
+Daily Goals
+
+Current Progress
+
+Remaining Targets
+
+Protein Jar
+
+Replace boring bars.
+
+Create a blueberry protein jar.
+
+As protein increases:
+
+Jar fills.
+
+Calorie Deficit Dashboard
+
+Display:
+
+Maintenance Calories
+
+Target Calories
+
+Current Calories
+
+Remaining Calories
+
+Deficit Achieved
+
+Example:
+
+Maintenance:
+2200
+
+Target:
+1700
+
+Current:
+1450
+
+Remaining:
+250
+
+Meal Photos
+
+Every meal should support photos.
+
+Create:
+
+Meal Gallery
+
+Filter by:
+
+Breakfast
+
+Lunch
+
+Dinner
+
+Snack
+
+Date
+
+Worth It Feature
+
+After logging a treat meal:
+
+Display:
+
+"Was it worth it?"
+
+Options:
+
+❤️ Absolutely
+
+😊 Pretty Worth It
+
+😐 Not Really
+
+Store answer.
+
+Use later in Cloud Corner insights.
+
+Food Mood Check-In
+
+After meal logging ask:
+
+How did this meal make you feel?
+
+Options:
+
+😊 Energized
+
+😌 Satisfied
+
+😴 Sleepy
+
+😕 Still Hungry
+
+🤢 Uncomfortable
+
+Store response.
+
+Favorite Meals
+
+Allow saving meals.
+
+Examples:
+
+Protein Breakfast
+
+School Lunch
+
+Favorite Snack
+
+Quick Dinner
+
+Users can log favorites instantly.
+
+Recipe Builder
+
+Allow creating custom recipes.
+
+Store:
+
+Ingredients
+
+Calories
+
+Protein
+
+Carbs
+
+Fat
+
+Recipe Photo
+
+Reuse later.
+
+Water Integration
+
+Connect with Sip Happens.
+
+Display:
+
+Calories
+
+Protein
+
+Water
+
+On same dashboard.
+
+Cycle & Error Integration
+
+Display gentle wellness insights.
+
+Examples:
+
+"Luteal phase may increase hunger."
+
+"Energy may feel lower this week."
+
+Never provide medical advice.
+
+Cloud Corner Insights
+
+Generate observations.
+
+Examples:
+
+"You tend to stay within your target when breakfast includes protein."
+
+"Water intake is higher on study days."
+
+"Weekend calories are typically higher."
+
+No judgmental language.
+
+Progress Photos
+
+Create:
+
+Transformation Gallery
+
+Support:
+
+Front
+
+Side
+
+Back
+
+Monthly Comparison
+
+Option:
+
+Move to Secret Vault
+
+Forkcast Achievements
+
+Examples:
+
+🍓 First Meal Logged
+
+💧 Hydration Hero
+
+🔥 7-Day Deficit Streak
+
+💪 Protein Pro
+
+🌟 Consistent Week
+
+Use cute badge designs.
+
+Nimbus Nutrition Companion
+
+Nimbus can provide supportive messages.
+
+Examples:
+
+"You stayed within your calorie target today."
+
+"Protein intake has improved this week."
+
+"One meal does not define your progress."
+
+Avoid guilt-based language.
+
+Daily Summary
+
+Generate nightly summary.
+
+Example:
+
+Forkcast Summary
+
+Calories:
+1630 / 1700
+
+Protein:
+118g / 120g
+
+Water:
+8 / 8
+
+Deficit:
+Achieved
+
+Mood:
+Satisfied
+
+Empty State
+
+Display:
+
+Blueberry basket illustration.
+
+Nimbus holding a blueberry.
+
+Message:
+
+"Every healthy habit starts with a single meal."
+
+Button:
+
+Log First Meal
+
+User Experience Goal
+
+Forkcast should feel like a friendly nutrition companion.
+
+Not a diet app.
+
+Not a calorie punishment system.
+
+A place where the user learns how food fuels their body, supports their goals, and becomes part of their journey through The Archive of Becoming.
