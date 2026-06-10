@@ -1,3 +1,4 @@
 - [Expo Web Dependencies](expo-web-deps.md) — react-native-worklets required for reanimated v4; react-native-keyboard-controller breaks web; expo-linking must be explicit.
 - [AnimatedButton pattern](animated-button.md) — use Pressable (not TouchableWithoutFeedback, which is deprecated); wraps Animated.View with spring scale on pressIn/pressOut.
 - [NimbusBird logo usage](nimbus-bird-usage.md) — full logo PNG shown everywhere; user confirmed logo badge is fine on auth/lock; inside-app uses (NimbusMessage etc.) just need larger size prop.
+- [Expo Router API routes for Replit](expo-api-routes-replit.md) — use app/api/+api.ts routes (not a separate Express server) to avoid cross-port URL issues in Replit previews.

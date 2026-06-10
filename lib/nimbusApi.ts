@@ -1,28 +1,12 @@
-import { Platform } from 'react-native';
-
 export type ChatRole = 'user' | 'assistant';
 export type ChatMsg = { role: ChatRole; content: string };
-
-function getBaseUrl(): string {
-  if (Platform.OS === 'web' && typeof window !== 'undefined') {
-    const origin = window.location.origin;
-    // Replit dev pattern: https://5000-slug.user.replit.dev → https://3001-slug.user.replit.dev
-    if (/\/\/\d+[-.]/.test(origin)) {
-      return origin.replace(/^(https?:\/\/)\d+([-.])/, '$13001$2');
-    }
-    // Local: replace port
-    return origin.replace(/:\d+$/, ':3001');
-  }
-  return 'http://localhost:3001';
-}
 
 export async function sendToNimbus(params: {
   messages: ChatMsg[];
   context?: string;
   mode?: string | null;
 }): Promise<string> {
-  const url = `${getBaseUrl()}/api/nimbus`;
-  const res = await fetch(url, {
+  const res = await fetch('/api/nimbus', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -41,8 +25,7 @@ export async function generateNimbusLetter(params: {
   context: string;
   type: 'weekly' | 'monthly';
 }): Promise<string> {
-  const url = `${getBaseUrl()}/api/nimbus/letter`;
-  const res = await fetch(url, {
+  const res = await fetch('/api/nimbus/letter', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(params),
