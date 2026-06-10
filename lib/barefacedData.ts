@@ -1,9 +1,26 @@
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
-const KEY = 'lid_barefaced_v1';
+const KEY = 'lid_barefaced_v2';
 
 export type SkinCondition = 'calm' | 'hydrated' | 'breakingout' | 'dry' | 'glowing' | 'sensitive';
+
+export type ProductType =
+  | 'cleanser' | 'toner' | 'serum' | 'moisturizer'
+  | 'sunscreen' | 'treatment' | 'mask' | 'eye cream' | 'oil' | 'other';
+
+export type SkinTypeTag = 'all' | 'dry' | 'oily' | 'combo' | 'sensitive';
+
+export type SkinProduct = {
+  id: string;
+  name: string;
+  brand: string;
+  type: ProductType;
+  skinType: SkinTypeTag;
+  notes: string;
+  addedDate: string;
+  isFavorite: boolean;
+};
 
 export type RoutineStep = {
   id: string;
@@ -23,6 +40,7 @@ export type DayLog = {
 
 export type BarefacedStore = {
   logs: DayLog[];
+  products: SkinProduct[];
   morningStreak: number;
   nightStreak: number;
   bestMorningStreak: number;
@@ -56,12 +74,39 @@ export function freshNightSteps(): RoutineStep[] {
 
 const DEFAULT_STORE: BarefacedStore = {
   logs: [],
+  products: [],
   morningStreak: 0,
   nightStreak: 0,
   bestMorningStreak: 0,
   bestNightStreak: 0,
   lastMorningDate: '',
   lastNightDate: '',
+};
+
+export const PRODUCT_TYPE_META: Record<ProductType, { label: string; emoji: string; color: string }> = {
+  cleanser:     { label: 'Cleanser',    emoji: '🫧', color: '#7EC8E3' },
+  toner:        { label: 'Toner',       emoji: '💧', color: '#7EC8E3' },
+  serum:        { label: 'Serum',       emoji: '✨', color: '#C9AEED' },
+  moisturizer:  { label: 'Moisturizer', emoji: '🌿', color: '#98D4A3' },
+  sunscreen:    { label: 'Sunscreen',   emoji: '☀️', color: '#FFCA6B' },
+  treatment:    { label: 'Treatment',   emoji: '⚗️', color: '#F4A261' },
+  mask:         { label: 'Mask',        emoji: '🌸', color: '#C9AEED' },
+  'eye cream':  { label: 'Eye Cream',   emoji: '👁️', color: '#B0C4DE' },
+  oil:          { label: 'Oil',         emoji: '🫙', color: '#FFCA6B' },
+  other:        { label: 'Other',       emoji: '🪞', color: '#B0C4DE' },
+};
+
+export const PRODUCT_TYPES: ProductType[] = [
+  'cleanser', 'toner', 'serum', 'moisturizer', 'sunscreen',
+  'treatment', 'mask', 'eye cream', 'oil', 'other',
+];
+
+export const SKIN_TYPE_META: Record<SkinTypeTag, { label: string; color: string }> = {
+  all:       { label: 'All skin types', color: '#98D4A3' },
+  dry:       { label: 'Dry',            color: '#B0C4DE' },
+  oily:      { label: 'Oily',           color: '#FFCA6B' },
+  combo:     { label: 'Combination',    color: '#C9AEED' },
+  sensitive: { label: 'Sensitive',      color: '#F4A261' },
 };
 
 async function getRaw(): Promise<string | null> {

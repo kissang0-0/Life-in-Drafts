@@ -13,7 +13,9 @@ import {
   loadBarefaced, saveBarefaced, todayBFStr, getTodayLog,
   upsertTodayLog, updateBFStreaks, getSkinMeta, getGlowLevel,
   getNimbusSkincareNote, freshMorningSteps, freshNightSteps,
+  PRODUCT_TYPE_META, PRODUCT_TYPES, SKIN_TYPE_META,
   type BarefacedStore, type DayLog, type SkinCondition, type RoutineStep,
+  type SkinProduct, type ProductType, type SkinTypeTag,
 } from '@/lib/barefacedData';
 
 const SKIN_CONDITIONS: { key: SkinCondition; emoji: string; label: string }[] = [
@@ -146,6 +148,14 @@ export default function BarefacedScreen() {
   const [todayLog, setTodayLog] = useState<DayLog | null>(null);
   const [routineModal, setRoutineModal] = useState<'morning' | 'night' | null>(null);
   const [skinModal, setSkinModal] = useState(false);
+  const [productModal, setProductModal] = useState(false);
+  const [viewProduct, setViewProduct] = useState<SkinProduct | null>(null);
+
+  const [pName, setPName] = useState('');
+  const [pBrand, setPBrand] = useState('');
+  const [pType, setPType] = useState<ProductType>('cleanser');
+  const [pSkinType, setPSkinType] = useState<SkinTypeTag>('all');
+  const [pNotes, setPNotes] = useState('');
 
   const loadData = useCallback(async () => {
     const s = await loadBarefaced();
@@ -198,6 +208,44 @@ export default function BarefacedScreen() {
     const newLog: DayLog = { ...todayLog, skinCondition: condition };
     await persistLog(newLog);
     setSkinModal(false);
+  };
+
+  const handleAddProduct = async () => {
+    if (!store || !pName.trim()) return;
+    const newProduct: SkinProduct = {
+      id: Date.now().toString(),
+      name: pName.trim(),
+      brand: pBrand.trim(),
+      type: pType,
+      skinType: pSkinType,
+      notes: pNotes.trim(),
+      addedDate: todayBFStr(),
+      isFavorite: false,
+    };
+    const updated: BarefacedStore = { ...store, products: [newProduct, ...store.products] };
+    await saveBarefaced(updated);
+    setStore(updated);
+    setProductModal(false);
+    setPName(''); setPBrand(''); setPNotes('');
+    setPType('cleanser'); setPSkinType('all');
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    if (!store) return;
+    const updated: BarefacedStore = { ...store, products: store.products.filter(p => p.id !== id) };
+    await saveBarefaced(updated);
+    setStore(updated);
+    setViewProduct(null);
+  };
+
+  const handleToggleFavorite = async (id: string) => {
+    if (!store) return;
+    const updated: BarefacedStore = {
+      ...store,
+      products: store.products.map(p => p.id === id ? { ...p, isFavorite: !p.isFavorite } : p),
+    };
+    await saveBarefaced(updated);
+    setStore(updated);
   };
 
   if (!store || !todayLog) {
@@ -404,6 +452,67 @@ export default function BarefacedScreen() {
             </TouchableOpacity>
           </View>
         )}
+
+        {/* ── Product library ── */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeaderRow}>
+            <Text style={[styles.sectionLabel, { color: colors.navy }]}>My Products</Text>
+            <TouchableOpacity
+              onPress={() => setProductModal(true)}
+              style={[styles.addProductBtn, { backgroundColor: '#E8F0FF', borderColor: '#B8C8E060' }]}
+            >
+              <Ionicons name="add" size={14} color="#3D4B72" />
+              <Text style={[styles.addProductBtnText, { color: '#3D4B72' }]}>Add</Text>
+            </TouchableOpacity>
+          </View>
+
+          {store.products.length === 0 ? (
+            <TouchableOpacity
+              onPress={() => setProductModal(true)}
+              style={[styles.productEmptyRow, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            >
+              <Text style={[styles.productEmptyText, { color: colors.textMuted }]}>
+                🫧 Tap to add your first product
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.productGrid}>
+              {store.products.map(product => {
+                const meta = PRODUCT_TYPE_META[product.type];
+                return (
+                  <TouchableOpacity
+                    key={product.id}
+                    onPress={() => setViewProduct(product)}
+                    activeOpacity={0.8}
+                    style={[styles.productCard, {
+                      backgroundColor: colors.surface,
+                      borderColor: meta.color + '50',
+                      shadowColor: colors.shadowDeep,
+                    }]}
+                  >
+                    {product.isFavorite && (
+                      <Text style={styles.productFavStar}>★</Text>
+                    )}
+                    <View style={[styles.productIcon, { backgroundColor: meta.color + '25' }]}>
+                      <Text style={{ fontSize: 20 }}>{meta.emoji}</Text>
+                    </View>
+                    <Text style={[styles.productName, { color: colors.navy }]} numberOfLines={2}>
+                      {product.name}
+                    </Text>
+                    {product.brand ? (
+                      <Text style={[styles.productBrand, { color: colors.textMuted }]} numberOfLines={1}>
+                        {product.brand}
+                      </Text>
+                    ) : null}
+                    <View style={[styles.productTypeBadge, { backgroundColor: meta.color + '20' }]}>
+                      <Text style={[styles.productTypeText, { color: meta.color }]}>{meta.label}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
+        </View>
       </ScrollView>
 
       {/* Routine modal */}
@@ -488,6 +597,198 @@ export default function BarefacedScreen() {
           </View>
         </View>
       </Modal>
+
+      {/* Add product modal */}
+      <Modal
+        visible={productModal}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setProductModal(false)}
+      >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <View style={styles.modalOverlay}>
+            <View style={[styles.modalCard, { backgroundColor: colors.surface }]}>
+              <View style={styles.modalHeader}>
+                <Text style={[styles.modalTitle, { color: colors.navy }]}>🫧 Add a product</Text>
+                <TouchableOpacity onPress={() => setProductModal(false)}>
+                  <Ionicons name="close" size={22} color={colors.textMuted} />
+                </TouchableOpacity>
+              </View>
+              <ScrollView showsVerticalScrollIndicator={false} style={{ maxHeight: 500 }}>
+                {/* Name */}
+                <Text style={[styles.fieldLabel, { color: colors.navy }]}>Product name *</Text>
+                <TextInput
+                  style={[styles.fieldInput, { borderColor: colors.border, color: colors.navy }]}
+                  placeholder="e.g. Gentle Hydrating Cleanser"
+                  placeholderTextColor={colors.textMuted}
+                  value={pName}
+                  onChangeText={setPName}
+                  autoFocus
+                />
+
+                {/* Brand */}
+                <Text style={[styles.fieldLabel, { color: colors.navy }]}>Brand (optional)</Text>
+                <TextInput
+                  style={[styles.fieldInput, { borderColor: colors.border, color: colors.navy }]}
+                  placeholder="e.g. CeraVe, La Roche-Posay…"
+                  placeholderTextColor={colors.textMuted}
+                  value={pBrand}
+                  onChangeText={setPBrand}
+                />
+
+                {/* Type */}
+                <Text style={[styles.fieldLabel, { color: colors.navy }]}>Type</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 14 }}>
+                  <View style={{ flexDirection: 'row', gap: 8 }}>
+                    {PRODUCT_TYPES.map(t => {
+                      const m = PRODUCT_TYPE_META[t];
+                      const active = pType === t;
+                      return (
+                        <TouchableOpacity
+                          key={t}
+                          onPress={() => setPType(t)}
+                          style={[styles.typeChip, {
+                            backgroundColor: active ? m.color + '30' : colors.background,
+                            borderColor: active ? m.color : colors.border,
+                          }]}
+                        >
+                          <Text style={{ fontSize: 14 }}>{m.emoji}</Text>
+                          <Text style={[styles.typeChipText, { color: active ? m.color : colors.textMuted }]}>
+                            {m.label}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </ScrollView>
+
+                {/* Skin type */}
+                <Text style={[styles.fieldLabel, { color: colors.navy }]}>Best for</Text>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+                  {(Object.keys(SKIN_TYPE_META) as SkinTypeTag[]).map(st => {
+                    const m = SKIN_TYPE_META[st];
+                    const active = pSkinType === st;
+                    return (
+                      <TouchableOpacity
+                        key={st}
+                        onPress={() => setPSkinType(st)}
+                        style={[styles.typeChip, {
+                          backgroundColor: active ? m.color + '25' : colors.background,
+                          borderColor: active ? m.color : colors.border,
+                        }]}
+                      >
+                        <Text style={[styles.typeChipText, { color: active ? m.color : colors.textMuted }]}>
+                          {m.label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+
+                {/* Notes */}
+                <Text style={[styles.fieldLabel, { color: colors.navy }]}>Notes (optional)</Text>
+                <TextInput
+                  style={[styles.fieldInput, styles.fieldTextarea, { borderColor: colors.border, color: colors.navy }]}
+                  placeholder="Helps with dryness, use AM only…"
+                  placeholderTextColor={colors.textMuted}
+                  value={pNotes}
+                  onChangeText={setPNotes}
+                  multiline
+                  numberOfLines={3}
+                />
+              </ScrollView>
+
+              <TouchableOpacity
+                onPress={handleAddProduct}
+                disabled={!pName.trim()}
+                style={[styles.saveBtn, {
+                  backgroundColor: pName.trim() ? '#E8F0FF' : colors.borderLight,
+                }]}
+              >
+                <Text style={[styles.saveBtnText, { color: pName.trim() ? '#3D4B72' : colors.textMuted }]}>
+                  Save product 🫧
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
+
+      {/* View product modal */}
+      {viewProduct && (
+        <Modal
+          visible={!!viewProduct}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setViewProduct(null)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={[styles.modalCard, { backgroundColor: colors.surface }]}>
+              <View style={styles.modalHeader}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                  <Text style={{ fontSize: 26 }}>{PRODUCT_TYPE_META[viewProduct.type].emoji}</Text>
+                  <View>
+                    <Text style={[styles.modalTitle, { color: colors.navy }]}>{viewProduct.name}</Text>
+                    {viewProduct.brand ? (
+                      <Text style={[styles.viewProductBrand, { color: colors.textMuted }]}>{viewProduct.brand}</Text>
+                    ) : null}
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => setViewProduct(null)}>
+                  <Ionicons name="close" size={22} color={colors.textMuted} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ gap: 10 }}>
+                <View style={styles.viewProductRow}>
+                  <View style={[styles.viewProductBadge, { backgroundColor: PRODUCT_TYPE_META[viewProduct.type].color + '20' }]}>
+                    <Text style={[styles.viewProductBadgeText, { color: PRODUCT_TYPE_META[viewProduct.type].color }]}>
+                      {PRODUCT_TYPE_META[viewProduct.type].label}
+                    </Text>
+                  </View>
+                  <View style={[styles.viewProductBadge, { backgroundColor: SKIN_TYPE_META[viewProduct.skinType].color + '20' }]}>
+                    <Text style={[styles.viewProductBadgeText, { color: SKIN_TYPE_META[viewProduct.skinType].color }]}>
+                      {SKIN_TYPE_META[viewProduct.skinType].label}
+                    </Text>
+                  </View>
+                </View>
+
+                {viewProduct.notes ? (
+                  <View style={[styles.viewProductNotes, { backgroundColor: colors.background, borderColor: colors.border }]}>
+                    <Text style={[styles.viewProductNotesLabel, { color: colors.textMuted }]}>Notes</Text>
+                    <Text style={[styles.viewProductNotesText, { color: colors.navy }]}>{viewProduct.notes}</Text>
+                  </View>
+                ) : null}
+
+                <Text style={[styles.viewProductDate, { color: colors.textMuted }]}>
+                  Added {viewProduct.addedDate}
+                </Text>
+              </View>
+
+              <View style={styles.viewProductActions}>
+                <TouchableOpacity
+                  onPress={() => handleToggleFavorite(viewProduct.id)}
+                  style={[styles.viewProductActionBtn, {
+                    backgroundColor: viewProduct.isFavorite ? '#FFCA6B25' : colors.background,
+                    borderColor: viewProduct.isFavorite ? '#FFCA6B80' : colors.border,
+                  }]}
+                >
+                  <Text style={[styles.viewProductActionText, { color: viewProduct.isFavorite ? '#C89A00' : colors.textMuted }]}>
+                    {viewProduct.isFavorite ? '★ Favorited' : '☆ Favorite'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => handleDeleteProduct(viewProduct.id)}
+                  style={[styles.viewProductActionBtn, { backgroundColor: '#FF6B6B12', borderColor: '#FF6B6B40' }]}
+                >
+                  <Text style={[styles.viewProductActionText, { color: '#E05555' }]}>Remove</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 }
@@ -590,6 +891,60 @@ const styles = StyleSheet.create({
 
   saveBtn: { borderRadius: 16, padding: 14, alignItems: 'center', marginTop: 4 },
   saveBtnText: { fontSize: 15, fontFamily: 'Nunito_700Bold' },
+
+  /* Product library */
+  sectionHeaderRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  addProductBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, borderWidth: 1,
+  },
+  addProductBtnText: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
+  productEmptyRow: {
+    borderRadius: 14, borderWidth: 1.5, borderStyle: 'dashed',
+    padding: 20, alignItems: 'center',
+  },
+  productEmptyText: { fontSize: 13, fontFamily: 'Nunito_400Regular' },
+  productGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  productCard: {
+    width: '47%', borderRadius: 18, borderWidth: 1.5, padding: 14, gap: 6,
+    shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.6, shadowRadius: 6, elevation: 2,
+  },
+  productFavStar: { position: 'absolute', top: 10, right: 12, fontSize: 13, color: '#FFCA6B' },
+  productIcon: { width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  productName: { fontSize: 13, fontFamily: 'Nunito_700Bold', lineHeight: 18 },
+  productBrand: { fontSize: 10, fontFamily: 'Nunito_400Regular' },
+  productTypeBadge: { alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
+  productTypeText: { fontSize: 10, fontFamily: 'Nunito_600SemiBold' },
+
+  /* Add product modal */
+  fieldLabel: { fontSize: 13, fontFamily: 'Nunito_700Bold', marginBottom: 6 },
+  fieldInput: {
+    borderWidth: 1.5, borderRadius: 12, padding: 11,
+    fontSize: 14, fontFamily: 'Nunito_400Regular', marginBottom: 14,
+  },
+  fieldTextarea: { textAlignVertical: 'top', minHeight: 70 },
+  typeChip: {
+    flexDirection: 'row', alignItems: 'center', gap: 5,
+    paddingHorizontal: 10, paddingVertical: 7, borderRadius: 12, borderWidth: 1.5,
+  },
+  typeChipText: { fontSize: 12, fontFamily: 'Nunito_600SemiBold' },
+
+  /* View product modal */
+  viewProductBrand: { fontSize: 11, fontFamily: 'Nunito_400Regular', marginTop: 1 },
+  viewProductRow: { flexDirection: 'row', gap: 8 },
+  viewProductBadge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10 },
+  viewProductBadgeText: { fontSize: 12, fontFamily: 'Nunito_600SemiBold' },
+  viewProductNotes: {
+    borderRadius: 12, borderWidth: 1, padding: 12, gap: 4,
+  },
+  viewProductNotesLabel: { fontSize: 10, fontFamily: 'Nunito_600SemiBold', textTransform: 'uppercase', letterSpacing: 0.4 },
+  viewProductNotesText: { fontSize: 14, fontFamily: 'Nunito_400Regular', lineHeight: 20 },
+  viewProductDate: { fontSize: 11, fontFamily: 'Nunito_400Regular' },
+  viewProductActions: { flexDirection: 'row', gap: 10 },
+  viewProductActionBtn: {
+    flex: 1, borderRadius: 14, borderWidth: 1, padding: 12, alignItems: 'center',
+  },
+  viewProductActionText: { fontSize: 13, fontFamily: 'Nunito_700Bold' },
 
   skinGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   skinOptBtn: {
