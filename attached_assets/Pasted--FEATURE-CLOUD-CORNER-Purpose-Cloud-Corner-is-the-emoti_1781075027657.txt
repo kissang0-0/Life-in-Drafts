@@ -1,0 +1,303 @@
+# FEATURE: CLOUD CORNER
+
+## Purpose
+
+Cloud Corner is the emotional intelligence center of Life in Drafts.
+
+This feature analyzes data from every section of the app and transforms it into gentle insights.
+
+Not statistics.
+
+Not spreadsheets.
+
+Stories and patterns.
+
+The goal is self-understanding.
+
+---
+
+# CORE CONCEPT
+
+Cloud Corner answers:
+
+How have I been?
+
+What patterns exist in my life?
+
+How am I growing?
+
+---
+
+# MAIN DASHBOARD
+
+Display floating cloud cards.
+
+Each cloud contains:
+
+* Insight
+* Reflection
+* Trend
+* Pattern
+
+The dashboard should feel dreamy and calm.
+
+---
+
+# LIFE OVERVIEW
+
+Display:
+
+* Current mood trend
+* Productivity trend
+* Study trend
+* Wellness trend
+
+Use clouds instead of charts when possible.
+
+---
+
+# MOOD INSIGHTS
+
+Analyze:
+
+* Mood Garden
+* Dear Me
+* Daily check-ins
+
+Examples:
+
+"You felt happiest on weekends this month."
+
+"Calm moods increased by 18%."
+
+"Anxious entries appeared less frequently."
+
+---
+
+# ENERGY INSIGHTS
+
+Analyze:
+
+* Energy levels
+* Study sessions
+* Cycle & Error
+
+Examples:
+
+"Your energy tends to peak around midday."
+
+"High-energy days often align with study success."
+
+---
+
+# STUDY INSIGHTS
+
+Connect with Study Sanctuary.
+
+Examples:
+
+"You studied most consistently on Tuesdays."
+
+"45-minute sessions are your most productive."
+
+"Math received the most focus this month."
+
+---
+
+# TO DO/N'T INSIGHTS
+
+Analyze:
+
+* Completed tasks
+* Missed tasks
+* Habits
+
+Examples:
+
+"You complete health-related tasks most often."
+
+"Doomscrolling was avoided 12 times this month."
+
+---
+
+# CYCLE & ERROR INSIGHTS
+
+Examples:
+
+"Low energy appears most often before your period."
+
+"You tend to journal more during luteal days."
+
+"Focus improves during follicular phase."
+
+Present gently.
+
+Never present as medical advice.
+
+---
+
+# UNSOCIAL ME-DIA INSIGHTS
+
+Examples:
+
+"You posted most often on Fridays."
+
+"Growth-related posts increased this month."
+
+"Your most common tag is #school."
+
+---
+
+# UNSENT MESSAGE INSIGHTS
+
+Examples:
+
+"Most messages were written to Future Me."
+
+"Gratitude messages increased recently."
+
+"Closure-related messages became less frequent."
+
+---
+
+# MEMORY INSIGHTS
+
+Examples:
+
+"Most saved memories happened during summer."
+
+"You save more achievement memories than photo memories."
+
+---
+
+# LIFE WEATHER SYSTEM
+
+Create a monthly emotional weather report.
+
+Examples:
+
+☀️ Mostly Sunny Month
+
+☁️ Mixed Skies
+
+🌧 Reflective Season
+
+🌈 Growth After Rain
+
+Generated from mood data.
+
+---
+
+# MONTHLY REFLECTION
+
+Automatically generate summaries.
+
+Examples:
+
+"This month you wrote 14 diary entries, completed 42 tasks, studied 23 hours, and saved 8 memories."
+
+Add gentle narrative observations.
+
+---
+
+# YEAR IN DRAFTS
+
+Annual review feature.
+
+Display:
+
+* Mood timeline
+* Favorite memories
+* Biggest achievements
+* Most active months
+* Growth highlights
+
+Like Spotify Wrapped, but for life.
+
+---
+
+# GROWTH TIMELINE
+
+Show personal growth milestones.
+
+Examples:
+
+First Diary Entry
+
+100th Task
+
+1 Year Journal Streak
+
+100 Study Hours
+
+---
+
+# CLOUD FORECAST
+
+Generate predictive insights.
+
+Examples:
+
+"You're usually most productive during the first week of the month."
+
+"Journaling tends to improve your mood."
+
+These should be observational, not deterministic.
+
+---
+
+# NIMBUS INSIGHTS
+
+Nimbus explains patterns.
+
+Examples:
+
+"You've been showing up for yourself consistently."
+
+"Progress isn't always visible, but it's here."
+
+"Your garden has grown a lot recently."
+
+---
+
+# VISUAL DESIGN
+
+Use:
+
+* Floating clouds
+* Soft animations
+* Sky gradients
+* Light particles
+* Gentle transitions
+
+Clouds should move slowly.
+
+The screen should feel alive.
+
+---
+
+# EMPTY STATE
+
+Display small cloud drifting in sky.
+
+Nimbus flying nearby.
+
+Message:
+
+"The more you live, the more patterns you'll discover."
+
+---
+
+# USER EXPERIENCE GOAL
+
+Cloud Corner should feel like a quiet conversation with yourself.
+
+Not a dashboard.
+
+Not an analytics page.
+
+A place where your memories, moods, habits, studies, and experiences come together to tell the story of your growth.
+
+A bird's-eye view of:
+
+The Archive of Becoming.
