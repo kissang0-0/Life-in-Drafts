@@ -60,6 +60,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="nest"
+        options={{
+          title: "Nimbus' Nest",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="chatbubble-ellipses-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="planner"
         options={{
           title: "To Do/n't",
@@ -73,7 +82,7 @@ export default function TabsLayout() {
         options={{
           title: 'Unsent',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="chatbubble-ellipses-outline" size={size} color={color} />
+            <Ionicons name="mail-outline" size={size} color={color} />
           ),
         }}
       />
@@ -89,7 +98,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="study"
         options={{
-          title: 'Study Buddy',
+          title: 'Study',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="school-outline" size={size} color={color} />
           ),
@@ -107,7 +116,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="cloud"
         options={{
-          title: 'Cloud Corner',
+          title: 'Cloud',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="partly-sunny-outline" size={size} color={color} />
           ),

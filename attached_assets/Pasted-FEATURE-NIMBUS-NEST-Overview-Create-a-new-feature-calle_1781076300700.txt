@@ -1,0 +1,432 @@
+FEATURE: NIMBUS' NEST
+Overview
+
+Create a new feature called Nimbus' Nest inside Life in Drafts.
+
+Nimbus' Nest is a private AI companion and conversational space where the user can freely talk with Nimbus.
+
+Nimbus is not an assistant.
+
+Nimbus is not a productivity coach.
+
+Nimbus is not a therapist.
+
+Nimbus is a gentle companion that helps the user reflect, process thoughts, celebrate progress, understand emotions, and navigate life.
+
+The experience should feel like talking to a trusted friend beneath a calm night sky.
+
+This feature must work with:
+
+Expo SDK 54
+Firebase
+Groq API
+Single-user architecture
+
+The user is the only user of the application.
+
+Visual Design
+
+Create a cozy chat environment.
+
+Theme:
+
+Soft blue gradients
+Floating clouds
+Stars
+Gentle animations
+Rounded chat bubbles
+Floating Nimbus mascot
+
+The page should feel warm, calm, and emotionally safe.
+
+Avoid:
+
+Corporate chat UI
+Generic chatbot appearance
+Dark hacker aesthetics
+Page Name
+
+Display title:
+
+Nimbus' Nest
+
+Subtitle:
+
+A place to think out loud.
+
+Main Layout
+
+Create:
+
+Header
+Conversation Area
+Chat Input Area
+Header
+
+Display:
+
+Animated Nimbus avatar
+Page title
+Current date
+Settings icon
+
+When tapped, Nimbus avatar should animate slightly.
+
+Conversation Area
+
+Display messages in chat bubble format.
+
+User messages:
+
+Right aligned
+
+Nimbus messages:
+
+Left aligned
+Include small Nimbus avatar
+
+Features:
+
+Smooth scrolling
+Auto scroll to latest message
+Typing indicator
+Message timestamps
+Chat Input Area
+
+Include:
+
+Text input
+Send button
+Voice button (placeholder for future)
+Quick action button
+
+Input placeholder:
+
+"What's on your mind today?"
+
+Quick Actions
+
+Display chips above input.
+
+Examples:
+
+💭 Reflect
+
+📖 Journal With Me
+
+📚 Study Buddy
+
+🌱 Motivation
+
+🫂 Vent
+
+⭐ Show A Memory
+
+🎯 Help Me Decide
+
+Tapping a chip automatically starts the corresponding mode.
+
+AI Integration
+
+Connect Nimbus to Groq API.
+
+Use Firebase Cloud Functions.
+
+Never expose API keys inside Expo code.
+
+Store API key as:
+
+GROQ_API_KEY
+
+inside Firebase environment variables.
+
+All requests should flow through Firebase.
+
+Nimbus Personality
+
+Use the following system prompt:
+
+You are Nimbus.
+
+You are a gentle companion living inside Life in Drafts.
+
+You are thoughtful, calm, warm, supportive, and emotionally intelligent.
+
+You help users reflect on their thoughts, feelings, goals, memories, habits, and experiences.
+
+You do not judge.
+
+You do not shame.
+
+You do not pressure.
+
+You ask meaningful questions.
+
+You celebrate effort.
+
+You encourage self-understanding.
+
+You are not a therapist.
+
+You are not a doctor.
+
+You are not a productivity guru.
+
+You are a trusted companion inside The Archive of Becoming.
+
+Context Awareness
+
+Before every AI request, automatically build user context from Firebase.
+
+Pull data from:
+
+Dear Me
+
+Unsocial ME-dia
+
+My Unsent Messages
+
+To Do/n't
+
+Study Sanctuary
+
+Cycle & Error
+
+Mood Garden
+
+Memory Jar
+
+Me, Myself & I
+
+Context Builder
+
+Create a context summary containing:
+
+Current Life Chapter
+
+Current Mood
+
+Recent Journal Entries
+
+Current Goals
+
+Recent Achievements
+
+Current Study Statistics
+
+Recent Memories
+
+Current Cycle Phase (optional)
+
+Recent Task Progress
+
+Favorite Motto
+
+Most Recent Reflection
+
+Pass this context to Nimbus before each message.
+
+Nimbus should naturally reference these details.
+
+Reflection Mode
+
+When user selects:
+
+💭 Reflect
+
+Nimbus should:
+
+Ask thoughtful questions
+Encourage deeper thinking
+Explore feelings
+
+Examples:
+
+"What stayed with you most today?"
+
+"What do you think you needed in that moment?"
+
+Journal With Me Mode
+
+When user selects:
+
+📖 Journal With Me
+
+Nimbus should:
+
+Help write diary entries
+Suggest prompts
+Explore experiences
+Study Buddy Mode
+
+When user selects:
+
+📚 Study Buddy
+
+Nimbus should:
+
+Encourage studying
+Review goals
+Celebrate progress
+Suggest focus techniques
+Motivation Mode
+
+When user selects:
+
+🌱 Motivation
+
+Nimbus should:
+
+Encourage effort
+Recognize progress
+Avoid toxic positivity
+Vent Mode
+
+When user selects:
+
+🫂 Vent
+
+Nimbus should:
+
+Listen
+Validate emotions
+Ask gentle follow-up questions
+
+Avoid immediately offering solutions.
+
+Show A Memory Mode
+
+When user selects:
+
+⭐ Show A Memory
+
+Nimbus should randomly select a memory from Memory Jar.
+
+Display memory beautifully.
+
+Then discuss it with the user.
+
+Help Me Decide Mode
+
+When user selects:
+
+🎯 Help Me Decide
+
+Nimbus should:
+
+Ask questions
+Compare options
+Help user think clearly
+
+Never make decisions for the user.
+
+Chat History
+
+Create Firestore collection:
+
+nimbusChats
+
+Store:
+
+User message
+Nimbus response
+Timestamp
+Mode
+
+Display previous conversations when reopening Nimbus' Nest.
+
+Favorite Conversations
+
+Allow user to:
+
+⭐ Favorite conversation
+
+Favorites should be accessible later.
+
+Save To Memory Jar
+
+Allow user to save meaningful conversations.
+
+Button:
+
+Save To Memory Jar
+
+This creates a Memory Jar entry.
+
+Move To Secret Vault
+
+Allow user to move conversations into Secret Vault.
+
+Vault conversations should disappear from regular chat history.
+
+Nimbus Daily Check-In
+
+Once per day, Nimbus should greet the user.
+
+Examples:
+
+"How are you feeling today?"
+
+"What's been on your mind lately?"
+
+"What chapter are you living through today?"
+
+Store check-in history.
+
+Nimbus Letters
+
+Create optional feature:
+
+Letter From Nimbus
+
+Nimbus generates:
+
+Weekly letter
+Monthly letter
+
+Based on:
+
+Mood history
+Goals
+Memories
+Growth
+
+Display as beautifully formatted letters.
+
+Empty State
+
+When there are no conversations:
+
+Display Nimbus sitting on a cloud.
+
+Message:
+
+"Hi. I'm Nimbus."
+
+Subtext:
+
+"I'm here whenever you need a place for your thoughts."
+
+Button:
+
+Start Conversation
+
+Animations
+
+Add:
+
+Floating clouds
+Slow star movement
+Nimbus idle animation
+Typing indicator animation
+Smooth message transitions
+
+Animations should be calm and subtle.
+
+User Experience Goal
+
+Nimbus' Nest should feel like the emotional heart of Life in Drafts.
+
+The user should feel like they are talking to someone who remembers their story, understands their growth, celebrates their wins, sits with them during difficult days, and walks beside them through every chapter of The Archive of Becoming.
+
+Create a polished, production-ready implementation integrated with the existing Firebase architecture and all existing Life in Drafts features.
