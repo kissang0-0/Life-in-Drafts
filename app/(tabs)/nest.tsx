@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import {
   View, Text, StyleSheet, TextInput, TouchableOpacity,
   FlatList, KeyboardAvoidingView, Platform, Animated,
-  ScrollView, Alert,
+  ScrollView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -250,6 +250,7 @@ export default function NestScreen() {
   const [activeMode, setActiveMode] = useState<string | null>(null);
   const [showQuickPanel, setShowQuickPanel] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const listRef = useRef<FlatList<DisplayMsg>>(null);
   const inputRef = useRef<TextInput>(null);
@@ -393,28 +394,21 @@ export default function NestScreen() {
 
   const handleDeleteConversation = useCallback(() => {
     if (!user || messages.length === 0) return;
-    Alert.alert(
-      'Clear conversation?',
-      'This will permanently delete all messages with Nimbus. This cannot be undone.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Clear',
-          style: 'destructive',
-          onPress: async () => {
-            setMessages([]);
-            historyRef.current = [];
-            setActiveMode(null);
-            try {
-              await deleteAllNimbusChats(user.uid);
-            } catch {
-              // Already cleared locally
-            }
-          },
-        },
-      ]
-    );
+    setConfirmDelete(true);
   }, [user, messages.length]);
+
+  const confirmDeleteNow = useCallback(async () => {
+    if (!user) return;
+    setConfirmDelete(false);
+    setMessages([]);
+    historyRef.current = [];
+    setActiveMode(null);
+    try {
+      await deleteAllNimbusChats(user.uid);
+    } catch {
+      // Already cleared locally
+    }
+  }, [user]);
 
   const showEmpty = hasLoaded && messages.length === 0 && !isTyping;
 
@@ -545,6 +539,21 @@ export default function NestScreen() {
           </View>
         )}
 
+        {/* Confirm delete banner */}
+        {confirmDelete && (
+          <View style={styles.confirmBanner}>
+            <Text style={styles.confirmText}>Delete all messages?</Text>
+            <View style={styles.confirmBtns}>
+              <TouchableOpacity onPress={() => setConfirmDelete(false)} style={styles.confirmCancel}>
+                <Text style={styles.confirmCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={confirmDeleteNow} style={styles.confirmDelete}>
+                <Text style={styles.confirmDeleteText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
         {/* Input bar */}
         <View style={[styles.inputBar, { paddingBottom: Platform.OS === 'ios' ? insets.bottom + 8 : 12 }]}>
           <View style={[styles.inputWrap, { backgroundColor: '#FFFFFF', shadowColor: '#0F274420' }]}>
@@ -643,6 +652,26 @@ const styles = StyleSheet.create({
     paddingVertical: 6, paddingHorizontal: 16,
   },
   modeBarText: { color: '#FFFFFF', fontSize: 11, fontFamily: 'Nunito_700Bold', opacity: 0.85 },
+
+  // Confirm delete
+  confirmBanner: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    marginHorizontal: 16, marginBottom: 6,
+    backgroundColor: '#1A3350EE', borderRadius: 16,
+    paddingHorizontal: 16, paddingVertical: 10,
+  },
+  confirmText: { color: '#FFFFFF', fontSize: 13, fontFamily: 'Nunito_700Bold', flex: 1 },
+  confirmBtns: { flexDirection: 'row', gap: 8 },
+  confirmCancel: {
+    paddingHorizontal: 14, paddingVertical: 6, borderRadius: 10,
+    backgroundColor: '#FFFFFF20',
+  },
+  confirmCancelText: { color: '#FFFFFFCC', fontSize: 13, fontFamily: 'Nunito_700Bold' },
+  confirmDelete: {
+    paddingHorizontal: 14, paddingVertical: 6, borderRadius: 10,
+    backgroundColor: '#E05C6B',
+  },
+  confirmDeleteText: { color: '#FFFFFF', fontSize: 13, fontFamily: 'Nunito_700Bold' },
 
   // Input
   inputBar: { paddingHorizontal: 16, paddingTop: 8 },
