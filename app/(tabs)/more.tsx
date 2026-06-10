@@ -24,6 +24,22 @@ export default function MoreScreen() {
 
   const items = [
     {
+      icon: 'chatbubble-ellipses-outline' as const,
+      label: "Nimbus' Nest",
+      subtitle: 'Your AI companion & chat',
+      count: null,
+      color: '#B48DE8',
+      route: '/(tabs)/nest' as const,
+    },
+    {
+      icon: 'moon-outline' as const,
+      label: 'Cycle & Error',
+      subtitle: 'Mood, cycle & pattern tracking',
+      count: null,
+      color: '#7EC8E3',
+      route: '/(tabs)/cycle' as const,
+    },
+    {
       icon: 'partly-sunny-outline' as const,
       label: 'Cloud Corner',
       subtitle: 'Your emotional weather & insights',

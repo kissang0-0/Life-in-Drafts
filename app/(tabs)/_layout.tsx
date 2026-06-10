@@ -61,12 +61,7 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="nest"
-        options={{
-          title: "Nimbus' Nest",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="chatbubble-ellipses-outline" size={size} color={color} />
-          ),
-        }}
+        options={{ href: null }}
       />
       <Tabs.Screen
         name="planner"
@@ -106,12 +101,7 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="cycle"
-        options={{
-          title: 'Cycle',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="moon-outline" size={size} color={color} />
-          ),
-        }}
+        options={{ href: null }}
       />
       <Tabs.Screen
         name="cloud"
