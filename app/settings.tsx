@@ -8,6 +8,8 @@ import {
   Switch,
   Alert,
   Platform,
+  TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -18,6 +20,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useAppStore } from '@/store/appStore';
 import { useSecurityStore } from '@/store/securityStore';
 import NimbusBird from '@/components/NimbusBird';
+import Toast from '@/components/Toast';
 import {
   saveBiometricEnabled,
   clearPIN,
@@ -36,7 +39,7 @@ export default function SettingsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { user, signOut } = useAuthStore();
+  const { user, signOut, resetPassword } = useAuthStore();
   const { diary, memories, habits } = useAppStore();
   const {
     hasPIN,
@@ -50,6 +53,14 @@ export default function SettingsScreen() {
 
   const [biometricAvailable, setBiometricAvailable] = useState(false);
   const [showTimeoutPicker, setShowTimeoutPicker] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+  const [toast, setToast] = useState<{ visible: boolean; message: string; type: 'success' | 'error' | 'info' }>({
+    visible: false, message: '', type: 'success',
+  });
+
+  const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setToast({ visible: true, message, type });
+  };
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
@@ -118,6 +129,30 @@ export default function SettingsScreen() {
     lock();
   };
 
+  const handleResetPassword = () => {
+    if (!user?.email) return;
+    Alert.alert(
+      'Reset Password',
+      `Send a password reset email to ${user.email}?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Send Email',
+          onPress: async () => {
+            setResetLoading(true);
+            const result = await resetPassword(user.email!);
+            setResetLoading(false);
+            if (result.success) {
+              showToast('💌 Reset email sent! Check your inbox.', 'success');
+            } else {
+              showToast(result.error ?? 'Could not send reset email.', 'error');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const currentTimeoutLabel = LOCK_TIMEOUTS.find(t => t.value === lockTimeoutMinutes)?.label ?? 'Immediately';
 
   return (
@@ -173,6 +208,21 @@ export default function SettingsScreen() {
             <Text style={[styles.statNum, { color: colors.accentDeep }]}>{habits.length}</Text>
             <Text style={[styles.statLabel, { color: colors.textMuted }]}>Habits</Text>
           </View>
+        </View>
+
+        {/* Account */}
+        <Text style={[styles.sectionLabel, { color: colors.textMuted }]}>Account</Text>
+        <View style={[styles.section, { backgroundColor: colors.surface, shadowColor: colors.shadowDeep }]}>
+          <TouchableOpacity style={styles.row} onPress={handleResetPassword} activeOpacity={0.7} disabled={resetLoading}>
+            <Ionicons name="key-outline" size={20} color={colors.navy} />
+            <Text style={[styles.rowLabel, { color: colors.text }]}>Reset Password</Text>
+            <View style={styles.rowRight}>
+              {resetLoading
+                ? <ActivityIndicator size="small" color={colors.primary} />
+                : <Ionicons name="chevron-forward" size={16} color={colors.textLight} />
+              }
+            </View>
+          </TouchableOpacity>
         </View>
 
         {/* Security */}
@@ -306,6 +356,13 @@ export default function SettingsScreen() {
 
         <Text style={[styles.brand, { color: colors.textLight }]}>Life in Drafts · The Archive of Becoming</Text>
       </ScrollView>
+
+      <Toast
+        message={toast.message}
+        visible={toast.visible}
+        type={toast.type}
+        onHide={() => setToast((t) => ({ ...t, visible: false }))}
+      />
     </View>
   );
 }

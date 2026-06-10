@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   User,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
@@ -17,6 +18,7 @@ type AuthState = {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
   clearError: () => void;
   initialize: () => () => void;
 };
@@ -76,6 +78,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   signOut: async () => {
     await firebaseSignOut(auth);
     set({ user: null });
+  },
+
+  resetPassword: async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      return { success: true };
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code ?? '';
+      return { success: false, error: formatAuthError(code) };
+    }
   },
 
   clearError: () => set({ error: null }),

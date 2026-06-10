@@ -27,12 +27,13 @@ export default function AuthScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { signIn, signUp, loading, error, clearError, user } = useAuthStore();
+  const { signIn, signUp, loading, error, clearError, user, resetPassword } = useAuthStore();
 
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [mode, setMode] = useState<'signin' | 'signup' | 'forgot'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
   const [toast, setToast] = useState<{ visible: boolean; message: string; type: 'success' | 'error' | 'info' }>({
     visible: false, message: '', type: 'success',
   });
@@ -46,6 +47,19 @@ export default function AuthScreen() {
   };
 
   const handleSubmit = async () => {
+    if (mode === 'forgot') {
+      if (!email.trim()) { Alert.alert('Missing email', 'Please enter your email address.'); return; }
+      setResetLoading(true);
+      const result = await resetPassword(email.trim());
+      setResetLoading(false);
+      if (result.success) {
+        showToast('💌 Reset email sent! Check your inbox.', 'success');
+        setTimeout(() => setMode('signin'), 2000);
+      } else {
+        showToast(result.error ?? 'Could not send reset email.', 'error');
+      }
+      return;
+    }
     if (!email.trim()) { Alert.alert('Missing email', 'Please enter your email address.'); return; }
     if (!password.trim()) { Alert.alert('Missing password', 'Please enter your password.'); return; }
     if (mode === 'signup' && password.length < 6) { Alert.alert('Weak password', 'Password must be at least 6 characters.'); return; }
@@ -101,12 +115,14 @@ export default function AuthScreen() {
           <View style={[styles.card, { backgroundColor: 'rgba(255,255,255,0.88)', shadowColor: '#C9AEED' }]}>
             <View style={styles.cardTop}>
               <Text style={[styles.heading, { color: colors.navy }]}>
-                {mode === 'signin' ? 'Welcome back! 💙' : 'Join the journey ✨'}
+                {mode === 'signin' ? 'Welcome back! 💙' : mode === 'signup' ? 'Join the journey ✨' : 'Reset Password 🔑'}
               </Text>
               <Text style={[styles.subheading, { color: colors.textMuted }]}>
                 {mode === 'signin'
                   ? 'Your private world is waiting for you.'
-                  : 'Create your personal journal archive.'}
+                  : mode === 'signup'
+                  ? 'Create your personal journal archive.'
+                  : "Enter your email and we'll send a reset link."}
               </Text>
             </View>
 
@@ -132,27 +148,39 @@ export default function AuthScreen() {
                 />
               </View>
 
-              <View style={[styles.inputWrap, { borderColor: '#E0D0F8', backgroundColor: '#FAF6FF' }]}>
-                <Ionicons name="lock-closed-outline" size={18} color={colors.textMuted} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: 'Nunito_400Regular' }]}
-                  placeholder="Password"
-                  placeholderTextColor={colors.textLight}
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPass}
-                  autoCapitalize="none"
-                />
-                <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-                  <Ionicons name={showPass ? 'eye-off-outline' : 'eye-outline'} size={18} color={colors.textMuted} />
-                </TouchableOpacity>
-              </View>
+              {mode !== 'forgot' && (
+                <View style={[styles.inputWrap, { borderColor: '#E0D0F8', backgroundColor: '#FAF6FF' }]}>
+                  <Ionicons name="lock-closed-outline" size={18} color={colors.textMuted} />
+                  <TextInput
+                    style={[styles.input, { color: colors.text, fontFamily: 'Nunito_400Regular' }]}
+                    placeholder="Password"
+                    placeholderTextColor={colors.textLight}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!showPass}
+                    autoCapitalize="none"
+                  />
+                  <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+                    <Ionicons name={showPass ? 'eye-off-outline' : 'eye-outline'} size={18} color={colors.textMuted} />
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
+
+            {/* Forgot password link (shown on sign-in mode) */}
+            {mode === 'signin' && (
+              <TouchableOpacity
+                onPress={() => { setMode('forgot'); clearError(); }}
+                style={styles.forgotBtn}
+              >
+                <Text style={[styles.forgotText, { color: '#B8A4E8' }]}>Forgot password?</Text>
+              </TouchableOpacity>
+            )}
 
             <AnimatedButton
               onPress={handleSubmit}
-              disabled={loading}
-              style={[styles.btnGradient, { opacity: loading ? 0.75 : 1 }]}
+              disabled={loading || resetLoading}
+              style={[styles.btnGradient, { opacity: (loading || resetLoading) ? 0.75 : 1 }]}
             >
               <LinearGradient
                 colors={['#B8A4E8', '#7EC8E3']}
@@ -160,27 +188,39 @@ export default function AuthScreen() {
                 end={{ x: 1, y: 0 }}
                 style={styles.btn}
               >
-                {loading ? (
+                {(loading || resetLoading) ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
                   <Text style={styles.btnText}>
-                    {mode === 'signin' ? '✨ Open my archive' : '🌟 Begin my journey'}
+                    {mode === 'signin' ? '✨ Open my archive' : mode === 'signup' ? '🌟 Begin my journey' : '💌 Send Reset Email'}
                   </Text>
                 )}
               </LinearGradient>
             </AnimatedButton>
 
-            <TouchableOpacity
-              onPress={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); clearError(); }}
-              style={styles.switchBtn}
-            >
-              <Text style={[styles.switchText, { color: colors.textMuted }]}>
-                {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
-                <Text style={{ color: '#B8A4E8', fontFamily: 'Nunito_700Bold' }}>
-                  {mode === 'signin' ? 'Create one 🌸' : 'Sign in 💙'}
+            {mode === 'forgot' ? (
+              <TouchableOpacity
+                onPress={() => { setMode('signin'); clearError(); }}
+                style={styles.switchBtn}
+              >
+                <Text style={[styles.switchText, { color: colors.textMuted }]}>
+                  {'← Back to '}
+                  <Text style={{ color: '#B8A4E8', fontFamily: 'Nunito_700Bold' }}>Sign in 💙</Text>
                 </Text>
-              </Text>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); clearError(); }}
+                style={styles.switchBtn}
+              >
+                <Text style={[styles.switchText, { color: colors.textMuted }]}>
+                  {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
+                  <Text style={{ color: '#B8A4E8', fontFamily: 'Nunito_700Bold' }}>
+                    {mode === 'signin' ? 'Create one 🌸' : 'Sign in 💙'}
+                  </Text>
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           {/* Bottom tagline */}
@@ -253,6 +293,8 @@ const styles = StyleSheet.create({
   btnGradient: { borderRadius: 18, overflow: 'hidden' },
   btn: { paddingVertical: 16, alignItems: 'center' },
   btnText: { color: '#fff', fontSize: 16, fontFamily: 'Nunito_700Bold', letterSpacing: 0.3 },
+  forgotBtn: { alignItems: 'flex-end', marginTop: -4 },
+  forgotText: { fontSize: 13, fontFamily: 'Nunito_600SemiBold' },
   switchBtn: { alignItems: 'center', paddingTop: 4 },
   switchText: { fontSize: 14, fontFamily: 'Nunito_400Regular', textAlign: 'center' },
   bottomNote: { alignItems: 'center', marginTop: 20 },
