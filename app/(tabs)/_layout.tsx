@@ -1,12 +1,10 @@
 import { Tabs, Redirect } from 'expo-router';
-import { Platform, Image } from 'react-native';
+import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/store/authStore';
 import { useDataSync } from '@/hooks/useData';
 import { useColors } from '@/hooks/useColors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-const nimbusImg = require('@/assets/nimbus-bird.png');
 
 export default function TabsLayout() {
   const user = useAuthStore((s) => s.user);
@@ -47,12 +45,8 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ size, focused }) => (
-            <Image
-              source={nimbusImg}
-              style={{ width: size + 4, height: size + 4, opacity: focused ? 1 : 0.45 }}
-              resizeMode="contain"
-            />
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
           ),
         }}
       />
@@ -60,12 +54,8 @@ export default function TabsLayout() {
         name="diary"
         options={{
           title: 'Dear Me',
-          tabBarIcon: ({ size, focused }) => (
-            <Image
-              source={nimbusImg}
-              style={{ width: size + 4, height: size + 4, opacity: focused ? 1 : 0.45 }}
-              resizeMode="contain"
-            />
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="book-outline" size={size} color={color} />
           ),
         }}
       />
@@ -115,6 +105,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="cloud"
+        options={{
+          title: 'Cloud Corner',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="partly-sunny-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="garden"
         options={{ href: null }}
       />
@@ -131,12 +130,9 @@ export default function TabsLayout() {
           ),
         }}
       />
-      {/* Memories is accessible via route but hidden from tab bar */}
       <Tabs.Screen
         name="memories"
-        options={{
-          href: null,
-        }}
+        options={{ href: null }}
       />
     </Tabs>
   );
