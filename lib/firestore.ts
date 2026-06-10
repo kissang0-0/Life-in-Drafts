@@ -860,3 +860,51 @@ export const updateMemorySlip = (uid: string, id: string, data: Partial<Omit<Mem
 
 export const deleteMemorySlip = (uid: string, id: string) =>
   deleteDoc(doc(memorySlipsRef(uid), id));
+
+// ── Constellation System ───────────────────────────────────────────────────────
+
+export type StarType = 'calm' | 'breakthrough' | 'emotional' | 'growth' | 'intense';
+
+export type Star = {
+  id: string;
+  type: StarType;
+  title: string;
+  content: string;
+  sourceType: 'diary' | 'memory' | 'manual';
+  sourceId: string;
+  mood?: string;
+  tags?: string[];
+  createdAt: Date;
+};
+
+export function getStarTypeFromMood(mood?: string): StarType {
+  if (!mood) return 'growth';
+  if (['calm', 'tired', 'melancholy', 'sad'].includes(mood)) return 'calm';
+  if (['happy', 'excited'].includes(mood)) return 'breakthrough';
+  if (['angry', 'anxious'].includes(mood)) return 'emotional';
+  if (['hopeful', 'grateful'].includes(mood)) return 'growth';
+  return 'intense';
+}
+
+const starsRef = (uid: string) => collection(db, 'users', uid, 'stars');
+
+export const subscribeStars = (uid: string, cb: (stars: Star[]) => void) =>
+  onSnapshot(query(starsRef(uid), orderBy('createdAt', 'desc')), (snap) =>
+    cb(snap.docs.map((d) => ({
+      id: d.id,
+      type: (d.data().type ?? 'growth') as StarType,
+      title: d.data().title ?? '',
+      content: d.data().content ?? '',
+      sourceType: d.data().sourceType ?? 'manual',
+      sourceId: d.data().sourceId ?? '',
+      mood: d.data().mood,
+      tags: d.data().tags ?? [],
+      createdAt: toDate(d.data().createdAt),
+    })))
+  );
+
+export const addStar = (uid: string, star: Omit<Star, 'id' | 'createdAt'>) =>
+  addDoc(starsRef(uid), { ...star, createdAt: serverTimestamp() });
+
+export const deleteStar = (uid: string, id: string) =>
+  deleteDoc(doc(starsRef(uid), id));

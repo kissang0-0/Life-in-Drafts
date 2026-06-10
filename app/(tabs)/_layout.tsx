@@ -152,6 +152,10 @@ export default function TabsLayout() {
         name="barefaced"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="constellation"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

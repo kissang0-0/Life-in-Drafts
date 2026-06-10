@@ -216,7 +216,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* ── Row 2: What Lingers + Barefaced ── */}
+        {/* ── Row 2: What Lingers + Barefaced + My Sky ── */}
         <View style={styles.featureRow}>
           <TouchableOpacity
             onPress={() => router.push('/(tabs)/whatlingers' as any)}
@@ -253,6 +253,25 @@ export default function HomeScreen() {
               </View>
               <Text style={[styles.featureTitle, { color: colors.navy }]}>Barefaced</Text>
               <Text style={[styles.featureSub, { color: colors.textMuted }]}>Skincare ritual</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/constellation' as any)}
+            activeOpacity={0.8}
+            style={styles.featureCardWrap}
+          >
+            <LinearGradient
+              colors={['#8ECFFF18', '#0D1A3015']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.featureCard, { borderColor: '#8ECFFF35' }]}
+            >
+              <View style={[styles.featureIconWrap, { backgroundColor: '#8ECFFF18' }]}>
+                <Ionicons name="star-outline" size={24} color="#8ECFFF" />
+              </View>
+              <Text style={[styles.featureTitle, { color: colors.navy }]}>My Sky</Text>
+              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Constellation</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>

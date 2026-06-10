@@ -16,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useColors } from '@/hooks/useColors';
 import { useAppStore } from '@/store/appStore';
 import { useAuthStore } from '@/store/authStore';
-import { deleteDiaryEntry, updateDiaryEntry } from '@/lib/firestore';
+import { deleteDiaryEntry, updateDiaryEntry, addStar, deleteStar, getStarTypeFromMood } from '@/lib/firestore';
 import { MOOD_OPTIONS, ENTRY_TYPES } from '@/constants/nimbus';
 import { MOOD_FLOWERS } from '@/constants/quotes';
 import { format } from '@/lib/dateUtils';
@@ -47,10 +47,15 @@ export default function DiaryEntryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const user = useAuthStore((s) => s.user);
   const diary = useAppStore((s) => s.diary);
+  const stars = useAppStore((s) => s.stars);
 
   const entry = diary.find((e) => e.id === id);
   const [isFavorite, setIsFavorite] = useState(entry?.isFavorite ?? false);
   const [togglingFav, setTogglingFav] = useState(false);
+  const [toggingStar, setTogglingStar] = useState(false);
+
+  const existingStar = stars.find((s) => s.sourceId === id);
+  const isStarred = !!existingStar;
 
   const mood = entry ? MOOD_OPTIONS.find((m) => m.key === entry.mood) : null;
   const moodColor = entry?.mood ? colors.moodColors[entry.mood] ?? colors.surfaceAlt : colors.surfaceAlt;
@@ -90,6 +95,28 @@ export default function DiaryEntryScreen() {
     }
   };
 
+  const handleToggleStar = async () => {
+    if (!user || !entry || toggingStar) return;
+    setTogglingStar(true);
+    try {
+      if (existingStar) {
+        await deleteStar(user.uid, existingStar.id);
+      } else {
+        await addStar(user.uid, {
+          type: getStarTypeFromMood(entry.mood),
+          title: entry.title || entry.content.slice(0, 60),
+          content: entry.content,
+          sourceType: 'diary',
+          sourceId: entry.id,
+          mood: entry.mood,
+          tags: entry.tags,
+        });
+      }
+    } finally {
+      setTogglingStar(false);
+    }
+  };
+
   if (!entry) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }]}>
@@ -109,6 +136,12 @@ export default function DiaryEntryScreen() {
           <Ionicons name="arrow-back" size={22} color={colors.navy} />
         </TouchableOpacity>
         <View style={{ flex: 1 }} />
+        <TouchableOpacity onPress={handleToggleStar} style={[styles.navBtn, styles.starBtnWrap]} disabled={toggingStar}>
+          <Ionicons name={isStarred ? 'sparkles' : 'sparkles-outline'} size={20} color={isStarred ? '#8ECFFF' : colors.textMuted} />
+          <Text style={[styles.starBtnLabel, { color: isStarred ? '#8ECFFF' : colors.textMuted }]}>
+            {isStarred ? 'Starred' : 'Star'}
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleToggleFavorite} style={styles.navBtn}>
           <Ionicons name={isFavorite ? 'star' : 'star-outline'} size={22} color={isFavorite ? '#FFD700' : colors.textMuted} />
         </TouchableOpacity>
@@ -236,6 +269,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1, gap: 4,
   },
   navBtn: { padding: 6 },
+  starBtnWrap: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 6 },
+  starBtnLabel: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
   scroll: {},
   moodBanner: {
     flexDirection: 'row', alignItems: 'center', gap: 12,

@@ -18,11 +18,19 @@ export default function MoreScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { diary, habits, memorySlips } = useAppStore();
+  const { diary, habits, memorySlips, stars } = useAppStore();
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
   const items = [
+    {
+      icon: 'sparkles-outline' as const,
+      label: 'My Sky',
+      subtitle: 'Your constellation of moments',
+      count: stars.length,
+      color: '#8ECFFF',
+      route: '/(tabs)/constellation' as const,
+    },
     {
       icon: 'chatbubble-ellipses-outline' as const,
       label: "Nimbus' Nest",

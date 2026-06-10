@@ -15,6 +15,7 @@ import {
   subscribeCycleLogs,
   subscribeCycleCheckins,
   subscribeMemorySlips,
+  subscribeStars,
 } from '@/lib/firestore';
 
 export function useDataSync() {
@@ -22,7 +23,7 @@ export function useDataSync() {
   const {
     setDiary, setMemories, setHabits, setUnsent, setStudyNotes,
     setSocialPosts, setTodos, setSubjects, setStudySessions, setStudyDeadlines,
-    setCycleLogs, setCycleCheckins, setMemorySlips,
+    setCycleLogs, setCycleCheckins, setMemorySlips, setStars,
   } = useAppStore();
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export function useDataSync() {
       subscribeCycleLogs(uid, setCycleLogs),
       subscribeCycleCheckins(uid, setCycleCheckins),
       subscribeMemorySlips(uid, setMemorySlips),
+      subscribeStars(uid, setStars),
     ];
 
     return () => unsubs.forEach((u) => u());

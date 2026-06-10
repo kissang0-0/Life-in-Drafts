@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import {
   DiaryEntry, Memory, Habit, UnsentMessage, UnsentConversation,
   StudyNote, SocialPost, Todo, Subject, StudySession, StudyDeadline,
-  CycleLog, CycleCheckin, MemorySlip,
+  CycleLog, CycleCheckin, MemorySlip, Star,
 } from '@/lib/firestore';
 
 type AppState = {
@@ -20,6 +20,7 @@ type AppState = {
   cycleLogs: CycleLog[];
   cycleCheckins: CycleCheckin[];
   memorySlips: MemorySlip[];
+  stars: Star[];
   todayMood: string | null;
   biometricEnabled: boolean;
   notificationsEnabled: boolean;
@@ -37,6 +38,7 @@ type AppState = {
   setCycleLogs: (logs: CycleLog[]) => void;
   setCycleCheckins: (checkins: CycleCheckin[]) => void;
   setMemorySlips: (slips: MemorySlip[]) => void;
+  setStars: (stars: Star[]) => void;
   setTodayMood: (mood: string) => void;
   setBiometricEnabled: (v: boolean) => void;
   setNotificationsEnabled: (v: boolean) => void;
@@ -58,6 +60,7 @@ const initialState = {
   cycleLogs: [] as CycleLog[],
   cycleCheckins: [] as CycleCheckin[],
   memorySlips: [] as MemorySlip[],
+  stars: [] as Star[],
   todayMood: null as string | null,
   biometricEnabled: false,
   notificationsEnabled: false,
@@ -79,6 +82,7 @@ export const useAppStore = create<AppState>((set) => ({
   setCycleLogs: (cycleLogs) => set({ cycleLogs }),
   setCycleCheckins: (cycleCheckins) => set({ cycleCheckins }),
   setMemorySlips: (memorySlips) => set({ memorySlips }),
+  setStars: (stars) => set({ stars }),
   setTodayMood: (todayMood) => set({ todayMood }),
   setBiometricEnabled: (biometricEnabled) => set({ biometricEnabled }),
   setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
