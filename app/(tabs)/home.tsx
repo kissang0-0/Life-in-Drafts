@@ -156,7 +156,7 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* ── Feature shortcuts ── */}
+        {/* ── Feature shortcuts: Row 1 ── */}
         <View style={styles.featureRow}>
           <TouchableOpacity
             onPress={() => router.push('/(tabs)/forkcast' as any)}
@@ -216,7 +216,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* ── Row 2: What Lingers + Barefaced + My Sky ── */}
+        {/* ── Row 2: What Lingers + Barefaced + Cycle & Error ── */}
         <View style={styles.featureRow}>
           <TouchableOpacity
             onPress={() => router.push('/(tabs)/whatlingers' as any)}
@@ -257,21 +257,21 @@ export default function HomeScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => router.push('/(tabs)/constellation' as any)}
+            onPress={() => router.push('/(tabs)/cycle' as any)}
             activeOpacity={0.8}
             style={styles.featureCardWrap}
           >
             <LinearGradient
-              colors={['#8ECFFF18', '#0D1A3015']}
+              colors={['#C9AEED22', '#7EC8E322']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={[styles.featureCard, { borderColor: '#8ECFFF35' }]}
+              style={[styles.featureCard, { borderColor: '#C9AEED55' }]}
             >
-              <View style={[styles.featureIconWrap, { backgroundColor: '#8ECFFF18' }]}>
-                <Ionicons name="star-outline" size={24} color="#8ECFFF" />
+              <View style={[styles.featureIconWrap, { backgroundColor: '#C9AEED25' }]}>
+                <Ionicons name="moon-outline" size={24} color="#C9AEED" />
               </View>
-              <Text style={[styles.featureTitle, { color: colors.navy }]}>My Sky</Text>
-              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Constellation</Text>
+              <Text style={[styles.featureTitle, { color: colors.navy }]}>Cycle</Text>
+              <Text style={[styles.featureSub, { color: colors.textMuted }]}>& Error</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>

@@ -1,14 +1,16 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   Platform, Modal, TextInput, KeyboardAvoidingView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useColors } from '@/hooks/useColors';
 import NimbusBird from '@/components/NimbusBird';
+import { useAppStore } from '@/store/appStore';
+import { CycleLog, CycleCheckin } from '@/lib/firestore';
 import {
   loadBarefaced, saveBarefaced, todayBFStr, getTodayLog,
   upsertTodayLog, updateBFStreaks, getSkinMeta, getGlowLevel,
@@ -17,6 +19,29 @@ import {
   type BarefacedStore, type DayLog, type SkinCondition, type RoutineStep,
   type SkinProduct, type ProductType, type SkinTypeTag,
 } from '@/lib/barefacedData';
+
+// ── Cycle phase helper ────────────────────────────────────────────────────────
+type CyclePhaseInfo = {
+  phase: string; emoji: string; color: string;
+  skinTip: string; day: number | null;
+};
+
+function getCyclePhase(cycleLogs: CycleLog[]): CyclePhaseInfo {
+  if (cycleLogs.length === 0) return {
+    phase: 'Not tracked', emoji: '🌸', color: '#C9AEED', day: null,
+    skinTip: 'Track your cycle in Cycle & Error to get personalised skin tips.',
+  };
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const last = cycleLogs[0];
+  const start = new Date(last.startDate); start.setHours(0, 0, 0, 0);
+  const day = Math.floor((today.getTime() - start.getTime()) / 86400000) + 1;
+  if (day <= 0) return { phase: 'Not tracked', emoji: '🌸', color: '#C9AEED', day: null, skinTip: 'Log your cycle start in Cycle & Error.' };
+  if (day <= 5)  return { phase: 'Menstrual',  emoji: '🌹', color: '#F4A0A0', day, skinTip: 'Go gentle — skin may be more reactive. Focus on hydration and minimal products.' };
+  if (day <= 13) return { phase: 'Follicular', emoji: '🌱', color: '#8DEBB8', day, skinTip: 'Skin is likely clearing. A good window for brightening actives.' };
+  if (day === 14) return { phase: 'Ovulation',  emoji: '✨', color: '#FFFAAA', day, skinTip: 'Peak glow phase. Your natural radiance is at its highest — keep it simple.' };
+  if (day <= 28) return { phase: 'Luteal',     emoji: '🌙', color: '#C9AEED', day, skinTip: 'Progesterone rising — watch for congestion. Clay & gentle exfoliation help.' };
+  return { phase: 'New cycle?', emoji: '🔄', color: '#7EC8E3', day, skinTip: 'It might be time to log a new cycle in Cycle & Error.' };
+}
 
 const SKIN_CONDITIONS: { key: SkinCondition; emoji: string; label: string }[] = [
   { key: 'calm',        emoji: '🌿', label: 'Calm'        },
@@ -142,7 +167,9 @@ const stepStyles = StyleSheet.create({
 export default function BarefacedScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
+  const { cycleLogs, cycleCheckins } = useAppStore();
 
   const [store, setStore] = useState<BarefacedStore | null>(null);
   const [todayLog, setTodayLog] = useState<DayLog | null>(null);
@@ -271,6 +298,10 @@ export default function BarefacedScreen() {
     l.skinCondition === 'calm' || l.skinCondition === 'glowing' || l.skinCondition === 'hydrated'
   ).length;
 
+  const cyclePhase = getCyclePhase(cycleLogs);
+  const todayDateStr = new Date().toISOString().split('T')[0];
+  const todayCycleCheckin = cycleCheckins.find(c => c.date === todayDateStr);
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
@@ -392,6 +423,36 @@ export default function BarefacedScreen() {
             <Text style={[styles.statLabel, { color: colors.textMuted }]}>Calm days</Text>
           </View>
         </View>
+
+        {/* ── Glow Cycle (powered by Cycle & Error) ── */}
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/cycle' as any)}
+          activeOpacity={0.85}
+          style={[styles.cycleCard, { borderColor: cyclePhase.color + '50', backgroundColor: cyclePhase.color + '10' }]}
+        >
+          <View style={[styles.cyclePhaseBadge, { backgroundColor: cyclePhase.color + '25' }]}>
+            <Text style={styles.cyclePhaseEmoji}>{cyclePhase.emoji}</Text>
+          </View>
+          <View style={{ flex: 1, gap: 4 }}>
+            <View style={styles.cycleTopRow}>
+              <Text style={[styles.cyclePhaseName, { color: cyclePhase.color }]}>{cyclePhase.phase}</Text>
+              {cyclePhase.day !== null && (
+                <View style={[styles.cycleDayBadge, { backgroundColor: cyclePhase.color + '20' }]}>
+                  <Text style={[styles.cycleDayText, { color: cyclePhase.color }]}>Day {cyclePhase.day}</Text>
+                </View>
+              )}
+              {todayCycleCheckin?.mood && (
+                <View style={[styles.cycleMoodBadge, { backgroundColor: colors.surfaceAlt }]}>
+                  <Text style={[styles.cycleMoodText, { color: colors.textMuted }]}>
+                    {todayCycleCheckin.mood}
+                  </Text>
+                </View>
+              )}
+            </View>
+            <Text style={[styles.cycleTip, { color: colors.text }]}>{cyclePhase.skinTip}</Text>
+            <Text style={[styles.cycleLinkText, { color: cyclePhase.color }]}>Open Cycle & Error →</Text>
+          </View>
+        </TouchableOpacity>
 
         {/* Insight cloud */}
         {store.logs.length >= 3 && (
@@ -851,6 +912,24 @@ const styles = StyleSheet.create({
   statNum: { fontSize: 18, fontFamily: 'Nunito_800ExtraBold' },
   statLabel: { fontSize: 9, fontFamily: 'Nunito_600SemiBold', textAlign: 'center' },
   statDivider: { width: 1, marginHorizontal: 8 },
+
+  cycleCard: {
+    flexDirection: 'row', alignItems: 'flex-start', gap: 14,
+    borderRadius: 20, borderWidth: 1, padding: 16,
+  },
+  cyclePhaseBadge: {
+    width: 48, height: 48, borderRadius: 14,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  cyclePhaseEmoji: { fontSize: 24 },
+  cycleTopRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 },
+  cyclePhaseName: { fontSize: 14, fontFamily: 'Nunito_700Bold' },
+  cycleDayBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
+  cycleDayText: { fontSize: 11, fontFamily: 'Nunito_700Bold' },
+  cycleMoodBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
+  cycleMoodText: { fontSize: 11, fontFamily: 'Nunito_400Regular' },
+  cycleTip: { fontSize: 13, fontFamily: 'Nunito_400Regular', lineHeight: 20 },
+  cycleLinkText: { fontSize: 12, fontFamily: 'Nunito_700Bold', marginTop: 2 },
 
   insightCard: {
     borderRadius: 18, borderWidth: 1, padding: 14, gap: 6,
