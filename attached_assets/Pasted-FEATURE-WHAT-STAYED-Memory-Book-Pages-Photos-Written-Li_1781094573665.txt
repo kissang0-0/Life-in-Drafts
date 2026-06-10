@@ -1,0 +1,231 @@
+FEATURE: WHAT STAYED
+Memory Book (Pages + Photos + Written Life Archive)
+PURPOSE
+
+Build a personal, private memory book system called What Stayed inside the app Life in Drafts: The Archive of Becoming.
+
+This feature is a hybrid of:
+
+Journal
+Photo album
+Scrapbook
+Emotional memory archive
+
+It is NOT a social app. It is NOT public. It is ONLY for the user.
+
+The goal is to let the user preserve moments that still matter emotionally over time.
+
+CORE EXPERIENCE
+
+The user should feel like they are opening a real physical notebook:
+
+Soft paper texture UI
+Page flipping animations (left/right swipe)
+Slight page shadows and depth
+Handwritten-style fonts for notes
+Polaroid-style image cards (not called polaroids in UI; just “memory photos”)
+
+Everything should feel warm, personal, and slightly nostalgic.
+
+APP STRUCTURE
+1. COVER PAGE
+
+Display:
+
+Title: What Stayed
+Optional subtitle: “A record of moments that remained”
+Current year or time span (auto-generated)
+Soft animated background (breathing paper texture)
+
+Actions:
+
+Open Journal
+Create First Entry
+2. PAGE SYSTEM (CORE FEATURE)
+
+The journal is structured into pages.
+
+Each page contains:
+
+One or multiple photos
+Text entry
+Mood tag
+Date/time stamp
+Optional location
+Optional linked features (Mood Garden, Nimbus, etc.)
+
+Each page behaves like a real notebook page.
+
+PAGE TYPES
+📸 Memory Page
+
+For moments captured with photos + short notes.
+
+Example layout:
+
+Image at top (or tilted layout)
+Caption below
+Mood tag chip
+
+Example:
+
+Title:
+“Afternoon after school”
+
+Note:
+“It felt quiet in a good way.”
+
+Mood:
+Calm 🌿
+✍️ Reflection Page
+
+Text-heavy entries.
+
+Used for deeper thoughts, Afterthoughts, or emotional processing.
+
+Supports long writing.
+
+🌙 Night Page
+
+Automatically suggested by Lights Out feature.
+
+Contains:
+
+Sleep summary
+Thoughts before bed
+Quiet reflections
+💌 Letter Page
+
+Optional format:
+
+“To Me”
+“To Someone I will never send this to”
+“To Yesterday”
+PAGE CREATION FLOW
+
+User can create a page by:
+
+Tapping “+ New Page”
+Selecting page type
+Adding:
+photos
+text
+mood
+Saving page into journal
+PHOTO SYSTEM (MEMORY IMAGES)
+
+Each image block should support:
+
+Upload image
+Drag to reposition
+Optional caption
+Optional mood tag
+Date auto-stamped
+
+Images appear like physical prints placed on paper:
+
+slightly rotated randomly
+soft shadow edges
+subtle tape/sticker effect (visual only)
+ORGANIZATION
+
+Pages can be sorted by:
+
+Date (default)
+Mood
+Tags (school, friends, travel, etc.)
+Emotional intensity (soft ranking, not numeric scoring)
+SEARCH SYSTEM
+
+User can search journal entries by:
+
+keywords
+mood
+date range
+tags
+
+Example:
+
+“sad days”
+“school memories”
+“June nights”
+LINKED SYSTEMS (IMPORTANT)
+
+Each page can optionally connect to other app features:
+
+🌱 Mood Garden
+Page can store mood entry
+Emotional data contributes to garden visuals
+🌌 Constellations
+Important pages can be marked as “memory stars”
+These become part of night sky system
+☁️ Nimbus
+
+Nimbus can reflect on pages:
+
+Example:
+
+“This moment seems important to you.”
+
+“This connects with other calm evenings you’ve logged.”
+
+🌫️ What Lingers
+
+If habits or emotional patterns exist, Nimbus may gently note correlations (no judgment).
+
+EMPTY STATE
+
+Display:
+
+A closed notebook on a desk.
+
+Message:
+
+“Some moments stay. Most fade. This is where the ones that stayed live.”
+
+Button:
+
+“Write First Page”
+
+NIMBUS INTERACTION RULES
+
+Nimbus inside this feature must:
+
+Be quiet and reflective
+Avoid over-commenting
+Never interrupt writing
+Only respond when prompted or after saving a page
+
+Example responses:
+
+“Saved.”
+
+“This feels like a memory worth keeping.”
+
+“Do you want to add this to your Constellations?”
+
+VISUAL STYLE
+Soft blue theme
+Paper texture UI
+Warm shadows
+Gentle animations
+No harsh UI elements
+No social media styling
+
+This should NOT feel like Instagram or Notion.
+
+It should feel like a physical emotional archive.
+
+USER EXPERIENCE GOAL
+
+“What Stayed” should feel like:
+
+opening an old notebook years later
+finding pressed memories inside pages
+quietly observing your life as it unfolds
+
+It is not productivity.
+
+It is not posting.
+
+It is remembering what mattered enough to remain.

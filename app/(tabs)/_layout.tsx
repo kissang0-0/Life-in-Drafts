@@ -149,6 +149,10 @@ export default function TabsLayout() {
         options={{ href: null }}
       />
       <Tabs.Screen
+        name="whatstayed"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
         name="barefaced"
         options={{ href: null }}
       />

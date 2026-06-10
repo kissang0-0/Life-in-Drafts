@@ -195,6 +195,26 @@ export default function HomeScreen() {
           );
         })()}
 
+        {/* ── What Stayed banner ── */}
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/whatstayed' as any)}
+          activeOpacity={0.82}
+        >
+          <LinearGradient
+            colors={['#EDE5D826', '#F5EFE418']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[styles.whatStayedBanner, { borderColor: '#D4C8B840' }]}
+          >
+            <Text style={styles.whatStayedEmoji}>📷</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.whatStayedTitle, { color: colors.navy }]}>What Stayed</Text>
+              <Text style={[styles.whatStayedSub, { color: colors.textMuted }]}>Your private photo album</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={15} color={colors.textMuted} />
+          </LinearGradient>
+        </TouchableOpacity>
+
         {/* ── Recent entries ── */}
         {recentEntries.length > 0 && (
           <View style={styles.section}>
@@ -344,6 +364,15 @@ const styles = StyleSheet.create({
   },
   featureTitle: { fontSize: 12, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
   featureSub: { fontSize: 10, fontFamily: 'Nunito_400Regular', textAlign: 'center' },
+
+  /* What Stayed banner */
+  whatStayedBanner: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    borderRadius: 18, borderWidth: 1.5, padding: 14,
+  },
+  whatStayedEmoji: { fontSize: 26 },
+  whatStayedTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold' },
+  whatStayedSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', fontStyle: 'italic', marginTop: 1 },
 
   /* Sections */
   section: { gap: 10 },

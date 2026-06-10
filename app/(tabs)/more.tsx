@@ -24,6 +24,14 @@ export default function MoreScreen() {
 
   const items = [
     {
+      icon: 'book-outline' as const,
+      label: 'What Stayed',
+      subtitle: 'Your memory book & photo archive',
+      count: null,
+      color: '#C9A87C',
+      route: '/(tabs)/whatstayed' as const,
+    },
+    {
       icon: 'sparkles-outline' as const,
       label: 'My Sky',
       subtitle: 'Your constellation of moments',
@@ -88,6 +96,7 @@ export default function MoreScreen() {
     { emoji: '👁️', label: 'What Lingers', color: '#6B7A9F', route: '/(tabs)/whatlingers' as const },
     { emoji: '✨', label: 'Barefaced',    color: '#7A9FC9', route: '/(tabs)/barefaced'   as const },
     { emoji: '🌸', label: 'Cycle',        color: '#C9AEED', route: '/(tabs)/cycle'       as const },
+    { emoji: '📷', label: 'What Stayed',  color: '#C9A87C', route: '/(tabs)/whatstayed'  as const },
   ];
 
   const stats = [
