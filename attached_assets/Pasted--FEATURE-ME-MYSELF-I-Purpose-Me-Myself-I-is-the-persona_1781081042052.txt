@@ -1,0 +1,489 @@
+# FEATURE: ME, MYSELF & I
+
+## Purpose
+
+Me, Myself & I is the personal profile and identity hub of Life in Drafts.
+
+This is where the user can see:
+
+* Who they are
+* Who they have been
+* Who they are becoming
+
+This page should feel like a personal scrapbook, life dashboard, and self-portrait combined.
+
+It is the emotional center of the app.
+
+Not a settings screen.
+
+Not a statistics page.
+
+A reflection of the person behind the entries.
+
+---
+
+# PROFILE HEADER
+
+Display:
+
+* Profile photo
+* Name
+* Nickname
+* Personal quote
+* Join date
+
+Example:
+
+Life in Drafts Member Since:
+June 2026
+
+---
+
+# PERSONAL MOTTO
+
+Allow custom motto.
+
+Examples:
+
+"Still figuring it out."
+
+"One draft at a time."
+
+"Growing through what I go through."
+
+Displayed beneath profile photo.
+
+---
+
+# CURRENT CHAPTER
+
+Allow user to name their current life chapter.
+
+Examples:
+
+* Senior Year
+* Healing Era
+* Main Character Season
+* Building My Future
+* Learning To Let Go
+
+Display prominently.
+
+---
+
+# CHAPTER HISTORY
+
+Store previous chapters.
+
+Display timeline.
+
+Example:
+
+2024
+Finding Myself
+
+2025
+Learning To Stay
+
+2026
+The Rebuild
+
+---
+
+# ABOUT ME
+
+Custom profile section.
+
+Fields:
+
+* Favorite Color
+* Favorite Song
+* Favorite Book
+* Favorite Movie
+* Dream Career
+* Fun Facts
+
+Allow editing anytime.
+
+---
+
+# LIFE DASHBOARD
+
+Display beautifully designed cards.
+
+Examples:
+
+📖 Diary Entries
+
+📸 Memories Saved
+
+🌸 Flowers Grown
+
+📚 Study Hours
+
+✅ Tasks Completed
+
+💬 Unsent Messages
+
+Display totals.
+
+---
+
+# THE ARCHIVE SCORE
+
+Create a personal growth score.
+
+Based on:
+
+* Journaling
+* Studying
+* Habit building
+* Reflection
+
+Do not gamify aggressively.
+
+Use as gentle progress indicator.
+
+Display:
+
+"The Archive has grown by 12% this month."
+
+---
+
+# LIFE TIMELINE
+
+Create a timeline of important milestones.
+
+Examples:
+
+First Diary Entry
+
+First Memory Saved
+
+100th Task Completed
+
+1 Year Journal Streak
+
+First Study Session
+
+Major Personal Milestones
+
+Display chronologically.
+
+---
+
+# LIFE CHAPTERS
+
+Allow user to create chapters.
+
+Examples:
+
+High School
+
+College
+
+Summer 2027
+
+Gap Year
+
+First Job
+
+Each chapter can contain:
+
+* Memories
+* Photos
+* Diary entries
+* Messages
+
+---
+
+# SCRAPBOOK WALL
+
+Create a visual scrapbook.
+
+Display:
+
+* Favorite photos
+* Favorite memories
+* Achievements
+* Milestones
+
+Polaroid style layout.
+
+---
+
+# ACHIEVEMENTS SHOWCASE
+
+Display earned achievements.
+
+Examples:
+
+🌱 First Bloom
+
+🔥 30 Day Streak
+
+📚 Study Warrior
+
+🌙 Midnight Writer
+
+⭐ Memory Keeper
+
+Display as collectible badges.
+
+---
+
+# MY FAVORITES
+
+Dedicated section.
+
+Display:
+
+Favorite:
+
+* Diary Entries
+* Photos
+* Memories
+* Posts
+* Messages
+
+---
+
+# LIFE MAP
+
+Create a visual overview.
+
+Show:
+
+* Mood distribution
+* Memory categories
+* Most active years
+* Personal growth highlights
+
+Use illustrations.
+
+Avoid boring charts.
+
+---
+
+# LETTER TO SELF
+
+Special profile feature.
+
+Display:
+
+Current Letter To Self
+
+User can update anytime.
+
+Example:
+
+"Dear future me, I hope you're proud of how far we've come."
+
+Pinned near top of profile.
+
+---
+
+# WHO I WAS
+
+Create reflection section.
+
+Generate snapshots from previous years.
+
+Examples:
+
+You One Year Ago
+
+You Six Months Ago
+
+You Last Month
+
+Display:
+
+* Mood trends
+* Favorite memories
+* Journal themes
+
+---
+
+# WHO I'M BECOMING
+
+Goal section.
+
+Allow user to define:
+
+Dreams
+
+Goals
+
+Future plans
+
+Personal values
+
+Display beautifully.
+
+---
+
+# BUCKET LIST
+
+Allow creating bucket list items.
+
+Examples:
+
+Visit Japan
+
+Graduate College
+
+Learn Guitar
+
+Read 100 Books
+
+Track progress.
+
+---
+
+# MY SOUNDTRACK
+
+Allow user to pin favorite songs.
+
+Store:
+
+* Song title
+* Artist
+* Why it matters
+
+Create personal soundtrack section.
+
+---
+
+# PHOTO OF THE ERA
+
+Allow user to choose:
+
+Current representative photo.
+
+Displayed near profile header.
+
+Can change over time.
+
+---
+
+# MOOD PORTRAIT
+
+Generate visual summary.
+
+Examples:
+
+Most Common Mood
+
+Current Energy
+
+Current Season
+
+Current Chapter
+
+Display as artistic profile card.
+
+---
+
+# YEAR IN DRAFTS
+
+Shortcut to annual recap.
+
+Display:
+
+* Growth highlights
+* Best memories
+* Biggest achievements
+* Mood journey
+
+---
+
+# SETTINGS ACCESS
+
+Place settings here.
+
+But keep them secondary.
+
+Main focus should remain identity and reflection.
+
+---
+
+# NIMBUS COMPANION
+
+Nimbus appears throughout profile.
+
+Examples:
+
+"Look how far you've come."
+
+"Your story is still being written."
+
+"This chapter won't last forever."
+
+---
+
+# EMPTY STATE
+
+New users see:
+
+Profile photo placeholder
+
+Empty scrapbook
+
+Tiny seedling
+
+Nimbus nearby
+
+Message:
+
+"You are the first page of this story."
+
+---
+
+# VISUAL DESIGN
+
+Inspiration:
+
+* Scrapbooks
+* Journals
+* Vision boards
+* Digital yearbooks
+
+Use:
+
+* Polaroids
+* Sticky notes
+* Handwritten labels
+* Soft blue accents
+* Floating particles
+* Cozy animations
+
+Avoid:
+
+* Social media profile layouts
+* Corporate dashboards
+* Plain statistics pages
+
+---
+
+# USER EXPERIENCE GOAL
+
+Me, Myself & I should feel like standing in front of a living museum of your life.
+
+A place to remember.
+
+A place to reflect.
+
+A place to dream.
+
+A place to see how much you've grown.
+
+Not who others think you are.
+
+But who you know yourself to be.
+
+The center of:
+
+Life in Drafts
+
+The Archive of Becoming.

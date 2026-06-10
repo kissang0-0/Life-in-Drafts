@@ -137,20 +137,27 @@ export default function SettingsScreen() {
           <Text style={[styles.title, { color: colors.navy }]}>Settings</Text>
         </View>
 
-        {/* Profile card */}
-        <View style={[styles.profileCard, { backgroundColor: colors.primary }]}>
+        {/* Profile card — taps into Me, Myself & I */}
+        <TouchableOpacity
+          onPress={() => router.push('/profile')}
+          activeOpacity={0.85}
+          style={[styles.profileCard, { backgroundColor: colors.primary }]}
+        >
           <View style={styles.profileAvatar}>
             <NimbusBird size={46} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.profileName}>My Archive</Text>
+            <Text style={styles.profileName}>Me, Myself & I</Text>
             <Text style={styles.profileEmail}>{user?.email ?? ''}</Text>
           </View>
-          <View style={[styles.ownerBadge]}>
-            <Ionicons name="shield-checkmark" size={13} color="rgba(255,255,255,0.9)" />
-            <Text style={styles.ownerText}>Owner</Text>
+          <View style={styles.profileArrow}>
+            <View style={[styles.ownerBadge]}>
+              <Ionicons name="shield-checkmark" size={13} color="rgba(255,255,255,0.9)" />
+              <Text style={styles.ownerText}>Owner</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="rgba(255,255,255,0.6)" />
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Stats */}
         <View style={styles.statsRow}>
@@ -320,6 +327,7 @@ const styles = StyleSheet.create({
   avatarEmoji: { fontSize: 26 },
   profileName: { color: '#fff', fontSize: 16, fontFamily: 'Nunito_700Bold' },
   profileEmail: { color: 'rgba(255,255,255,0.75)', fontSize: 13, fontFamily: 'Nunito_400Regular', marginTop: 2 },
+  profileArrow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   ownerBadge: {
     flexDirection: 'row', alignItems: 'center', gap: 4,
     backgroundColor: 'rgba(255,255,255,0.2)',

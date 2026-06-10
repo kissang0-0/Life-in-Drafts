@@ -81,6 +81,15 @@ export default function MoreScreen() {
     },
   ];
 
+  const shortcuts = [
+    { emoji: '✍️', label: 'New Entry',   color: '#5BB8D4', route: '/(tabs)/diary'     as const },
+    { emoji: '📸', label: 'Memory',      color: '#A78BFA', route: '/(tabs)/memories'  as const },
+    { emoji: '💬', label: 'Unsent',      color: '#F4A261', route: '/(tabs)/unsent'    as const },
+    { emoji: '📚', label: 'Study',       color: '#5DB87A', route: '/(tabs)/study'     as const },
+    { emoji: '🌸', label: 'Garden',      color: '#F9A8D4', route: '/(tabs)/garden'    as const },
+    { emoji: '👤', label: 'My Profile',  color: '#B48DE8', route: '/profile'          as const },
+  ];
+
   const stats = [
     { label: 'Diary Entries', value: diary.length,       icon: 'book-outline' as const,           color: colors.primary },
     { label: 'Habits',        value: habits.length,      icon: 'checkmark-circle-outline' as const, color: colors.accentDeep },
@@ -98,6 +107,24 @@ export default function MoreScreen() {
       >
         <Text style={[styles.title, { color: colors.navy }]}>More</Text>
         <Text style={[styles.subtitle, { color: colors.textMuted }]}>Your private world</Text>
+
+        {/* Quick shortcuts */}
+        <Text style={[styles.sectionTitle, { color: colors.navy, marginBottom: 10 }]}>Quick Access</Text>
+        <View style={styles.shortcutsGrid}>
+          {shortcuts.map((s) => (
+            <TouchableOpacity
+              key={s.label}
+              onPress={() => router.push(s.route)}
+              activeOpacity={0.82}
+              style={[styles.shortcutCard, { backgroundColor: s.color + '18', borderColor: s.color + '35' }]}
+            >
+              <View style={[styles.shortcutIcon, { backgroundColor: s.color + '28' }]}>
+                <Text style={styles.shortcutEmoji}>{s.emoji}</Text>
+              </View>
+              <Text style={[styles.shortcutLabel, { color: colors.navy }]}>{s.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
         {/* Stats */}
         <View style={styles.statsGrid}>
@@ -167,6 +194,15 @@ const styles = StyleSheet.create({
   statValue: { fontSize: 22, fontFamily: 'Nunito_800ExtraBold' },
   statLabel: { fontSize: 11, fontFamily: 'Nunito_600SemiBold', textAlign: 'center' },
   sectionTitle: { fontSize: 17, fontFamily: 'Nunito_700Bold', marginBottom: 12 },
+  shortcutsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 24 },
+  shortcutCard: {
+    flex: 1, minWidth: '28%', alignItems: 'center', justifyContent: 'center',
+    gap: 6, paddingVertical: 14, paddingHorizontal: 8,
+    borderRadius: 18, borderWidth: 1,
+  },
+  shortcutIcon: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  shortcutEmoji: { fontSize: 22 },
+  shortcutLabel: { fontSize: 11, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
   navList: { gap: 10, marginBottom: 32 },
   navItem: {
     flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16, borderRadius: 20,
