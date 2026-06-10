@@ -18,7 +18,7 @@ export default function MoreScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { diary, memories, habits, memorySlips } = useAppStore();
+  const { diary, habits, memorySlips } = useAppStore();
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
@@ -40,14 +40,6 @@ export default function MoreScreen() {
       route: '/(tabs)/memoryjar' as const,
     },
     {
-      icon: 'images-outline' as const,
-      label: 'Memories',
-      subtitle: 'Photos & moments',
-      count: memories.length,
-      color: colors.lavenderDeep,
-      route: '/(tabs)/memories' as const,
-    },
-    {
       icon: 'settings-outline' as const,
       label: 'Settings',
       subtitle: 'Preferences & security',
@@ -59,7 +51,6 @@ export default function MoreScreen() {
 
   const stats = [
     { label: 'Diary Entries', value: diary.length,       icon: 'book-outline' as const,           color: colors.primary },
-    { label: 'Memories',      value: memories.length,    icon: 'images-outline' as const,         color: colors.lavenderDeep },
     { label: 'Habits',        value: habits.length,      icon: 'checkmark-circle-outline' as const, color: colors.accentDeep },
     { label: 'Memory Slips',  value: memorySlips.length, icon: 'archive-outline' as const,        color: '#A78BFA' },
   ];
