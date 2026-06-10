@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -24,14 +25,18 @@ import { getGreeting, formatDate, todayString } from '@/lib/dateUtils';
 import { updateHabit } from '@/lib/firestore';
 import { MOOD_OPTIONS } from '@/constants/nimbus';
 import { Habit } from '@/lib/firestore';
-
+import { getOrRefreshNimbusCard } from '@/lib/nimbusHomeCard';
 
 export default function HomeScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const { diary, habits, todayMood, setTodayMood } = useAppStore();
+  const {
+    diary, habits, todayMood, setTodayMood,
+    memories, memorySlips, socialPosts, todos,
+    studySessions, stars,
+  } = useAppStore();
   const { hasPIN, lock } = useSecurityStore();
 
   const today = todayString();
@@ -41,11 +46,36 @@ export default function HomeScreen() {
   const dateStr = formatDate(new Date());
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
-  const nimbusMessage = useMemo(
-    () => getDailyNimbusMessage(todayMood || undefined),
-    [todayMood]
-  );
+  // ── Dynamic Nimbus card ───────────────────────────────────────────────────
+  const fallback = getDailyNimbusMessage(todayMood || undefined);
+  const [cardMessage, setCardMessage] = useState<string>(fallback);
+  const [cardCategory, setCardCategory] = useState<string>('');
+  const [cardLoading, setCardLoading] = useState(false);
 
+  const loadCard = useCallback(async (force = false) => {
+    setCardLoading(true);
+    try {
+      const result = await getOrRefreshNimbusCard(
+        { diary, habits, memories, memorySlips, socialPosts, todos, studySessions, stars, todayMood },
+        force,
+      );
+      setCardMessage(result.message);
+      setCardCategory(result.category);
+    } catch {
+      // keep fallback
+    } finally {
+      setCardLoading(false);
+    }
+  }, [diary, habits, memories, memorySlips, socialPosts, todos, studySessions, stars, todayMood]);
+
+  useEffect(() => {
+    // Only fire when we have some data loaded
+    if (diary.length > 0 || habits.length > 0) {
+      loadCard(false);
+    }
+  }, []);  // run once on mount; background refresh uses cache logic
+
+  // ── Habit toggle ─────────────────────────────────────────────────────────
   const toggleHabit = async (habit: Habit) => {
     if (!user) return;
     const completed = habit.completedDates.includes(today);
@@ -110,8 +140,33 @@ export default function HomeScreen() {
             <NimbusBird size={110} />
           </View>
           <View style={styles.nimbusBubble}>
-            <Text style={[styles.nimbusName, { color: colors.primary }]}>✦ Nimbus</Text>
-            <Text style={[styles.nimbusMsg, { color: colors.navy }]}>{nimbusMessage}</Text>
+            <View style={styles.nimbusNameRow}>
+              <Text style={[styles.nimbusName, { color: colors.primary }]}>✦ Nimbus</Text>
+              {cardCategory ? (
+                <Text style={[styles.categoryLabel, { color: colors.primary + '80' }]}>{cardCategory}</Text>
+              ) : null}
+              <TouchableOpacity
+                onPress={() => loadCard(true)}
+                disabled={cardLoading}
+                style={styles.refreshBtn}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                {cardLoading
+                  ? <ActivityIndicator size={11} color={colors.primary + 'AA'} />
+                  : <Ionicons name="refresh-outline" size={13} color={colors.primary + '80'} />
+                }
+              </TouchableOpacity>
+            </View>
+
+            {cardLoading && cardMessage === fallback ? (
+              <View style={styles.loadingLines}>
+                <View style={[styles.shimmerLine, { width: '92%', backgroundColor: colors.primary + '18' }]} />
+                <View style={[styles.shimmerLine, { width: '75%', backgroundColor: colors.primary + '12' }]} />
+              </View>
+            ) : (
+              <Text style={[styles.nimbusMsg, { color: colors.navy }]}>{cardMessage}</Text>
+            )}
+
             {todayMood ? (
               <View style={[styles.moodBadge, { backgroundColor: (colors.moodColors?.[todayMood] ?? colors.surfaceAlt) + '50' }]}>
                 <Text style={styles.moodBadgeText}>
@@ -156,7 +211,7 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* ── Feature shortcuts: explicit 3×2 grid ── */}
+        {/* ── Feature shortcuts: 3×2 grid ── */}
         {(() => {
           const CARDS = [
             { route: '/(tabs)/forkcast',    colors: ['#5DB87A22','#FFCA6B22'] as [string,string], border: '#5DB87A55', iconBg: '#5DB87A25', icon: 'nutrition-outline',  color: '#5DB87A', title: 'Forkcast',      sub: 'Meals & calories'   },
@@ -259,7 +314,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
 
-  /* Top bar */
   topBar: {
     flexDirection: 'row', alignItems: 'center', gap: 10,
     paddingHorizontal: 20, paddingBottom: 12,
@@ -273,7 +327,6 @@ const styles = StyleSheet.create({
   },
   nestBtnLabel: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
 
-  /* Scroll */
   scroll: { flex: 1 },
   scrollContent: { paddingHorizontal: 16, paddingTop: 4, gap: 14 },
 
@@ -286,8 +339,13 @@ const styles = StyleSheet.create({
   },
   nimbusLeft: { alignItems: 'center', justifyContent: 'flex-end', width: 110 },
   nimbusBubble: { flex: 1, gap: 8, paddingLeft: 4 },
+  nimbusNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   nimbusName: { fontSize: 11, fontFamily: 'Nunito_700Bold', letterSpacing: 1, textTransform: 'uppercase' },
+  categoryLabel: { fontSize: 9, fontFamily: 'Nunito_600SemiBold', letterSpacing: 0.3, textTransform: 'uppercase', flex: 1 },
+  refreshBtn: { padding: 2 },
   nimbusMsg: { fontSize: 15, fontFamily: 'Nunito_600SemiBold', lineHeight: 22 },
+  loadingLines: { gap: 8, paddingVertical: 4 },
+  shimmerLine: { height: 14, borderRadius: 7 },
   moodBadge: {
     alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4,
     borderRadius: 20,
@@ -316,20 +374,7 @@ const styles = StyleSheet.create({
   moodSetText: { flex: 1, fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
   moodClear: { padding: 2 },
 
-  /* What Lingers card */
-  lingerCard: {
-    flexDirection: 'row', alignItems: 'center', gap: 12,
-    borderRadius: 20, borderWidth: 1.5,
-    paddingHorizontal: 16, paddingVertical: 15,
-  },
-  lingerIconWrap: {
-    width: 44, height: 44, borderRadius: 14,
-    alignItems: 'center', justifyContent: 'center',
-  },
-  lingerTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold' },
-  lingerSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', fontStyle: 'italic', marginTop: 1 },
-
-  /* Feature shortcut cards — explicit 3×2 grid */
+  /* Feature shortcut cards */
   featureGrid: { gap: 10 },
   featureRow: { flexDirection: 'row', gap: 10 },
   featureCardWrap: { flex: 1, height: 118 },
@@ -344,15 +389,6 @@ const styles = StyleSheet.create({
   },
   featureTitle: { fontSize: 12, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
   featureSub: { fontSize: 10, fontFamily: 'Nunito_400Regular', textAlign: 'center' },
-
-  /* What Stayed banner */
-  whatStayedBanner: {
-    flexDirection: 'row', alignItems: 'center', gap: 12,
-    borderRadius: 18, borderWidth: 1.5, padding: 14,
-  },
-  whatStayedEmoji: { fontSize: 26 },
-  whatStayedTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold' },
-  whatStayedSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', fontStyle: 'italic', marginTop: 1 },
 
   /* Sections */
   section: { gap: 10 },
