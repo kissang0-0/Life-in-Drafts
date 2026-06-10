@@ -1,0 +1,268 @@
+FEATURE: LIGHTS OUT
+Sleep Tracker & Night Recovery System
+Purpose
+
+Create a sleep tracking feature called Lights Out.
+
+This feature helps the user understand their sleep patterns, improve rest quality, and build a calming night routine.
+
+It should feel like closing the day gently, not monitoring performance.
+
+Lights Out connects with:
+
+Afterthoughts (night writing)
+Forkcast (nutrition & recovery)
+Sip Happens (hydration balance)
+Glow Cycle (wellness phases)
+Cloud Corner (sleep insights)
+Nimbus (night companion)
+Visual Concept
+
+Sleep is represented as a night sky system.
+
+Deep navy-blue background
+Slow-moving stars
+Soft glowing moon
+Clouds drifting slowly across screen
+
+Each sleep session adds stars to the sky.
+
+Better sleep = brighter sky.
+
+Poor sleep = cloudy night sky.
+
+Main Dashboard
+
+Display:
+
+Sleep Summary Card
+
+Example:
+
+Sleep Duration:
+6h 45m
+
+Sleep Quality:
+Moderate 🌙
+
+Bedtime:
+11:30 PM
+
+Wake Time:
+6:15 AM
+Sleep Logging System
+
+Allow users to log:
+
+Bedtime
+Wake time
+Sleep duration (auto-calculated)
+Sleep quality
+
+Sleep quality options:
+
+😴 Poor
+🌙 Okay
+✨ Good
+💫 Excellent
+
+Optional notes:
+
+Dreams
+Night thoughts
+Interruptions
+Bedtime Mode
+
+When user activates bedtime mode:
+
+Screen transitions into:
+
+🌙 Sleep interface
+
+Features:
+
+Dimmed UI
+Slow animations
+Nimbus becomes quiet mode
+“Goodnight” message appears
+
+Example:
+
+“It’s time to rest. I’ll be here when you wake up.”
+
+Wake-Up Check-In
+
+When user opens app in the morning:
+
+Nimbus asks:
+
+“How did you sleep?”
+“Do you feel rested?”
+
+Options:
+
+Fully rested
+Somewhat rested
+Still tired
+
+This updates sleep insights.
+
+Sleep Streak System
+
+Track consistency:
+
+Example:
+
+Sleep Streak:
+5 Days
+
+Average Sleep:
+6.8 Hours
+
+Reward consistency, not perfection.
+
+Sleep Quality Analysis
+
+Track patterns:
+
+Bedtime consistency
+Sleep duration average
+Rest quality trends
+
+Example insights:
+
+“You sleep better when you go to bed before 11 PM.”
+“Long study days slightly reduce sleep quality.”
+“Weekends show irregular sleep patterns.”
+Mood Integration
+
+Sleep affects Mood Garden:
+
+Good sleep → brighter flowers, stable moods
+Poor sleep → wilted or cloudy garden visuals
+
+This creates emotional awareness of rest.
+
+Forkcast Integration
+
+Sleep affects Forkcast:
+
+Examples:
+
+Poor sleep → increased hunger signals
+Good sleep → stable appetite
+
+Display:
+
+Sleep:
+6h 30m
+
+Appetite:
+Slightly increased today
+Nimbus Sleep Companion
+
+Nimbus adapts behavior at night:
+
+Before sleep:
+
+“You did enough today. Rest now.”
+
+“Tomorrow can wait.”
+
+After poor sleep:
+
+“You might feel a bit tired today. Be gentle with yourself.”
+
+Avoid judgment or pressure.
+
+Dream Journal
+
+Optional feature inside Lights Out:
+
+User can record:
+
+Dreams
+Night thoughts
+Symbols
+Feelings
+
+Example:
+
+Dream:
+Lost in school hallways
+
+Feeling:
+Confused but calm
+Sleep Environment Tracking (Optional)
+
+User can log:
+
+Noise level
+Room temperature
+Stress level before bed
+Screen time before sleep
+
+Used for Cloud Corner insights.
+
+Night Sky Visualization
+
+Each night creates a sky:
+
+Stars represent sleep quality
+Moon phase shifts over time
+Constellations form from consistent sleep patterns
+
+Example:
+
+7 good nights → bright constellation
+
+Sleep Insights (Cloud Corner)
+
+Examples:
+
+“You tend to sleep later on high-stress days.”
+“Better sleep improves your study performance by 18%.”
+“Irregular sleep affects mood stability.”
+
+Always gentle, never critical.
+
+Achievements
+
+Examples:
+
+😴 First Sleep Logged
+🌙 7-Day Sleep Streak
+💫 Consistent Sleeper
+🌌 Night Guardian (30 days)
+
+Empty State
+
+Display:
+
+A quiet night sky.
+
+Nimbus floating on a cloud.
+
+Message:
+
+“Rest is also part of becoming.”
+
+Button:
+
+Log First Sleep
+
+User Experience Goal
+
+Lights Out should feel like:
+
+Closing a chapter of the day
+Letting go of thoughts
+Preparing the mind and body for rest
+
+Not a health report.
+
+Not a productivity metric.
+
+A soft nightly ritual inside:
+
+The Archive of Becoming 🌙

@@ -140,6 +140,10 @@ export default function TabsLayout() {
         name="siphappens"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="lightsout"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

@@ -195,6 +195,25 @@ export default function HomeScreen() {
               <Text style={[styles.featureSub, { color: colors.textMuted }]}>Hydration tracker</Text>
             </LinearGradient>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/lightsout' as any)}
+            activeOpacity={0.8}
+            style={styles.featureCardWrap}
+          >
+            <LinearGradient
+              colors={['#1A2F5E18', '#C9AEED18']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.featureCard, { borderColor: '#C9AEED50' }]}
+            >
+              <View style={[styles.featureIconWrap, { backgroundColor: '#1A2F5E18' }]}>
+                <Ionicons name="moon-outline" size={24} color="#8B9DC3" />
+              </View>
+              <Text style={[styles.featureTitle, { color: colors.navy }]}>Lights Out</Text>
+              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Sleep tracker</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
 
         {/* ── Recent entries ── */}
