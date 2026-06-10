@@ -195,26 +195,6 @@ export default function HomeScreen() {
           );
         })()}
 
-        {/* ── What Stayed banner ── */}
-        <TouchableOpacity
-          onPress={() => router.push('/(tabs)/whatstayed' as any)}
-          activeOpacity={0.82}
-        >
-          <LinearGradient
-            colors={['#EDE5D826', '#F5EFE418']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.whatStayedBanner, { borderColor: '#D4C8B840' }]}
-          >
-            <Text style={styles.whatStayedEmoji}>📷</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={[styles.whatStayedTitle, { color: colors.navy }]}>What Stayed</Text>
-              <Text style={[styles.whatStayedSub, { color: colors.textMuted }]}>Your private photo album</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={15} color={colors.textMuted} />
-          </LinearGradient>
-        </TouchableOpacity>
-
         {/* ── Recent entries ── */}
         {recentEntries.length > 0 && (
           <View style={styles.section}>

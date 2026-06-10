@@ -8,7 +8,6 @@ import {
   Switch,
   Alert,
   Platform,
-  TextInput,
   ActivityIndicator,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,6 +25,12 @@ import {
   clearPIN,
   saveLockTimeout,
 } from '@/lib/security';
+import {
+  scheduleDailyReminder,
+  cancelDailyReminder,
+  getReminderEnabled,
+  getReminderTime,
+} from '@/lib/notifications';
 
 const LOCK_TIMEOUTS = [
   { label: 'Immediately', value: 0 },
@@ -33,6 +38,19 @@ const LOCK_TIMEOUTS = [
   { label: '5 minutes', value: 5 },
   { label: '15 minutes', value: 15 },
   { label: '30 minutes', value: 30 },
+];
+
+const REMINDER_HOURS = [
+  { label: '6:00 AM', hour: 6, minute: 0 },
+  { label: '7:00 AM', hour: 7, minute: 0 },
+  { label: '8:00 AM', hour: 8, minute: 0 },
+  { label: '9:00 AM', hour: 9, minute: 0 },
+  { label: '12:00 PM', hour: 12, minute: 0 },
+  { label: '6:00 PM', hour: 18, minute: 0 },
+  { label: '7:00 PM', hour: 19, minute: 0 },
+  { label: '8:00 PM', hour: 20, minute: 0 },
+  { label: '9:00 PM', hour: 21, minute: 0 },
+  { label: '10:00 PM', hour: 22, minute: 0 },
 ];
 
 export default function SettingsScreen() {
@@ -54,6 +72,13 @@ export default function SettingsScreen() {
   const [biometricAvailable, setBiometricAvailable] = useState(false);
   const [showTimeoutPicker, setShowTimeoutPicker] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
+
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [reminderHour, setReminderHour] = useState(20);
+  const [reminderMinute, setReminderMinute] = useState(0);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
   const [toast, setToast] = useState<{ visible: boolean; message: string; type: 'success' | 'error' | 'info' }>({
     visible: false, message: '', type: 'success',
   });
@@ -70,6 +95,16 @@ export default function SettingsScreen() {
     }
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const enabled = await getReminderEnabled();
+      const time = await getReminderTime();
+      setNotificationsEnabled(enabled);
+      setReminderHour(time.hour);
+      setReminderMinute(time.minute);
+    })();
+  }, []);
+
   const handleSignOut = () => {
     Alert.alert('Sign Out', 'Are you sure you want to sign out of your archive?', [
       { text: 'Cancel', style: 'cancel' },
@@ -83,7 +118,7 @@ export default function SettingsScreen() {
   };
 
   const handleBiometricToggle = async (value: boolean) => {
-    if (value && Platform.OS !== 'web') {
+    if (value) {
       const result = await LocalAuthentication.authenticateAsync({
         promptMessage: 'Authenticate to enable biometric lock',
       });
@@ -91,6 +126,7 @@ export default function SettingsScreen() {
     }
     await saveBiometricEnabled(value);
     setBiometricEnabled(value);
+    showToast(value ? '🔒 Biometric lock enabled' : 'Biometric lock disabled', 'success');
   };
 
   const handlePINAction = () => {
@@ -153,7 +189,44 @@ export default function SettingsScreen() {
     );
   };
 
+  const handleNotificationToggle = async (value: boolean) => {
+    if (Platform.OS === 'web') {
+      showToast('Journal reminders are only available on mobile.', 'info');
+      return;
+    }
+    setNotifLoading(true);
+    if (value) {
+      const result = await scheduleDailyReminder(reminderHour, reminderMinute);
+      if (result.success) {
+        setNotificationsEnabled(true);
+        const label = REMINDER_HOURS.find(h => h.hour === reminderHour && h.minute === reminderMinute)?.label ?? `${reminderHour}:${String(reminderMinute).padStart(2, '0')}`;
+        showToast(`🔔 Reminder set for ${label} daily`, 'success');
+      } else {
+        showToast(result.error ?? 'Could not set reminder.', 'error');
+      }
+    } else {
+      await cancelDailyReminder();
+      setNotificationsEnabled(false);
+      showToast('Reminder turned off', 'info');
+    }
+    setNotifLoading(false);
+  };
+
+  const handleReminderTimeChange = async (hour: number, minute: number) => {
+    setReminderHour(hour);
+    setReminderMinute(minute);
+    setShowTimePicker(false);
+    if (notificationsEnabled) {
+      const result = await scheduleDailyReminder(hour, minute);
+      if (result.success) {
+        const label = REMINDER_HOURS.find(h => h.hour === hour && h.minute === minute)?.label ?? `${hour}:${String(minute).padStart(2, '0')}`;
+        showToast(`🔔 Reminder updated to ${label}`, 'success');
+      }
+    }
+  };
+
   const currentTimeoutLabel = LOCK_TIMEOUTS.find(t => t.value === lockTimeoutMinutes)?.label ?? 'Immediately';
+  const currentReminderLabel = REMINDER_HOURS.find(h => h.hour === reminderHour && h.minute === reminderMinute)?.label ?? `${reminderHour}:${String(reminderMinute).padStart(2, '0')}`;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -172,7 +245,7 @@ export default function SettingsScreen() {
           <Text style={[styles.title, { color: colors.navy }]}>Settings</Text>
         </View>
 
-        {/* Profile card — taps into Me, Myself & I */}
+        {/* Profile card */}
         <TouchableOpacity
           onPress={() => router.push('/profile')}
           activeOpacity={0.85}
@@ -245,11 +318,10 @@ export default function SettingsScreen() {
             </View>
           </TouchableOpacity>
 
-          <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
-
-          {/* Biometric */}
-          {(biometricAvailable || Platform.OS === 'web') && (
+          {/* Biometric — only show when native hardware is available */}
+          {biometricAvailable && Platform.OS !== 'web' && (
             <>
+              <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
               <View style={styles.row}>
                 <Ionicons name="finger-print-outline" size={20} color={colors.navy} />
                 <Text style={[styles.rowLabel, { color: colors.text }]}>Biometric Lock</Text>
@@ -264,13 +336,13 @@ export default function SettingsScreen() {
               {!hasPIN && (
                 <Text style={[styles.rowHint, { color: colors.textLight }]}>Set up a PIN first to enable biometrics</Text>
               )}
-              <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
             </>
           )}
 
           {/* Lock Timeout */}
           {hasPIN && (
             <>
+              <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
               <TouchableOpacity style={styles.row} onPress={() => setShowTimeoutPicker(!showTimeoutPicker)} activeOpacity={0.7}>
                 <Ionicons name="timer-outline" size={20} color={colors.navy} />
                 <Text style={[styles.rowLabel, { color: colors.text }]}>Lock After</Text>
@@ -320,13 +392,58 @@ export default function SettingsScreen() {
           <View style={styles.row}>
             <Ionicons name="notifications-outline" size={20} color={colors.navy} />
             <Text style={[styles.rowLabel, { color: colors.text }]}>Daily Journal Reminder</Text>
-            <Switch
-              value={false}
-              onValueChange={() => {}}
-              trackColor={{ false: colors.border, true: colors.primary }}
-              thumbColor="#fff"
-            />
+            {notifLoading
+              ? <ActivityIndicator size="small" color={colors.primary} />
+              : (
+                <Switch
+                  value={notificationsEnabled}
+                  onValueChange={handleNotificationToggle}
+                  trackColor={{ false: colors.border, true: colors.primary }}
+                  thumbColor="#fff"
+                />
+              )
+            }
           </View>
+
+          {notificationsEnabled && Platform.OS !== 'web' && (
+            <>
+              <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => setShowTimePicker(!showTimePicker)}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="time-outline" size={20} color={colors.navy} />
+                <Text style={[styles.rowLabel, { color: colors.text }]}>Reminder Time</Text>
+                <View style={styles.rowRight}>
+                  <Text style={[styles.rowValue, { color: colors.textMuted }]}>{currentReminderLabel}</Text>
+                  <Ionicons name={showTimePicker ? 'chevron-up' : 'chevron-down'} size={16} color={colors.textLight} />
+                </View>
+              </TouchableOpacity>
+              {showTimePicker && (
+                <View style={[styles.pickerList, { borderTopColor: colors.borderLight }]}>
+                  {REMINDER_HOURS.map((opt) => (
+                    <TouchableOpacity
+                      key={`${opt.hour}:${opt.minute}`}
+                      style={[styles.pickerRow, { borderBottomColor: colors.borderLight }]}
+                      onPress={() => handleReminderTimeChange(opt.hour, opt.minute)}
+                    >
+                      <Text style={[styles.pickerText, { color: colors.text }]}>{opt.label}</Text>
+                      {reminderHour === opt.hour && reminderMinute === opt.minute && (
+                        <Ionicons name="checkmark" size={16} color={colors.primary} />
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </>
+          )}
+
+          {Platform.OS === 'web' && (
+            <Text style={[styles.rowHint, { color: colors.textLight, paddingBottom: 10 }]}>
+              Journal reminders are available on the mobile app
+            </Text>
+          )}
         </View>
 
         {/* About */}
@@ -381,7 +498,6 @@ const styles = StyleSheet.create({
     width: 52, height: 52, borderRadius: 26, backgroundColor: 'rgba(255,255,255,0.25)',
     alignItems: 'center', justifyContent: 'center',
   },
-  avatarEmoji: { fontSize: 26 },
   profileName: { color: '#fff', fontSize: 16, fontFamily: 'Nunito_700Bold' },
   profileEmail: { color: 'rgba(255,255,255,0.75)', fontSize: 13, fontFamily: 'Nunito_400Regular', marginTop: 2 },
   profileArrow: { flexDirection: 'row', alignItems: 'center', gap: 6 },

@@ -1,0 +1,291 @@
+# FEATURE: DYNAMIC NIMBUS HOME CARD
+
+## Purpose
+
+The Nimbus Card displayed on the Home screen must NEVER feel repetitive, scripted, or quote-based.
+
+Nimbus is not a motivational quote generator.
+
+Nimbus is a living companion that generates unique observations based on the user's actual data, memories, habits, moods, goals, reflections, and recent activity inside Life in Drafts.
+
+Every card should feel personally written for the user.
+
+---
+
+# CORE RULE
+
+DO NOT use a fixed quote database.
+
+DO NOT rotate pre-written messages.
+
+DO NOT repeat messages unless enough time has passed and the context is substantially different.
+
+Every Nimbus Card should be dynamically generated from real user activity.
+
+---
+
+# NIMBUS DATA SOURCES
+
+Nimbus can use information from:
+
+* Dear Me entries
+* Afterthoughts
+* What Stayed memories
+* Mood Garden
+* Lights Out
+* Forkcast
+* Sip Happens
+* Barefaced
+* Glow Cycle
+* What Lingers
+* To Do/n't
+* Study Space
+* Memory Jar
+* Constellations
+* Previous Nimbus conversations
+
+Nimbus should combine multiple data sources whenever possible.
+
+---
+
+# MESSAGE CATEGORIES
+
+Randomly choose a category, weighted by relevance.
+
+Categories:
+
+1. Observation
+2. Reflection
+3. Encouragement
+4. Pattern Recognition
+5. Memory Recall
+6. Gentle Question
+7. Growth Recognition
+8. Life Chapter Reflection
+9. Seasonal Reflection
+10. Emotional Check-In
+
+No category should dominate.
+
+---
+
+# OBSERVATION EXAMPLES
+
+Generated from actual activity.
+
+Examples:
+
+"You've been ending your days with writing more often lately."
+
+"Your sleep has quietly improved this week."
+
+"You've been remembering to drink water even on busy days."
+
+"Most of your recent entries feel calmer than they did last month."
+
+---
+
+# REFLECTION EXAMPLES
+
+Examples:
+
+"It seems like you're learning how to rest without feeling guilty."
+
+"A lot of your recent thoughts circle around change."
+
+"You've been spending more time understanding your feelings instead of avoiding them."
+
+---
+
+# PATTERN RECOGNITION
+
+Analyze trends across features.
+
+Examples:
+
+"You usually write more on difficult days."
+
+"Good sleep often leads to better moods in your garden."
+
+"Your most productive study sessions happen after calmer evenings."
+
+Never present these as facts.
+
+Always use soft language:
+
+* It seems...
+* I notice...
+* It looks like...
+* You often...
+* You tend to...
+
+---
+
+# MEMORY RECALL
+
+Nimbus can occasionally revisit old memories.
+
+Example:
+
+"Three months ago you saved a memory about feeling lost. Reading your recent entries, you seem a little steadier now."
+
+"An old page from What Stayed came to mind today."
+
+Memory recalls should feel rare and meaningful.
+
+Maximum:
+2–3 times per week.
+
+---
+
+# GENTLE QUESTIONS
+
+Nimbus may ask questions.
+
+Examples:
+
+"What has been taking up the most space in your mind lately?"
+
+"Do you think your current worries will matter a year from now?"
+
+"What part of today would you keep if you could only save one moment?"
+
+Questions should encourage reflection.
+
+Not productivity.
+
+---
+
+# GROWTH RECOGNITION
+
+Nimbus should recognize effort.
+
+Examples:
+
+"You've shown up for yourself consistently this week."
+
+"You've been building small routines without making a big deal about it."
+
+"The version of you from a few months ago would probably notice the difference."
+
+Avoid praise inflation.
+
+Keep it subtle.
+
+---
+
+# CURRENT ERA SYSTEM
+
+Nimbus should occasionally reference the user's current life chapter.
+
+Examples:
+
+"You still seem to be in your Soft Recovery Era."
+
+"This season feels quieter than the last one."
+
+"Your current chapter feels focused on rebuilding."
+
+---
+
+# WEATHER AWARENESS
+
+Nimbus can use Mood Garden weather.
+
+Examples:
+
+"Your garden has been brighter recently."
+
+"The winds seem calmer than they were last week."
+
+"There's been more sunlight in your emotional weather."
+
+---
+
+# PERSONALITY RULES
+
+Nimbus must:
+
+* sound human
+* sound observant
+* sound calm
+* sound reflective
+* sound emotionally intelligent
+
+Nimbus must never:
+
+* sound robotic
+* sound corporate
+* sound like a therapist
+* sound like a life coach
+* sound like a motivational speaker
+
+---
+
+# REPETITION PREVENTION
+
+Store every Nimbus Home Card generated.
+
+Maintain card history.
+
+Before generating a new card:
+
+* Compare against previous cards.
+* Check similarity score.
+* If similarity exceeds threshold, regenerate.
+
+Do not repeat:
+
+* sentence structures
+* openings
+* wording
+* observations
+
+Rotate language naturally.
+
+---
+
+# CARD LIFESPAN
+
+Generate a new card:
+
+* once per day automatically
+* when app opens after 12 hours
+* when major activity occurs
+
+Examples:
+
+* meaningful journal entry
+* milestone reached
+* memory saved
+* new constellation formed
+
+---
+
+# SPECIAL MOMENTS
+
+Sometimes Nimbus should generate unexpected messages.
+
+Examples:
+
+* birthday reflections
+* monthly summaries
+* first day of a new month
+* major streak milestones
+* anniversary of saved memories
+
+These should feel rare and memorable.
+
+---
+
+# USER EXPERIENCE GOAL
+
+The user should never feel like Nimbus is pulling from a quote database.
+
+The user should feel:
+
+"How did Nimbus notice that?"
+
+Every card should feel personal, contextual, reflective, and unique.
+
+Nimbus should behave like a quiet companion who has been reading the story of the user's life and occasionally leaves a thoughtful note in the margin.
