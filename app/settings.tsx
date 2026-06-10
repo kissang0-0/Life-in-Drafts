@@ -242,25 +242,6 @@ export default function SettingsScreen() {
           )}
         </View>
 
-        {/* Vault */}
-        <Text style={[styles.sectionLabel, { color: colors.textMuted }]}>Secret Vault</Text>
-        <TouchableOpacity
-          style={[styles.vaultCard, { shadowColor: colors.shadowDeep }]}
-          onPress={() => router.push('/vault')}
-          activeOpacity={0.85}
-        >
-          <View style={styles.vaultLeft}>
-            <View style={styles.vaultIconCircle}>
-              <Ionicons name="lock-closed" size={20} color="#7EC8E3" />
-            </View>
-            <View>
-              <Text style={styles.vaultTitle}>Secret Vault</Text>
-              <Text style={styles.vaultDesc}>Hidden entries, photos & messages</Text>
-            </View>
-          </View>
-          <Ionicons name="chevron-forward" size={16} color="rgba(255,255,255,0.4)" />
-        </TouchableOpacity>
-
         {/* Emergency Lock */}
         {hasPIN && (
           <>
@@ -371,20 +352,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1,
   },
   pickerText: { fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
-  vaultCard: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    backgroundColor: '#1A1A2E', borderRadius: 16, padding: 18, marginBottom: 16,
-    shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 4,
-    borderWidth: 1, borderColor: 'rgba(126,200,227,0.15)',
-  },
-  vaultLeft: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  vaultIconCircle: {
-    width: 44, height: 44, borderRadius: 22,
-    backgroundColor: 'rgba(126,200,227,0.1)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  vaultTitle: { color: '#fff', fontSize: 15, fontFamily: 'Nunito_700Bold' },
-  vaultDesc: { color: 'rgba(255,255,255,0.45)', fontSize: 12, fontFamily: 'Nunito_400Regular', marginTop: 2 },
   emergencyBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
     padding: 16, borderRadius: 16, borderWidth: 1, marginBottom: 16,
