@@ -24,6 +24,14 @@ export default function MoreScreen() {
 
   const items = [
     {
+      icon: 'partly-sunny-outline' as const,
+      label: 'Cloud Corner',
+      subtitle: 'Your emotional weather & insights',
+      count: null,
+      color: '#5BB8D4',
+      route: '/(tabs)/cloud' as const,
+    },
+    {
       icon: 'leaf-outline' as const,
       label: 'Mood Garden',
       subtitle: 'Your emotional garden in bloom',
@@ -38,6 +46,14 @@ export default function MoreScreen() {
       count: memorySlips.length,
       color: '#A78BFA',
       route: '/(tabs)/memoryjar' as const,
+    },
+    {
+      icon: 'shield-outline' as const,
+      label: 'Secret Vault',
+      subtitle: 'Your hidden sanctuary',
+      count: null,
+      color: '#7A6AB0',
+      route: '/(tabs)/vault' as const,
     },
     {
       icon: 'settings-outline' as const,

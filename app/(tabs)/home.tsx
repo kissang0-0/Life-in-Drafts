@@ -88,10 +88,12 @@ export default function HomeScreen() {
           </TouchableOpacity>
         )}
         <TouchableOpacity
-          style={[styles.avatarBtn, { backgroundColor: colors.primary }]}
-          onPress={() => router.push('/settings')}
+          style={[styles.nestBtn, { backgroundColor: colors.lavender + '60', borderColor: colors.lavenderDeep + '40' }]}
+          onPress={() => router.push('/(tabs)/nest')}
+          activeOpacity={0.8}
         >
-          <Ionicons name="person" size={18} color="#fff" />
+          <Ionicons name="chatbubble-ellipses-outline" size={15} color={colors.lavenderDeep} />
+          <Text style={[styles.nestBtnLabel, { color: colors.lavenderDeep }]}>Nimbus' Nest</Text>
         </TouchableOpacity>
       </View>
 
@@ -249,7 +251,11 @@ const styles = StyleSheet.create({
   greeting: { fontSize: 12, fontFamily: 'Nunito_600SemiBold', marginBottom: 2 },
   date: { fontSize: 17, fontFamily: 'Nunito_800ExtraBold' },
   iconBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  avatarBtn: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
+  nestBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 5,
+    paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1,
+  },
+  nestBtnLabel: { fontSize: 12, fontFamily: 'Nunito_700Bold' },
 
   /* Scroll */
   scroll: { flex: 1 },

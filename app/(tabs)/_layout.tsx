@@ -115,12 +115,11 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="cloud"
-        options={{
-          title: 'Cloud',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="partly-sunny-outline" size={size} color={color} />
-          ),
-        }}
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="vault"
+        options={{ href: null }}
       />
       <Tabs.Screen
         name="garden"
