@@ -5,6 +5,8 @@ const KEY = 'lid_what_lingers_v1';
 
 export type LogType = 'action' | 'urge';
 
+export type HabitType = 'vaping' | 'drinking' | 'general';
+
 export type EmotionalState =
   | 'overwhelmed'
   | 'stressed'
@@ -20,6 +22,7 @@ export type LingerLog = {
   date: string;
   timestamp: string;
   type: LogType;
+  habitType?: HabitType;
   what: string;
   emotionalState: EmotionalState;
   intensity: number;
@@ -155,6 +158,39 @@ export function getWeeklyReflection(logs: LingerLog[]): string | null {
   if (stateMeta) reflection += `It often appears when you feel ${stateMeta.label.toLowerCase()} ${stateMeta.emoji}. `;
   reflection += `I'm not here to change anything. Just to help you see it clearly.`;
   return reflection;
+}
+
+export function getHabitCount(logs: LingerLog[], habit: HabitType, days = 1): number {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - (days - 1));
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+  return logs.filter(l => l.habitType === habit && l.date >= cutoffStr).length;
+}
+
+export function getHabitWeekStreak(logs: LingerLog[], habit: HabitType): number {
+  const days: Set<string> = new Set(logs.filter(l => l.habitType === habit).map(l => l.date));
+  let streak = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    if (days.has(d.toISOString().split('T')[0])) streak++;
+    else break;
+  }
+  return streak;
+}
+
+export function getHabitNimbusResponse(habit: HabitType, countToday: number): string {
+  if (habit === 'vaping') {
+    if (countToday === 1) return "Logged. Noticing the first one is actually a big deal.";
+    if (countToday <= 3) return `${countToday} today. I'm not counting against you — just with you.`;
+    return `${countToday} today. Something in the day might be driving this. What's been heavy?`;
+  }
+  if (habit === 'drinking') {
+    if (countToday === 1) return "Logged. No judgment here — just awareness.";
+    if (countToday <= 2) return `${countToday} today. How are you feeling with it?`;
+    return `${countToday} today. I noticed. Are you doing okay?`;
+  }
+  return "Logged.";
 }
 
 export function getPatternInsight(logs: LingerLog[]): string | null {

@@ -156,125 +156,44 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* ── Feature shortcuts: Row 1 ── */}
-        <View style={styles.featureRow}>
-          <TouchableOpacity
-            onPress={() => router.push('/(tabs)/forkcast' as any)}
-            activeOpacity={0.8}
-            style={styles.featureCardWrap}
-          >
-            <LinearGradient
-              colors={['#5DB87A22', '#FFCA6B22']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.featureCard, { borderColor: '#5DB87A55' }]}
+        {/* ── Feature shortcuts: explicit 3×2 grid ── */}
+        {(() => {
+          const CARDS = [
+            { route: '/(tabs)/forkcast',    colors: ['#5DB87A22','#FFCA6B22'] as [string,string], border: '#5DB87A55', iconBg: '#5DB87A25', icon: 'nutrition-outline',  color: '#5DB87A', title: 'Forkcast',      sub: 'Meals & calories'   },
+            { route: '/(tabs)/siphappens',  colors: ['#7EC8E322','#C9AEED22'] as [string,string], border: '#7EC8E355', iconBg: '#7EC8E325', icon: 'water-outline',      color: '#7EC8E3', title: 'Sip Happens',  sub: 'Hydration tracker'  },
+            { route: '/(tabs)/lightsout',   colors: ['#1A2F5E18','#C9AEED18'] as [string,string], border: '#C9AEED50', iconBg: '#1A2F5E18', icon: 'moon-outline',       color: '#8B9DC3', title: 'Lights Out',   sub: 'Sleep tracker'      },
+            { route: '/(tabs)/whatlingers', colors: ['#D4D8E840','#E8EAF020'] as [string,string], border: '#B0B8D055', iconBg: '#B0B8D025', icon: 'eye-outline',        color: '#6B7A9F', title: 'What Lingers', sub: 'Pattern awareness'  },
+            { route: '/(tabs)/barefaced',   colors: ['#E8F0FF40','#D4E4F820'] as [string,string], border: '#B8C8E055', iconBg: '#B8C8E025', icon: 'sparkles-outline',   color: '#7A9FC9', title: 'Barefaced',    sub: 'Skincare ritual'    },
+            { route: '/(tabs)/cycle',       colors: ['#C9AEED22','#7EC8E322'] as [string,string], border: '#C9AEED55', iconBg: '#C9AEED25', icon: 'moon-outline',       color: '#C9AEED', title: 'Cycle',        sub: '& Error'            },
+          ];
+          const renderCard = (item: typeof CARDS[0]) => (
+            <TouchableOpacity
+              key={item.title}
+              onPress={() => router.push(item.route as any)}
+              activeOpacity={0.8}
+              style={styles.featureCardWrap}
             >
-              <View style={[styles.featureIconWrap, { backgroundColor: '#5DB87A25' }]}>
-                <Ionicons name="nutrition-outline" size={24} color="#5DB87A" />
-              </View>
-              <Text style={[styles.featureTitle, { color: colors.navy }]}>Forkcast</Text>
-              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Meals & calories</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => router.push('/(tabs)/siphappens' as any)}
-            activeOpacity={0.8}
-            style={styles.featureCardWrap}
-          >
-            <LinearGradient
-              colors={['#7EC8E322', '#C9AEED22']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.featureCard, { borderColor: '#7EC8E355' }]}
-            >
-              <View style={[styles.featureIconWrap, { backgroundColor: '#7EC8E325' }]}>
-                <Ionicons name="water-outline" size={24} color="#7EC8E3" />
-              </View>
-              <Text style={[styles.featureTitle, { color: colors.navy }]}>Sip Happens</Text>
-              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Hydration tracker</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => router.push('/(tabs)/lightsout' as any)}
-            activeOpacity={0.8}
-            style={styles.featureCardWrap}
-          >
-            <LinearGradient
-              colors={['#1A2F5E18', '#C9AEED18']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.featureCard, { borderColor: '#C9AEED50' }]}
-            >
-              <View style={[styles.featureIconWrap, { backgroundColor: '#1A2F5E18' }]}>
-                <Ionicons name="moon-outline" size={24} color="#8B9DC3" />
-              </View>
-              <Text style={[styles.featureTitle, { color: colors.navy }]}>Lights Out</Text>
-              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Sleep tracker</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-
-        {/* ── Row 2: What Lingers + Barefaced + Cycle & Error ── */}
-        <View style={styles.featureRow}>
-          <TouchableOpacity
-            onPress={() => router.push('/(tabs)/whatlingers' as any)}
-            activeOpacity={0.8}
-            style={styles.featureCardWrap}
-          >
-            <LinearGradient
-              colors={['#D4D8E840', '#E8EAF020']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.featureCard, { borderColor: '#B0B8D055' }]}
-            >
-              <View style={[styles.featureIconWrap, { backgroundColor: '#B0B8D025' }]}>
-                <Ionicons name="eye-outline" size={24} color="#6B7A9F" />
-              </View>
-              <Text style={[styles.featureTitle, { color: colors.navy }]}>What Lingers</Text>
-              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Pattern awareness</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => router.push('/(tabs)/barefaced' as any)}
-            activeOpacity={0.8}
-            style={styles.featureCardWrap}
-          >
-            <LinearGradient
-              colors={['#E8F0FF40', '#D4E4F820']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.featureCard, { borderColor: '#B8C8E055' }]}
-            >
-              <View style={[styles.featureIconWrap, { backgroundColor: '#B8C8E025' }]}>
-                <Ionicons name="sparkles-outline" size={24} color="#7A9FC9" />
-              </View>
-              <Text style={[styles.featureTitle, { color: colors.navy }]}>Barefaced</Text>
-              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Skincare ritual</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => router.push('/(tabs)/cycle' as any)}
-            activeOpacity={0.8}
-            style={styles.featureCardWrap}
-          >
-            <LinearGradient
-              colors={['#C9AEED22', '#7EC8E322']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.featureCard, { borderColor: '#C9AEED55' }]}
-            >
-              <View style={[styles.featureIconWrap, { backgroundColor: '#C9AEED25' }]}>
-                <Ionicons name="moon-outline" size={24} color="#C9AEED" />
-              </View>
-              <Text style={[styles.featureTitle, { color: colors.navy }]}>Cycle</Text>
-              <Text style={[styles.featureSub, { color: colors.textMuted }]}>& Error</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+              <LinearGradient
+                colors={item.colors}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={[styles.featureCard, { borderColor: item.border }]}
+              >
+                <View style={[styles.featureIconWrap, { backgroundColor: item.iconBg }]}>
+                  <Ionicons name={item.icon as any} size={24} color={item.color} />
+                </View>
+                <Text style={[styles.featureTitle, { color: colors.navy }]}>{item.title}</Text>
+                <Text style={[styles.featureSub, { color: colors.textMuted }]}>{item.sub}</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          );
+          return (
+            <View style={styles.featureGrid}>
+              <View style={styles.featureRow}>{CARDS.slice(0, 3).map(renderCard)}</View>
+              <View style={styles.featureRow}>{CARDS.slice(3, 6).map(renderCard)}</View>
+            </View>
+          );
+        })()}
 
         {/* ── Recent entries ── */}
         {recentEntries.length > 0 && (
@@ -410,20 +329,21 @@ const styles = StyleSheet.create({
   lingerTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold' },
   lingerSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', fontStyle: 'italic', marginTop: 1 },
 
-  /* Feature shortcut cards */
+  /* Feature shortcut cards — explicit 3×2 grid */
+  featureGrid: { gap: 10 },
   featureRow: { flexDirection: 'row', gap: 10 },
-  featureCardWrap: { flex: 1 },
+  featureCardWrap: { flex: 1, height: 118 },
   featureCard: {
-    borderRadius: 20, borderWidth: 1.5,
-    paddingVertical: 18, paddingHorizontal: 14,
-    alignItems: 'center', gap: 8,
+    flex: 1, borderRadius: 20, borderWidth: 1.5,
+    paddingVertical: 14, paddingHorizontal: 8,
+    alignItems: 'center', justifyContent: 'center', gap: 6,
   },
   featureIconWrap: {
-    width: 50, height: 50, borderRadius: 16,
+    width: 46, height: 46, borderRadius: 14,
     alignItems: 'center', justifyContent: 'center',
   },
-  featureTitle: { fontSize: 14, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
-  featureSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', textAlign: 'center' },
+  featureTitle: { fontSize: 12, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
+  featureSub: { fontSize: 10, fontFamily: 'Nunito_400Regular', textAlign: 'center' },
 
   /* Sections */
   section: { gap: 10 },

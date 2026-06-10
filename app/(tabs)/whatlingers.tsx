@@ -13,8 +13,9 @@ import {
   loadLingers, saveLingers, todayWLStr, getStateMeta,
   getRecentLogs, getMostCommonHour, getMostCommonState,
   getWeeklyReflection, getPatternInsight, getNimbusLingerResponse,
+  getHabitCount, getHabitWeekStreak, getHabitNimbusResponse,
   formatHour, isNightTime,
-  type WhatLingersStore, type LingerLog, type LogType, type EmotionalState,
+  type WhatLingersStore, type LingerLog, type LogType, type EmotionalState, type HabitType,
 } from '@/lib/whatLingersData';
 
 const EMOTIONAL_STATES: EmotionalState[] = [
@@ -66,6 +67,7 @@ export default function WhatLingersScreen() {
       date: todayWLStr(),
       timestamp: now.toISOString(),
       type: logType,
+      habitType: 'general',
       what: what.trim(),
       emotionalState,
       intensity,
@@ -90,6 +92,35 @@ export default function WhatLingersScreen() {
     setTimeout(() => setShowResponse(false), 8000);
   };
 
+  const handleHabitLog = async (habit: HabitType) => {
+    if (!store) return;
+    const now = new Date();
+    const label = habit === 'vaping' ? 'Vaped' : 'Drank';
+    const newLog: LingerLog = {
+      id: Date.now().toString(),
+      date: todayWLStr(),
+      timestamp: now.toISOString(),
+      type: 'action',
+      habitType: habit,
+      what: label,
+      emotionalState: 'neutral',
+      intensity: 3,
+      notes: '',
+      hourOfDay: now.getHours(),
+    };
+    const updated: WhatLingersStore = {
+      ...store,
+      logs: [newLog, ...store.logs],
+    };
+    await saveLingers(updated);
+    setStore(updated);
+    const todayCount = getHabitCount(updated.logs, habit, 1);
+    const response = getHabitNimbusResponse(habit, todayCount);
+    setNimbusResponse(response);
+    setShowResponse(true);
+    setTimeout(() => setShowResponse(false), 7000);
+  };
+
   if (!store) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -109,6 +140,11 @@ export default function WhatLingersScreen() {
   const weeklyReflection = getWeeklyReflection(recent7);
   const patternInsight = getPatternInsight(store.logs.slice(0, 20));
   const isNight = isNightTime(new Date().getHours());
+
+  const vapingToday = getHabitCount(store.logs, 'vaping', 1);
+  const drinkingToday = getHabitCount(store.logs, 'drinking', 1);
+  const vapingWeek = getHabitCount(store.logs, 'vaping', 7);
+  const drinkingWeek = getHabitCount(store.logs, 'drinking', 7);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -163,6 +199,61 @@ export default function WhatLingersScreen() {
             <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
           </LinearGradient>
         </TouchableOpacity>
+
+        {/* ── Habit trackers: Vaping & Drinking ── */}
+        <View style={styles.habitRow}>
+          {/* Vaping */}
+          <TouchableOpacity
+            onPress={() => handleHabitLog('vaping')}
+            activeOpacity={0.8}
+            style={styles.habitCardWrap}
+          >
+            <LinearGradient
+              colors={['#B0C4DE22', '#8B9DC322']}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              style={[styles.habitCard, { borderColor: '#8B9DC355' }]}
+            >
+              <View style={styles.habitCardTop}>
+                <Text style={styles.habitEmoji}>🚬</Text>
+                <View style={[styles.habitCountBadge, { backgroundColor: vapingToday > 0 ? '#8B9DC330' : 'transparent', borderColor: '#8B9DC350' }]}>
+                  <Text style={[styles.habitCountNum, { color: vapingToday > 0 ? '#4A5F8A' : colors.textMuted }]}>
+                    {vapingToday}
+                  </Text>
+                </View>
+              </View>
+              <Text style={[styles.habitTitle, { color: colors.navy }]}>Vaping</Text>
+              <Text style={[styles.habitSub, { color: colors.textMuted }]}>
+                {vapingWeek > 0 ? `${vapingWeek} this week` : 'Tap to log'}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* Drinking */}
+          <TouchableOpacity
+            onPress={() => handleHabitLog('drinking')}
+            activeOpacity={0.8}
+            style={styles.habitCardWrap}
+          >
+            <LinearGradient
+              colors={['#FFCA6B18', '#F4A26118']}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              style={[styles.habitCard, { borderColor: '#FFCA6B55' }]}
+            >
+              <View style={styles.habitCardTop}>
+                <Text style={styles.habitEmoji}>🍺</Text>
+                <View style={[styles.habitCountBadge, { backgroundColor: drinkingToday > 0 ? '#FFCA6B30' : 'transparent', borderColor: '#FFCA6B50' }]}>
+                  <Text style={[styles.habitCountNum, { color: drinkingToday > 0 ? '#A07820' : colors.textMuted }]}>
+                    {drinkingToday}
+                  </Text>
+                </View>
+              </View>
+              <Text style={[styles.habitTitle, { color: colors.navy }]}>Drinking</Text>
+              <Text style={[styles.habitSub, { color: colors.textMuted }]}>
+                {drinkingWeek > 0 ? `${drinkingWeek} this week` : 'Tap to log'}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
 
         {/* Pattern insight */}
         {patternInsight && (
@@ -553,4 +644,20 @@ const styles = StyleSheet.create({
 
   saveBtn: { borderRadius: 16, padding: 15, alignItems: 'center', marginTop: 4 },
   saveBtnText: { fontSize: 16, fontFamily: 'Nunito_700Bold' },
+
+  habitRow: { flexDirection: 'row', gap: 12 },
+  habitCardWrap: { flex: 1 },
+  habitCard: {
+    borderRadius: 20, borderWidth: 1.5,
+    padding: 16, gap: 4,
+  },
+  habitCardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  habitEmoji: { fontSize: 24 },
+  habitCountBadge: {
+    minWidth: 32, height: 32, borderRadius: 10, borderWidth: 1,
+    alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6,
+  },
+  habitCountNum: { fontSize: 16, fontFamily: 'Nunito_800ExtraBold' },
+  habitTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold' },
+  habitSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', fontStyle: 'italic' },
 });
