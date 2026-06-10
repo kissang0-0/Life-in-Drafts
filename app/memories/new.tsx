@@ -101,7 +101,7 @@ export default function NewMemory() {
         showsVerticalScrollIndicator={false}
       >
         {/* Polaroid preview */}
-        <View style={[styles.polaroidPreview, { backgroundColor: frameColor }]}>
+        <View style={[styles.polaroidPreview, { backgroundColor: frameColor, marginBottom: 16 }]}>
           {photoUri ? (
             <Image source={{ uri: photoUri }} style={styles.previewPhoto} resizeMode="cover" />
           ) : (
@@ -131,10 +131,10 @@ export default function NewMemory() {
           </View>
         </View>
 
-        {photoUri && (
+        {!!photoUri && (
           <TouchableOpacity
             onPress={handlePickPhoto}
-            style={[styles.changePhotoBtn, { borderColor: colors.border }]}
+            style={[styles.changePhotoBtn, { borderColor: colors.border, marginBottom: 16 }]}
           >
             <Ionicons name="swap-horizontal-outline" size={16} color={colors.textMuted} />
             <Text style={[styles.changePhotoText, { color: colors.textMuted }]}>Change photo</Text>
@@ -142,7 +142,7 @@ export default function NewMemory() {
         )}
 
         {/* Date */}
-        <View style={[styles.field, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.field, { backgroundColor: colors.surface, borderColor: colors.border, marginBottom: 16 }]}>
           <Ionicons name="calendar-outline" size={18} color={colors.textMuted} />
           <TextInput
             style={[styles.fieldInput, { color: colors.text, fontFamily: 'Nunito_400Regular' }]}
@@ -154,19 +154,21 @@ export default function NewMemory() {
         </View>
 
         {/* Frame color */}
-        <Text style={[styles.frameLabel, { color: colors.text }]}>Frame color</Text>
-        <View style={styles.colorRow}>
-          {FRAME_COLORS.map((c) => (
-            <TouchableOpacity
-              key={c}
-              onPress={() => setFrameColor(c)}
-              style={[
-                styles.colorDot,
-                { backgroundColor: c, borderColor: colors.border, borderWidth: 1 },
-                frameColor === c && { borderWidth: 2.5, borderColor: colors.navy },
-              ]}
-            />
-          ))}
+        <View style={{ marginBottom: 8 }}>
+          <Text style={[styles.frameLabel, { color: colors.text, marginBottom: 10 }]}>Frame color</Text>
+          <View style={styles.colorRow}>
+            {FRAME_COLORS.map((c) => (
+              <TouchableOpacity
+                key={c}
+                onPress={() => setFrameColor(c)}
+                style={[
+                  styles.colorDot,
+                  { backgroundColor: c, borderColor: colors.border, borderWidth: 1 },
+                  frameColor === c && { borderWidth: 2.5, borderColor: colors.navy },
+                ]}
+              />
+            ))}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
   headerTitle: { flex: 1, fontSize: 17, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
   saveBtn: { paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20 },
   saveBtnText: { color: '#fff', fontFamily: 'Nunito_700Bold', fontSize: 14 },
-  scroll: { paddingHorizontal: 24, paddingTop: 24, gap: 16 },
+  scroll: { paddingHorizontal: 24, paddingTop: 24 },
   polaroidPreview: {
     borderRadius: 4, padding: 10, paddingBottom: 16, alignSelf: 'center', width: '85%',
     shadowColor: '#000', shadowOffset: { width: 2, height: 4 }, shadowOpacity: 0.12, shadowRadius: 10, elevation: 6,
