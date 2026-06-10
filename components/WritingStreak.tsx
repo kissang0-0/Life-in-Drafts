@@ -10,7 +10,13 @@ function computeStreak(entries: DiaryEntry[]): number {
   if (entries.length === 0) return 0;
 
   const days = new Set(
-    entries.map((e) => e.createdAt.toISOString().split('T')[0])
+    entries.map((e) => {
+      const raw = e.createdAt as any;
+      const d: Date = raw && typeof raw.toDate === 'function'
+        ? raw.toDate()
+        : raw instanceof Date ? raw : new Date(raw);
+      return d.toISOString().split('T')[0];
+    })
   );
 
   let streak = 0;
