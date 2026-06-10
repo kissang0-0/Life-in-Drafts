@@ -216,6 +216,28 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* ── What Lingers ── */}
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/whatlingers' as any)}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={['#D4D8E840', '#E8EAF020']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[styles.lingerCard, { borderColor: '#B0B8D055' }]}
+          >
+            <View style={[styles.lingerIconWrap, { backgroundColor: '#B0B8D025' }]}>
+              <Ionicons name="eye-outline" size={22} color="#6B7A9F" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.lingerTitle, { color: colors.navy }]}>What Lingers</Text>
+              <Text style={[styles.lingerSub, { color: colors.textMuted }]}>Pattern awareness · not judgment</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+          </LinearGradient>
+        </TouchableOpacity>
+
         {/* ── Recent entries ── */}
         {recentEntries.length > 0 && (
           <View style={styles.section}>
@@ -336,6 +358,19 @@ const styles = StyleSheet.create({
   moodSetEmoji: { fontSize: 20 },
   moodSetText: { flex: 1, fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
   moodClear: { padding: 2 },
+
+  /* What Lingers card */
+  lingerCard: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    borderRadius: 20, borderWidth: 1.5,
+    paddingHorizontal: 16, paddingVertical: 15,
+  },
+  lingerIconWrap: {
+    width: 44, height: 44, borderRadius: 14,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  lingerTitle: { fontSize: 15, fontFamily: 'Nunito_700Bold' },
+  lingerSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', fontStyle: 'italic', marginTop: 1 },
 
   /* Feature shortcut cards */
   featureRow: { flexDirection: 'row', gap: 10 },

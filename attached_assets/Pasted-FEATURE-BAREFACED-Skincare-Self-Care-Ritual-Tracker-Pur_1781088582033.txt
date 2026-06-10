@@ -1,0 +1,243 @@
+FEATURE: BAREFACED
+Skincare & Self-Care Ritual Tracker
+Purpose
+
+Create a skincare and self-care tracking feature called Barefaced.
+
+Barefaced is not just a checklist. It is a gentle ritual tracker that helps the user care for their skin, notice patterns, and build consistency without pressure.
+
+It should feel like a calming mirror moment, not a beauty standard app.
+
+It connects with:
+
+Lights Out (sleep quality affects skin)
+Sip Happens (hydration affects skin glow)
+Forkcast (nutrition affects skin health)
+Glow Cycle (hormonal changes)
+Nimbus (self-care reminders)
+Visual Concept
+
+Barefaced is designed like a soft mirror interface.
+
+Frosted glass panels
+Gentle reflections
+Blue-white lighting
+Floating skincare icons (not emojis)
+
+Skin is represented as a living glow meter, not a score.
+
+Main Dashboard
+
+Display:
+
+Today’s Skin State
+
+Example:
+
+Skin Status:
+Calm 🌿
+
+Hydration Glow:
+Moderate
+
+Sensitivity:
+Low
+
+Overall Feel:
+Balanced
+Routine Tracking System
+
+Split into:
+
+🌅 Morning Routine
+Cleanser
+Toner
+Serum
+Moisturizer
+Sunscreen
+🌙 Night Routine
+Makeup removal
+Cleanser
+Treatment
+Moisturizer
+
+Each step can be checked off.
+
+Quick Log System
+
+Allow fast logging:
+
+“Completed Morning Routine”
+“Completed Night Routine”
+
+Or step-by-step mode for detailed users.
+
+Product Library
+
+Allow user to save skincare products:
+
+For each product:
+
+Name
+Type (cleanser, toner, etc.)
+Skin type compatibility
+Notes
+Photo
+
+Example:
+
+Product:
+Gentle Hydrating Cleanser
+
+Type:
+Cleanser
+
+Notes:
+Helps with dryness
+Skin Condition Check-In
+
+Daily prompt:
+
+“How is your skin feeling today?”
+
+Options:
+
+🌿 Calm
+💧 Hydrated
+🔥 Breaking Out
+🌬 Dry
+🌸 Glowing
+⚡ Sensitive
+
+This updates insights over time.
+
+Progress Photos
+
+Allow optional:
+
+Weekly skin photos
+Monthly comparison view
+
+Stored privately.
+
+Option:
+
+Move to Secret Vault
+
+Barefaced Mirror Mode
+
+A calming reflection screen:
+
+Soft animated mirror
+Subtle glow changes based on routine completion
+
+If routines are completed:
+
+Mirror becomes clearer
+
+If not:
+
+Slight fog remains
+
+Nimbus Skincare Companion
+
+Nimbus responds gently:
+
+“You took care of your skin today. That consistency matters.”
+
+“Even on tired days, small care still counts.”
+
+“Your skin doesn’t need perfection, just care.”
+
+Integration with Lights Out
+
+If sleep is poor:
+
+Skin sensitivity increases
+Mirror becomes slightly foggier
+Nimbus notes:
+
+“Rest might help your skin feel calmer tomorrow.”
+
+Integration with Sip Happens
+
+Hydration affects glow:
+
+High hydration → brighter glow meter
+Low hydration → duller reflection
+Integration with Forkcast
+
+Nutrition affects skin:
+
+High protein consistency → improved glow trend
+High sugar days → slight sensitivity increase (gentle wording only)
+Glow Meter System
+
+Instead of scores:
+
+Display:
+
+Calm Glow 🌿
+Soft Glow 💧
+Radiant Glow ✨
+
+Never numeric ratings.
+
+Routine Streaks
+
+Track consistency:
+
+Morning Routine Streak:
+6 Days
+
+Night Routine Streak:
+4 Days
+
+Reward consistency, not perfection.
+
+Achievements
+
+Examples:
+
+🫧 First Cleanse
+🌿 Calm Skin Week
+✨ Radiant Routine
+💧 Hydration Glow Up
+
+Empty State
+
+Display:
+
+A foggy mirror with Nimbus wiping it gently.
+
+Message:
+
+“Care starts with showing up once.”
+
+Button:
+
+Start First Routine
+
+Cloud Corner Insights
+
+Examples:
+
+“Your skin tends to feel calmer after 2+ nights of good sleep.”
+“Hydration improves your glow consistency.”
+“Stress days correlate with increased sensitivity.”
+
+Always gentle, never judgmental.
+
+User Experience Goal
+
+Barefaced should feel like:
+
+A soft morning and night ritual
+A moment of self-care awareness
+A mirror that reflects habits, not insecurities
+
+It is not about appearance.
+
+It is about care consistency inside:
+
+The Archive of Becoming 🌙✨

@@ -144,6 +144,10 @@ export default function TabsLayout() {
         name="lightsout"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="whatlingers"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }
