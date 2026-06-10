@@ -148,6 +148,10 @@ export default function TabsLayout() {
         name="whatlingers"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="barefaced"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

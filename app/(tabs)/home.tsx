@@ -216,27 +216,46 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* ── What Lingers ── */}
-        <TouchableOpacity
-          onPress={() => router.push('/(tabs)/whatlingers' as any)}
-          activeOpacity={0.8}
-        >
-          <LinearGradient
-            colors={['#D4D8E840', '#E8EAF020']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={[styles.lingerCard, { borderColor: '#B0B8D055' }]}
+        {/* ── Row 2: What Lingers + Barefaced ── */}
+        <View style={styles.featureRow}>
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/whatlingers' as any)}
+            activeOpacity={0.8}
+            style={styles.featureCardWrap}
           >
-            <View style={[styles.lingerIconWrap, { backgroundColor: '#B0B8D025' }]}>
-              <Ionicons name="eye-outline" size={22} color="#6B7A9F" />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={[styles.lingerTitle, { color: colors.navy }]}>What Lingers</Text>
-              <Text style={[styles.lingerSub, { color: colors.textMuted }]}>Pattern awareness · not judgment</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={['#D4D8E840', '#E8EAF020']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.featureCard, { borderColor: '#B0B8D055' }]}
+            >
+              <View style={[styles.featureIconWrap, { backgroundColor: '#B0B8D025' }]}>
+                <Ionicons name="eye-outline" size={24} color="#6B7A9F" />
+              </View>
+              <Text style={[styles.featureTitle, { color: colors.navy }]}>What Lingers</Text>
+              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Pattern awareness</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/barefaced' as any)}
+            activeOpacity={0.8}
+            style={styles.featureCardWrap}
+          >
+            <LinearGradient
+              colors={['#E8F0FF40', '#D4E4F820']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.featureCard, { borderColor: '#B8C8E055' }]}
+            >
+              <View style={[styles.featureIconWrap, { backgroundColor: '#B8C8E025' }]}>
+                <Ionicons name="sparkles-outline" size={24} color="#7A9FC9" />
+              </View>
+              <Text style={[styles.featureTitle, { color: colors.navy }]}>Barefaced</Text>
+              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Skincare ritual</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
 
         {/* ── Recent entries ── */}
         {recentEntries.length > 0 && (
