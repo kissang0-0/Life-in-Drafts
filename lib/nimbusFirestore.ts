@@ -1,5 +1,5 @@
 import {
-  collection, doc, addDoc, updateDoc, getDocs,
+  collection, doc, addDoc, updateDoc, getDocs, deleteDoc,
   query, orderBy, limit, onSnapshot, serverTimestamp, Timestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
@@ -49,6 +49,11 @@ export const addNimbusChatMsg = (
 
 export const toggleFavoriteMsg = (uid: string, msgId: string, isFavorite: boolean) =>
   updateDoc(doc(chatRef(uid), msgId), { isFavorite });
+
+export const deleteAllNimbusChats = async (uid: string): Promise<void> => {
+  const snap = await getDocs(chatRef(uid));
+  await Promise.all(snap.docs.map((d) => deleteDoc(doc(chatRef(uid), d.id))));
+};
 
 export const getLastCheckinDate = async (uid: string): Promise<string | null> => {
   try {

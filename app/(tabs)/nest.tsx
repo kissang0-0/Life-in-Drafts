@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import {
   View, Text, StyleSheet, TextInput, TouchableOpacity,
   FlatList, KeyboardAvoidingView, Platform, Animated,
-  ScrollView, Pressable,
+  ScrollView, Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,7 +15,7 @@ import { buildNimbusContext, getRandomMemory } from '@/lib/nimbusContext';
 import { sendToNimbus, type ChatMsg } from '@/lib/nimbusApi';
 import {
   subscribeNimbusChats, addNimbusChatMsg, toggleFavoriteMsg,
-  getLastCheckinDate, type NimbusChatMsg,
+  deleteAllNimbusChats, getLastCheckinDate, type NimbusChatMsg,
 } from '@/lib/nimbusFirestore';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -391,6 +391,31 @@ export default function NestScreen() {
     toggleFavoriteMsg(user.uid, id, isFav).catch(() => {});
   }, [user]);
 
+  const handleDeleteConversation = useCallback(() => {
+    if (!user || messages.length === 0) return;
+    Alert.alert(
+      'Clear conversation?',
+      'This will permanently delete all messages with Nimbus. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Clear',
+          style: 'destructive',
+          onPress: async () => {
+            setMessages([]);
+            historyRef.current = [];
+            setActiveMode(null);
+            try {
+              await deleteAllNimbusChats(user.uid);
+            } catch {
+              // Already cleared locally
+            }
+          },
+        },
+      ]
+    );
+  }, [user, messages.length]);
+
   const showEmpty = hasLoaded && messages.length === 0 && !isTyping;
 
   const renderItem = useCallback(({ item }: { item: DisplayMsg }) => (
@@ -434,12 +459,23 @@ export default function NestScreen() {
               <Text style={[styles.headerSub, { color: '#4A6A85' }]}>A place to think out loud.</Text>
             </View>
           </View>
-          <TouchableOpacity
-            onPress={() => setShowQuickPanel((v) => !v)}
-            style={[styles.sparkBtn, { backgroundColor: showQuickPanel ? '#5BB8D430' : '#FFFFFF50' }]}
-          >
-            <Ionicons name="sparkles-outline" size={18} color="#0F2744" />
-          </TouchableOpacity>
+          <View style={styles.headerActions}>
+            {messages.length > 0 && (
+              <TouchableOpacity
+                onPress={handleDeleteConversation}
+                style={[styles.sparkBtn, { backgroundColor: '#FFFFFF50' }]}
+                hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+              >
+                <Ionicons name="trash-outline" size={16} color="#0F2744" />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              onPress={() => setShowQuickPanel((v) => !v)}
+              style={[styles.sparkBtn, { backgroundColor: showQuickPanel ? '#5BB8D430' : '#FFFFFF50' }]}
+            >
+              <Ionicons name="sparkles-outline" size={18} color="#0F2744" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Message list */}
@@ -560,6 +596,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: { fontSize: 19, fontFamily: 'Nunito_800ExtraBold' },
   headerSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', marginTop: 1 },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   sparkBtn: {
     width: 38, height: 38, borderRadius: 12,
     alignItems: 'center', justifyContent: 'center',
