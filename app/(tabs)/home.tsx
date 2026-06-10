@@ -25,12 +25,6 @@ import { updateHabit } from '@/lib/firestore';
 import { MOOD_OPTIONS } from '@/constants/nimbus';
 import { Habit } from '@/lib/firestore';
 
-const QUICK_ACTIONS = [
-  { icon: 'pencil',        label: 'Dear Me',  color: '#7EC8E3', route: '/diary/new'     },
-  { icon: 'camera',        label: 'Memory',   color: '#C9AEED', route: '/memories/new'  },
-  { icon: 'mail',          label: 'Unsent',   color: '#FFCA6B', route: '/unsent/new'    },
-  { icon: 'book',          label: 'Study',    color: '#98D4A3', route: '/study/index'   },
-] as const;
 
 export default function HomeScreen() {
   const colors = useColors();
@@ -162,22 +156,27 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* ── Quick actions ── */}
-        <View style={styles.quickRow}>
-          {QUICK_ACTIONS.map((qa) => (
-            <TouchableOpacity
-              key={qa.label}
-              onPress={() => router.push(qa.route as any)}
-              activeOpacity={0.8}
-              style={[styles.qaCard, { backgroundColor: qa.color + '18', borderColor: qa.color + '40' }]}
-            >
-              <View style={[styles.qaIcon, { backgroundColor: qa.color + '25' }]}>
-                <Ionicons name={qa.icon as any} size={20} color={qa.color} />
-              </View>
-              <Text style={[styles.qaLabel, { color: colors.navy }]}>{qa.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {/* ── Forkcast quick action ── */}
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/forkcast' as any)}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={['#5DB87A22', '#FFCA6B22']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[styles.forkcastCard, { borderColor: '#5DB87A55' }]}
+          >
+            <View style={[styles.forkcastIconWrap, { backgroundColor: '#5DB87A25' }]}>
+              <Ionicons name="nutrition-outline" size={26} color="#5DB87A" />
+            </View>
+            <View style={styles.forkcastText}>
+              <Text style={[styles.forkcastTitle, { color: colors.navy }]}>Forkcast</Text>
+              <Text style={[styles.forkcastSub, { color: colors.textMuted }]}>Track meals, calories & nutrition</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+          </LinearGradient>
+        </TouchableOpacity>
 
         {/* ── Recent entries ── */}
         {recentEntries.length > 0 && (
@@ -300,14 +299,19 @@ const styles = StyleSheet.create({
   moodSetText: { flex: 1, fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
   moodClear: { padding: 2 },
 
-  /* Quick actions */
-  quickRow: { flexDirection: 'row', gap: 10 },
-  qaCard: {
-    flex: 1, alignItems: 'center', gap: 7,
-    paddingVertical: 14, borderRadius: 18, borderWidth: 1.5,
+  /* Forkcast card */
+  forkcastCard: {
+    flexDirection: 'row', alignItems: 'center', gap: 14,
+    borderRadius: 20, borderWidth: 1.5,
+    paddingHorizontal: 16, paddingVertical: 16,
   },
-  qaIcon: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
-  qaLabel: { fontSize: 11, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
+  forkcastIconWrap: {
+    width: 50, height: 50, borderRadius: 16,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  forkcastText: { flex: 1, gap: 3 },
+  forkcastTitle: { fontSize: 16, fontFamily: 'Nunito_700Bold' },
+  forkcastSub: { fontSize: 12, fontFamily: 'Nunito_400Regular' },
 
   /* Sections */
   section: { gap: 10 },
