@@ -136,6 +136,10 @@ export default function TabsLayout() {
         name="forkcast"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="siphappens"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

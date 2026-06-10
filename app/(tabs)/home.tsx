@@ -156,27 +156,46 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* ── Forkcast quick action ── */}
-        <TouchableOpacity
-          onPress={() => router.push('/(tabs)/forkcast' as any)}
-          activeOpacity={0.8}
-        >
-          <LinearGradient
-            colors={['#5DB87A22', '#FFCA6B22']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={[styles.forkcastCard, { borderColor: '#5DB87A55' }]}
+        {/* ── Feature shortcuts ── */}
+        <View style={styles.featureRow}>
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/forkcast' as any)}
+            activeOpacity={0.8}
+            style={styles.featureCardWrap}
           >
-            <View style={[styles.forkcastIconWrap, { backgroundColor: '#5DB87A25' }]}>
-              <Ionicons name="nutrition-outline" size={26} color="#5DB87A" />
-            </View>
-            <View style={styles.forkcastText}>
-              <Text style={[styles.forkcastTitle, { color: colors.navy }]}>Forkcast</Text>
-              <Text style={[styles.forkcastSub, { color: colors.textMuted }]}>Track meals, calories & nutrition</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={['#5DB87A22', '#FFCA6B22']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.featureCard, { borderColor: '#5DB87A55' }]}
+            >
+              <View style={[styles.featureIconWrap, { backgroundColor: '#5DB87A25' }]}>
+                <Ionicons name="nutrition-outline" size={24} color="#5DB87A" />
+              </View>
+              <Text style={[styles.featureTitle, { color: colors.navy }]}>Forkcast</Text>
+              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Meals & calories</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/siphappens' as any)}
+            activeOpacity={0.8}
+            style={styles.featureCardWrap}
+          >
+            <LinearGradient
+              colors={['#7EC8E322', '#C9AEED22']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.featureCard, { borderColor: '#7EC8E355' }]}
+            >
+              <View style={[styles.featureIconWrap, { backgroundColor: '#7EC8E325' }]}>
+                <Ionicons name="water-outline" size={24} color="#7EC8E3" />
+              </View>
+              <Text style={[styles.featureTitle, { color: colors.navy }]}>Sip Happens</Text>
+              <Text style={[styles.featureSub, { color: colors.textMuted }]}>Hydration tracker</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
 
         {/* ── Recent entries ── */}
         {recentEntries.length > 0 && (
@@ -299,19 +318,20 @@ const styles = StyleSheet.create({
   moodSetText: { flex: 1, fontSize: 14, fontFamily: 'Nunito_600SemiBold' },
   moodClear: { padding: 2 },
 
-  /* Forkcast card */
-  forkcastCard: {
-    flexDirection: 'row', alignItems: 'center', gap: 14,
+  /* Feature shortcut cards */
+  featureRow: { flexDirection: 'row', gap: 10 },
+  featureCardWrap: { flex: 1 },
+  featureCard: {
     borderRadius: 20, borderWidth: 1.5,
-    paddingHorizontal: 16, paddingVertical: 16,
+    paddingVertical: 18, paddingHorizontal: 14,
+    alignItems: 'center', gap: 8,
   },
-  forkcastIconWrap: {
+  featureIconWrap: {
     width: 50, height: 50, borderRadius: 16,
     alignItems: 'center', justifyContent: 'center',
   },
-  forkcastText: { flex: 1, gap: 3 },
-  forkcastTitle: { fontSize: 16, fontFamily: 'Nunito_700Bold' },
-  forkcastSub: { fontSize: 12, fontFamily: 'Nunito_400Regular' },
+  featureTitle: { fontSize: 14, fontFamily: 'Nunito_700Bold', textAlign: 'center' },
+  featureSub: { fontSize: 11, fontFamily: 'Nunito_400Regular', textAlign: 'center' },
 
   /* Sections */
   section: { gap: 10 },

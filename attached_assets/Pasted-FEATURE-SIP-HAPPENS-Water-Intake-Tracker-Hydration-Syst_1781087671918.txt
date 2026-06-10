@@ -1,0 +1,196 @@
+FEATURE: SIP HAPPENS
+Water Intake Tracker (Hydration System)
+Purpose
+
+Create a hydration tracking feature called Sip Happens.
+
+This feature helps the user build a consistent water intake habit in a cute, visual, and satisfying way.
+
+It should feel light, rewarding, and integrated into daily life—not like a strict health requirement.
+
+Sip Happens is deeply connected to:
+
+Forkcast (nutrition)
+Mood Garden (emotional state)
+Glow Cycle (wellness system)
+Cloud Corner (insights)
+Nimbus (companion encouragement)
+Visual Concept
+
+Water is represented as a living cloud system.
+
+Instead of bottles or glasses:
+
+A soft blue cloud floats on screen
+It fills with rain droplets as the user drinks water
+When hydrated, the cloud becomes bright and fluffy
+When dehydrated, it becomes small and sleepy
+
+Everything should feel soft, cute, and animated.
+
+Main Dashboard
+
+Display:
+
+Daily Hydration Cloud
+
+Show:
+
+Current intake
+Daily goal
+Progress animation
+
+Example:
+
+Water Intake:
+5 / 8 glasses
+
+Cloud Status:
+Partially Rainy ☁️🌧
+Water Logging System
+
+Allow users to log water in:
+
+Glasses (250ml default)
+Bottles (500ml / 750ml / 1L)
+Custom ml input
+
+Quick buttons:
+
+💧 +1 Glass
+💧 +500ml
+💧 +1L
+
+Animation System
+
+Each water log triggers:
+
+Raindrops falling into cloud
+Gentle sparkle effect
+Flower growth in Mood Garden
+
+If goal reached:
+
+Full rain animation
+Rainbow appears briefly
+Nimbus celebrates
+Streak System
+
+Track:
+
+Daily hydration streaks
+Weekly consistency
+
+Examples:
+
+Hydration Streak:
+7 Days 🌧🌧🌧
+
+Best Streak:
+21 Days
+Integration with Forkcast
+
+Water affects Forkcast dashboard:
+
+Examples:
+
+Better hydration → improved energy insight
+Low hydration → Nimbus gentle reminder
+
+Forkcast shows:
+
+Water:
+6 / 8 glasses
+
+Shared data source.
+
+Mood Garden Connection
+
+Water directly affects Mood Garden:
+
+Well hydrated → flowers bloom brighter
+Low hydration → garden looks dry or cloudy
+
+This creates emotional feedback loop.
+
+Nimbus Hydration Companion
+
+Nimbus gives soft reminders:
+
+Examples:
+
+“You’ve only had 2 glasses today. Want to give your cloud a little rain?”
+
+“Your garden might need water too 🌱”
+
+“Small sips still count.”
+
+Avoid pressure or guilt language.
+
+Smart Reminders
+
+Allow optional reminders:
+
+Morning hydration check
+Afternoon reminder
+Evening reminder
+
+User can customize frequency.
+
+Daily Summary
+
+At end of day:
+
+Sip Happens Summary
+
+Water Intake:
+7 / 8 glasses
+
+Hydration Level:
+Good 🌧
+
+Streak:
+5 Days
+
+Nimbus Note:
+You're taking care of yourself well today.
+Achievements
+
+Examples:
+
+💧 First Sip Logged
+🌧 Rainmaker (7-day streak)
+☁️ Cloud Keeper (30 days)
+💙 Hydration Hero
+
+Empty State
+
+Display:
+
+A single floating cloud.
+
+Nimbus holding a tiny water drop.
+
+Message:
+
+“Even small sips can change your whole day.”
+
+Button:
+
+Log First Sip
+
+User Experience Goal
+
+Sip Happens should feel like:
+
+Caring for a little cloud
+Watching something grow gently over time
+A calming daily ritual
+
+Not a fitness requirement.
+
+Not pressure.
+
+Just gentle self-care inside:
+
+The Archive of Becoming
