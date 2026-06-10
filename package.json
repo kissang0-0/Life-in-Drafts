@@ -24,7 +24,7 @@
     "expo-linear-gradient": "^56.0.4",
     "expo-linking": "^56.0.13",
     "expo-local-authentication": "^56.0.4",
-    "expo-modules-core": "^2.5.0",
+    "expo-modules-core": "~56.0.15",
     "expo-notifications": "^56.0.16",
     "expo-router": "^56.2.9",
     "expo-secure-store": "^56.0.4",

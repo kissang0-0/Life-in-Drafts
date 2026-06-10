@@ -41,7 +41,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "EXPO_NO_INSPECTOR_PROXY=1 EXPO_NO_DEVTOOLS=1 BROWSER=none npx expo start --web --port 5000 --clear"
+args = "EXPO_NO_INSPECTOR_PROXY=1 EXPO_NO_DEVTOOLS=1 EXPO_NO_METRO_INSPECTOR=1 BROWSER=none npx expo start --web --port 5000"
 waitForPort = 5000
 
 [[workflows.workflow]]
