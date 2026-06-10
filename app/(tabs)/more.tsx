@@ -40,14 +40,6 @@ export default function MoreScreen() {
       route: '/(tabs)/nest' as const,
     },
     {
-      icon: 'moon-outline' as const,
-      label: 'Cycle & Error',
-      subtitle: 'Mood, cycle & pattern tracking',
-      count: null,
-      color: '#7EC8E3',
-      route: '/(tabs)/cycle' as const,
-    },
-    {
       icon: 'partly-sunny-outline' as const,
       label: 'Cloud Corner',
       subtitle: 'Your emotional weather & insights',
@@ -90,12 +82,12 @@ export default function MoreScreen() {
   ];
 
   const shortcuts = [
-    { emoji: '✍️', label: 'New Entry',   color: '#5BB8D4', route: '/(tabs)/diary'     as const },
-    { emoji: '📸', label: 'Memory',      color: '#A78BFA', route: '/(tabs)/memories'  as const },
-    { emoji: '💬', label: 'Unsent',      color: '#F4A261', route: '/(tabs)/unsent'    as const },
-    { emoji: '📚', label: 'Study',       color: '#5DB87A', route: '/(tabs)/study'     as const },
-    { emoji: '🌸', label: 'Garden',      color: '#F9A8D4', route: '/(tabs)/garden'    as const },
-    { emoji: '👤', label: 'My Profile',  color: '#B48DE8', route: '/profile'          as const },
+    { emoji: '🍽️', label: 'Forkcast',     color: '#5DB87A', route: '/(tabs)/forkcast'    as const },
+    { emoji: '💧', label: 'Sip Happens',  color: '#7EC8E3', route: '/(tabs)/siphappens'  as const },
+    { emoji: '🌙', label: 'Lights Out',   color: '#8B9DC3', route: '/(tabs)/lightsout'   as const },
+    { emoji: '👁️', label: 'What Lingers', color: '#6B7A9F', route: '/(tabs)/whatlingers' as const },
+    { emoji: '✨', label: 'Barefaced',    color: '#7A9FC9', route: '/(tabs)/barefaced'   as const },
+    { emoji: '🌸', label: 'Cycle',        color: '#C9AEED', route: '/(tabs)/cycle'       as const },
   ];
 
   const stats = [
